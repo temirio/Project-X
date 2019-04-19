@@ -1,0 +1,63 @@
+﻿@model FNMusic.Models.Auth.Register
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+}
+
+<section id="content" class="m-t-lg wrapper-md animated fadeInDown">
+    <div class="container aside-xl">
+        <a class="navbar-brand block" href="index.html"><span class="h1 font-bold">FNMusic</span></a>
+        <section class="m-b-lg">
+            <header class="wrapper text-center">
+                <strong>Sign up to listen to the latest</strong>
+            </header>
+            <hr />
+            @using (Html.BeginForm("Register", "Auth", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="form-group">
+                    @Html.TextBoxFor(x => x.username, new { placeholder = "Username", @class = "form-control rounded input-lg text-center no-border" })
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(x => x.email, new { type = "email", placeholder = "Email Address", @class = "form-control rounded input-lg text-center no-border" })
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(x => x.password, new { type = "password", placeholder = "Password", @class = "form-control rounded input-lg text-center no-border" })
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(x => x.firstname, new { placeholder = "First Name", @class = "form-control rounded input-lg text-center no-border" })
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(x => x.lastname, new { placeholder = "Last Name", @class = "form-control rounded input-lg text-center no-border" })
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(x => x.dateOfBirth, new { placeholder = "Date of Birth", type = "date", @class = "form-control rounded input-lg text-center no-border" })
+                </div>
+                <div class="form-group">
+                    @Html.DropDownListFor(x => x.gender, new List<SelectListItem>() {
+                                                            new SelectListItem{ Text = "Select Gender", Value = null, Selected = true },
+                                                            new SelectListItem{ Text = "Male", Value = "M" },
+                                                            new SelectListItem{ Text = "Female", Value = "F" }
+                                                            //new SelectListItem(){ Text = "Unspecified", Value = "U", Disabled = true }
+                                                        }, new { @class = "form-control rounded input-lg text-center no-border" })
+                </div>
+                <div class="checkbox i-checks m-b">
+                    <label class="m-l">
+                        <input id="tac" type="checkbox" style="text-align:center;" checked=""><i></i> Agree the <a href="#">terms and policy</a>
+
+                    </label>
+                </div>
+
+                <button id="submit_btn" type="submit" class="btn btn-lg btn-warning lt b-white b-2x btn-block btn-rounded">
+                    <i class="icon-arrow-right pull-right"></i>
+                    <span class="m-r-n-lg">Sign up</span>
+                </button>
+                <div class="line line-dashed"></div>
+                <p class="text-muted text-center">
+                    <small>Already have an account?</small>
+                </p>
+                <a asp-controller="Auth" asp-action="Login" class="btn btn-lg btn-info btn-block btn-rounded">Sign in</a>
+            }
+        </section>
+    </div>
+</section>
+

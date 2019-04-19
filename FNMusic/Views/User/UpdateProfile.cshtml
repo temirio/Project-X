@@ -1,0 +1,126 @@
+﻿@model FNMusic.Models.User
+@using FNMusic.Controllers;
+@{
+    ViewData["Title"] = "EditProfile";
+    Layout = "~/Views/Shared/_ModalLayout.cshtml";    
+}
+
+<div class="modal-over">
+    <div class="modal-body">
+        <div class="container">
+            <div class="modal-content animated fadeInUp">
+                @using (Html.BeginForm("UpdateProfile", "UserController", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <div class="modal-header">
+                        <h4>Edit Profile (@Html.DisplayFor(x => x.Username)) </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group" style="padding-top:39px;">
+                                    <img src="~/images/a0.png" class="img-rounded center-block" style="left:70px;" height="200" />
+                                    <br />                                   
+                                    @Html.TextBoxFor(x => x.ProfileImagePath, new { type="file", @class="form-control center-block", style = "border-left:unset; border-right:unset; border-top:unset" })
+                                    
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <h4>Please fill in the following information</h4>
+                                <div class="form-group">
+                                    <p>
+                                        <span class="text-black">Display name</span>
+                                        <i class="text-danger">*</i>
+                                        <br />
+                                        <span class="small">What do you want your fans to call you?</span>
+                                    </p>
+                                    @Html.TextBoxFor(x => x.Username, new { @class = "form-control", style = "border-left:unset; border-right:unset; border-top:unset" })
+                                </div>
+                                <div class="form-group">
+                                    <p>
+                                        <span class="text-black">Date of Birth</span>
+                                        <i class="text-danger">*</i>
+                                        <br />
+                                        <span class="small">You can only change this once</span>
+                                    </p>
+                                    @Html.TextBoxFor(x => x.DateOfBirth, new { type = "date", @class = "form-control", style = "border-left:unset; border-right:unset; border-top:unset" })
+                                </div>
+                                <div class="form-group">
+                                    <p>
+                                        <span class="text-black">Nationality</span>
+                                        <i class="text-danger">*</i>
+                                        <br />
+                                        <span class="small">What country are you from?</span>
+                                    </p>
+                                    @Html.DropDownListFor(x => x.Nationality, UserController.countrylist, new { @class = "form-control", style = "border-left:unset; border-right:unset; border-top:unset" })
+                                </div>
+                                <div class="form-group">
+                                    <p>
+                                        <span class="text-black">Location</span>
+                                        <i class="text-danger">*</i>
+                                        <br />
+                                        <span class="small">Let us know where you are?</span>
+                                    </p>
+                                    @Html.TextBoxFor(x => x.Nationality, new { @class = "form-control", style = "border-left:unset; border-right:unset; border-top:unset" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" style="padding-top:39px;">
+                                    <p>
+                                        <span class="text-black">Primary Genre</span>
+                                        @*<i class="text-danger">*</i>*@
+                                        <br />
+                                        <span class="small">What kind of music do you like?</span>
+                                    </p>
+                                    @Html.TextBoxFor(x => x.PrimaryGenre, new { @class = "form-control", style = "border-left:unset; border-right:unset; border-top:unset" })
+                                </div>
+                                <div class="form-group">
+                                    <p>
+                                        <span class="text-black">Biography</span>
+                                        <i class="text-danger">*</i>
+                                        <br />
+                                        <span class="small">Tell us a bit about yourself</span>
+                                    </p>
+                                    @Html.TextBoxFor(x => x.Biography, new { @class = "form-control", style = "border-left:unset; border-right:unset; border-top:unset" })
+                                </div>
+                                <div class="form-group">
+                                    <p>
+                                        <span class="text-black">Website</span>
+                                        @*<i class="text-danger">*</i>*@
+                                        <br />
+                                        <span class="small">Your Personal Website</span>
+                                    </p>
+                                    @Html.TextBoxFor(x => x.Website, new { @class = "form-control", style = "border-left:unset; border-right:unset; border-top:unset" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-default btn-warning btn-rounded" data-dismiss="modal">
+                            <span>Cancel</span>
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                        <a href="#" class="btn btn-success btn-rounded">
+                            <span>Save Changes</span>
+                            <i class="fa fa-save"></i>
+                        </a>
+                    </div>
+                }
+
+            </div>
+            
+        </div>
+        
+        
+    </div>
+
+    @*<div class="modal-center animated fadeInUp text-center" style="width:200px;margin:-80px 0 0 -100px;">
+        <div class="thumb-md"><img src="images/a0.png" class="img-circle b-a b-light b-3x"></div>
+        <p class="text-white h4 m-t m-b">John.Smith</p>
+        <div class="input-group">
+            <input type="password" class="form-control text-sm btn-rounded" placeholder="Enter pwd to continue">
+            <span class="input-group-btn">
+                <button class="btn btn-success btn-rounded" type="button" data-dismiss="modal"><i class="fa fa-arrow-right"></i></button>
+            </span>
+        </div>
+    </div>*@
+</div>
