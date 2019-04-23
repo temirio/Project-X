@@ -16,6 +16,7 @@
     <!--[if lt IE 9]> <script src="js/ie/html5shiv.js"></script> <script src="js/ie/respond.min.js"></script> <script src="js/ie/excanvas.js"></script> <![endif]-->
 </head>
 <body class="">
+    @Html.Partial("_StatusMessages")
     <section class="vbox">
         <header class="bg-white-only header header-md navbar navbar-fixed-top-xs">
             <div class="navbar-header aside bg-info nav-xs">
@@ -36,7 +37,7 @@
                                 <i class="fa fa-search"></i>
                             </button>
                         </span>
-                        @Html.TextBox("Search","Search", new { type = "text", @class = "form-control input-sm no-border rounded", placeholder = "Search songs, albums...", style = "width:300px;" })
+                        @Html.TextBox("Search", "Search", new { type = "text", @class = "form-control input-sm no-border rounded", placeholder = "Search songs, albums...", style = "width:300px;" })
                     </div>
                 </div>
             </form>
@@ -60,13 +61,13 @@
                             <span class="thumb-sm avatar pull-right m-t-n-sm m-b-n-sm m-l-sm">
                                 <img src="~/images/a0.png" alt="...">
                             </span>
-                            @HttpContextAccessor.HttpContext.Session.GetString("firstname") 
+                            @HttpContextAccessor.HttpContext.Session.GetString("firstname")
                             @HttpContextAccessor.HttpContext.Session.GetString("lastname")
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight">
                             <li><span class="arrow top"></span><a href="#">Settings</a></li>
-                            <li><a href="~/profile">Profile</a></li>
+                            <li><a href="~/@HttpContextAccessor.HttpContext.Session.GetString("username")">Profile</a></li>
                             <li><a href="~/@HttpContextAccessor.HttpContext.Session.GetString("username")/updateprofile">Update Profile</a></li>
                             <li><a href="#"> <span class="badge bg-danger pull-right">3</span> Notifications </a></li>
                             <li><a href="docs.html">Help</a></li>
@@ -78,11 +79,12 @@
             </div>
         </header>
         <section>
+
             <section class="hbox stretch">
                 <aside class="bg-black dk nav-xs aside hidden-print" id="nav">
                     <section class="vbox">
                         <section class="w-f-md scrollable">
-                            <div class="slim-scroll" data-height="auto" data-disable-fade-out="true" data-distance="0" data-size="10px"  data-railOpacity="0.2">
+                            <div class="slim-scroll" data-height="auto" data-disable-fade-out="true" data-distance="0" data-size="10px" data-railOpacity="0.2">
                                 <!-- nav -->
                                 <nav class="nav-primary hidden-xs">
                                     <ul class="nav bg clearfix">
@@ -190,6 +192,7 @@
                         </footer>
                     </section>
                 </aside>
+
                 @RenderBody()
             </section>
         </section>

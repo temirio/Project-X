@@ -1,21 +1,12 @@
-C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\FNEntertainment\UserMgt\bin\Debug\netcoreapp2.1\UserMgt.deps.json
-C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\FNEntertainment\UserMgt\bin\Debug\netcoreapp2.1\UserMgt.dll
-C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\FNEntertainment\UserMgt\bin\Debug\netcoreapp2.1\UserMgt.pdb
-C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\FNEntertainment\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.csprojAssemblyReference.cache
-C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\FNEntertainment\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.csproj.CoreCompileInputs.cache
-C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\FNEntertainment\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.AssemblyInfoInputs.cache
-C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\FNEntertainment\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.AssemblyInfo.cs
-C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\FNEntertainment\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.dll
-C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\FNEntertainment\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.pdb
 C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\UserMgt\bin\Debug\netcoreapp2.1\UserMgt.deps.json
 C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\UserMgt\bin\Debug\netcoreapp2.1\UserMgt.dll
 C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\UserMgt\bin\Debug\netcoreapp2.1\UserMgt.pdb
-C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.csproj.CoreCompileInputs.cache
-C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.AssemblyInfoInputs.cache
-C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.AssemblyInfo.cs
-C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.dll
-C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.pdb
 C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\UserMgt\bin\Debug\netcoreapp2.1\BaseLib.dll
 C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\UserMgt\bin\Debug\netcoreapp2.1\BaseLib.pdb
 C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.csprojAssemblyReference.cache
+C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.csproj.CoreCompileInputs.cache
+C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.AssemblyInfoInputs.cache
+C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.AssemblyInfo.cs
 C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.csproj.CopyComplete
+C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.dll
+C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.pdb

@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Http;
 using UserMgt.Utils;
+using UserMgt.Services;
+using UserMgt.Models;
+using FNMusic.Utils;
 
 namespace FNMusic.Controllers
 {
@@ -15,33 +18,35 @@ namespace FNMusic.Controllers
     {
         public static List<SelectListItem> countrylist = new List<SelectListItem>();
         private IHttpContextAccessor httpContextAccessor;
+        private IUserService userService;
         Dictionary<string, object> userDetails;
         User user;
+        private string accessToken;
 
 
-        public UserController(IHttpContextAccessor httpContextAccessor)
+        public UserController(IHttpContextAccessor httpContextAccessor, IUserService userService)
         {
             this.user = new User();
             this.userDetails = new Dictionary<string, object>();
             this.httpContextAccessor = httpContextAccessor;
+            this.userService = userService;
 
-            while (httpContextAccessor.HttpContext.Session.Keys == null)
+            if (httpContextAccessor.HttpContext.Session.Keys == null)
             {
                 foreach (string key in httpContextAccessor.HttpContext.Session.Keys)
                 {
                     userDetails.Add(key, httpContextAccessor.HttpContext.Session.GetString(key));
                 }
 
-                //user.Id = (long) userDetails.GetValueOrDefault("id");
                 user.Username = userDetails.GetValueOrDefault("username").ToString();
                 user.FirstName = userDetails.GetValueOrDefault("firstname").ToString();
                 user.LastName = userDetails.GetValueOrDefault("lastname").ToString();
                 user.Gender = userDetails.GetValueOrDefault("gender").ToString();
-                //user.DateOfBirth = (DateTime) userDetails.GetValueOrDefault("dateofbirth");
                 user.Role = userDetails.GetValueOrDefault("role").ToString();
-                user.Email = userDetails.GetValueOrDefault("sub").ToString();
-                break;
+                user.Email = userDetails.GetValueOrDefault("email").ToString();             
             }
+
+            accessToken = httpContextAccessor.HttpContext.Session.GetString("X-AUTH-TOKEN");
             
 
         }
@@ -61,13 +66,18 @@ namespace FNMusic.Controllers
             return View(user);
         }
 
-        [HttpGet]
         [Route("{username}")]
-        public IActionResult Profile([FromRoute] string username)
+        public async Task<IActionResult> Profile([FromRoute] string username)
         {
             ViewData["Title"] = "Profile";
+            User user = await userService.FindUserByUsername(username,accessToken);
+            if (user == null) {
+                return View().WithDanger("Something went wrong", "Kindly refresh this page");
+            }
+                 
 
             return View(user);
+
         }
 
     }

@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BaseLib.Models;
 using FNMusic.Models.Auth;
+using FNMusic.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -17,11 +18,12 @@ namespace FNMusic.Controllers
     public class AuthController : Controller
     {
         private IAuthService authService;
+        private SessionUtils sessionUtils;
 
         public AuthController(IAuthService authService)
-        {
-        
+        {    
             this.authService = authService;
+            this.sessionUtils = new SessionUtils();
         }
 
         [Route("register")]
@@ -44,31 +46,32 @@ namespace FNMusic.Controllers
         {
             if (!ModelState.IsValid)
             {            
-                return View(model);                        
+                return View(model).WithWarning("Wrong input", "kindly fill in the correct information"); ;                        
             }
 
             string json = JsonConvert.SerializeObject(model);
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
             Response response = await authService.Register(content);
-            if (response != null)
-            {     
+            while (response != null)
+            {
                 if (response.Code != "201")
-                    await Response.WriteAsync(response.Description);
+                    break;
 
                 if (response.Token != null)
                 {
-                    Dictionary<string,string> userDetails  = AuthorizeJWToken.Authorize(response.Token);
-                    HttpContext.Session.Clear();
+                    Dictionary<string, string> userDetails = AuthorizeJWToken.Authorize(response.Token);
+                    userDetails.Add("X-AUTH-TOKEN", response.Token);
+
                     foreach (string key in userDetails.Keys)
-                    { 
+                    {
                         HttpContext.Session.SetString(key.ToString(), userDetails.GetValueOrDefault(key));
                     }
-
                     Response.Redirect("/"+userDetails.GetValueOrDefault("username").ToString()+"/updateprofile");
                 }
+                break;
             }
 
-            return View(model);         
+            return View(model).WithDanger("Service Unavailable", "Sorry we could not log you in right now, try again later");
         }
 
         [Route("login")]
@@ -86,30 +89,34 @@ namespace FNMusic.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return View(model).WithWarning("Wrong input","kindly fill in the correct information");
             }
 
             string json = JsonConvert.SerializeObject(model);
             HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
             Response response = await authService.Login(content);
-            if (response != null)
+            while (response != null)
             {
+                if (response.Code != "200")
+                    break;
                 
                 if (response.Token != null)
                 {
                     Dictionary<string, string> userDetails = AuthorizeJWToken.Authorize(response.Token);
-                    HttpContext.Session.Clear();
+                    userDetails.Add("X-AUTH-TOKEN", response.Token);
+
                     foreach (string key in userDetails.Keys)
                     {
                         HttpContext.Session.SetString(key.ToString(), userDetails.GetValueOrDefault(key));
                     }
-
                     Response.Redirect("/discover");
                 }
-               
+                break;
             }
 
-            return View(model);
+            return View(model).WithDanger("Service Unavailable","Sorry we could not log you in right now, try again later");
         }
+
+        
     }
 }

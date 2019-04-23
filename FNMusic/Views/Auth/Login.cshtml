@@ -11,7 +11,7 @@
         </a>
         <section class="m-b-lg">
             <header class="wrapper text-center"> <strong>Sign in to get in touch</strong> </header>
-            @using (Html.BeginForm("Login", "Auth", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("signin", "Auth", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 @Html.ValidationSummary(true)
                 <hr />
