@@ -175,7 +175,7 @@ using FNMusic.Models;
                 ");
             EndContext();
             BeginContext(3607, 105, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4bbf18942fec458688d5c48588fa85c7", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c40698c19f984d6fbc3116b9c87f35ae", async() => {
                 BeginContext(3701, 7, true);
                 WriteLiteral("Sign in");
                 EndContext();

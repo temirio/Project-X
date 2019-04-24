@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,20 +17,29 @@ namespace BaseLib.Services
 
         public RestHandler()
         {
-            client = new HttpClient();
-            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            var proxy = new WebProxy()
+            {
+                Address = new Uri("http://172.16.10.20:8080"),
+                BypassProxyOnLocal = false,
+                UseDefaultCredentials = false,
 
+            };
+
+            var httpClientHandler = new HttpClientHandler()
+            {
+                Proxy = proxy,
+            };
+
+            client = new HttpClient(handler: httpClientHandler, disposeHandler: true);
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         public void SetDefaultRequestHeaders(Dictionary<string,string> headers)
-        {
-            
+        {         
             foreach (var header in headers)
             {
                 client.DefaultRequestHeaders.Add(header.Key, header.Value);
-            }
-
-            
+            }          
         }
 
         public string ModifyRequestUrl(string url, string[] pathVariables)
@@ -59,7 +69,7 @@ namespace BaseLib.Services
                     if (response.IsSuccessStatusCode)
                     {
                         string json = await response.Content.ReadAsStringAsync();
-                        T model = (T) JsonConvert.DeserializeObject(json);
+                        T model = (T) JsonConvert.DeserializeObject(json,typeof(T));
                         return model;
                     }
                     

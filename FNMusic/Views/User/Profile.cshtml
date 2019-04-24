@@ -1,6 +1,10 @@
 ﻿@model UserMgt.Models.User
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
 @{
     Layout = "~/Views/Shared/_PlayerLayout.cshtml";
+    string userLocation = Model.location ?? "Not Found";
+    string biography = Model.biography ?? "Musician from" + Model.nationality + "";
 
 }
 
@@ -15,36 +19,41 @@
                                 <div class="text-center m-b m-t">
                                     <a href="#" class="thumb-lg"> <img src="images/a0.png" class="img-circle"> </a>
                                     <div>
-                                        <div class="h3 m-t-xs m-b-xs">@Html.DisplayFor(x => x.FirstName) </div> 
-                                        <small class="text-muted"><i class="fa fa-map-marker"></i> London, UK</small>
+                                        <div class="h3 m-t-xs m-b-xs">@Html.DisplayFor(x => x.firstname) @Html.DisplayFor(x => x.lastname) </div>
+                                        <small class="text-muted"><i class="fa fa-map-marker"></i> @userLocation</small>
+
                                     </div>
                                 </div>
                                 <div class="panel wrapper">
                                     <div class="row text-center">
                                         <div class="col-xs-6">
-                                            <a href="#"> <span class="m-b-xs h4 block">245</span> <small class="text-muted">Followers</small>                                                            </a>
+                                            <a href="#"> <span class="m-b-xs h4 block">@Html.DisplayFor(x => x.followers)</span> <small class="text-muted">Followers</small></a>
                                         </div>
                                         <div class="col-xs-6">
-                                            <a href="#"> <span class="m-b-xs h4 block">55</span> <small class="text-muted">Following</small>                                                            </a>
+                                            <a href="#"> <span class="m-b-xs h4 block">@Html.DisplayFor(x => x.following)</span> <small class="text-muted">Following</small></a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="btn-group btn-group-justified m-b">
-                                    <a class="btn btn-success btn-rounded" data-toggle="button"> <span class="text"> <i class="fa fa-eye"></i> Follow </span> <span class="text-active"> <i class="fa fa-eye"></i> Following </span>                                                    </a>
-                                    <a class="btn btn-dark btn-rounded"> <i class="fa fa-comment-o"></i> Chat </a>
+                                    @if (HttpContextAccessor.HttpContext.Session.GetString("email") != Model.email)
+                                    {
+                                        <a class="btn btn-success btn-rounded" data-toggle="button"> <span class="text"> <i class="fa fa-eye"></i> Follow </span> <span class="text-active"> <i class="fa fa-eye"></i> Following </span></a>
+                                        <a class="btn btn-dark btn-rounded"> <i class="fa fa-comment-o"></i> Chat </a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-success btn-rounded" data-toggle="button"><span class="text"><i class="fa fa-edit"></i> Edit Profile </span></a>
+                                    }
                                 </div>
                                 <div>
                                     <small class="text-uc text-xs text-muted">about me</small>
-                                    <p>Artist</p> <small class="text-uc text-xs text-muted">info</small>
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id neque quam.
-                                        Aliquam sollicitudin venenatis ipsum ac feugiat.
-                                    </p>
+                                    <p>Artist</p>
+                                    <small class="text-uc text-xs text-muted">info</small>
+                                    <p>@biography</p>
                                     <div class="line"></div> <small class="text-uc text-xs text-muted">connection</small>
                                     <p class="m-t-sm">
                                         <a href="#" class="btn btn-rounded btn-twitter btn-icon"><i class="fa fa-twitter"></i></a>
                                         <a href="#" class="btn btn-rounded btn-facebook btn-icon"><i class="fa fa-facebook"></i></a>
-                                        <a href="#" class="btn btn-rounded btn-gplus btn-icon"><i class="fa fa-google-plus"></i></a>
                                     </p>
                                 </div>
                             </div>
@@ -139,36 +148,20 @@
                 <aside class="col-lg-3 b-l">
                     <section class="vbox">
                         <section class="scrollable padder-v">
-                            <div class="panel">
-                                <h4 class="font-thin padder">Latest Tweets</h4>
-                                <ul class="list-group">
-                                    <li class="list-group-item">
-                                        <p>
-                                            Wellcome <a href="#" class="text-info">@@Drew Wllon</a> and play this
-                                            web application template, have fun1
-                                        </p> <small class="block text-muted"><i class="fa fa-clock-o"></i> 2 minuts ago</small>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <p>
-                                            Morbi nec <a href="#" class="text-info">@@Jonathan George</a> nunc condimentum
-                                            ipsum dolor sit amet, consectetur
-                                        </p> <small class="block text-muted"><i class="fa fa-clock-o"></i> 1 hour ago</small>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <p>
-                                            <a href="#" class="text-info">@@Josh Long</a> Vestibulum ullamcorper sodales
-                                            nisi nec adipiscing elit. Morbi id neque quam. Aliquam sollicitudin
-                                            venenatis
-                                        </p> <small class="block text-muted"><i class="fa fa-clock-o"></i> 2 hours ago</small>
-                                    </li>
-                                </ul>
-                            </div>
+                            
                             <div class="panel clearfix">
                                 <div class="panel-body">
                                     <a href="#" class="thumb pull-left m-r"> <img src="images/a0.png" class="img-circle"> </a>
-                                    <div class="clear"> <a href="#" class="text-info">@@Mike Mcalidek <i class="fa fa-twitter"></i></a>                                                    <small class="block text-muted">2,415 followers / 225 tweets</small>                                                    <a href="#" class="btn btn-xs btn-success m-t-xs">Follow</a> </div>
+                                    <div class="clear">
+                                        <a href="https://twitter.com/beyonce" class="text-info">@Model.firstname @Model.lastname</a>
+                                        <br />
+                                        <a href="https://twitter.com/beyonce?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @@beyonce</a>
+                                        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                                    </div>
                                 </div>
                             </div>
+                            <a class="twitter-timeline" href="https://twitter.com/Beyonce?ref_src=twsrc%5Etfw">Tweets by Beyonce</a>
+                            <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
                         </section>
                     </section>
                 </aside>

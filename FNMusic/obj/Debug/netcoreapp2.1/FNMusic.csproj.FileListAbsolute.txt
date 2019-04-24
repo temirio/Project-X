@@ -43,3 +43,5 @@ C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\FNMusic
 C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.Views.pdb
 C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.csproj.CopyComplete
 C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_StatusMessages.g.cshtml.cs
+C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Home\PageNotFound.g.cshtml.cs
+C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_WhiteLayout.g.cshtml.cs

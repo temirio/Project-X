@@ -67,7 +67,7 @@ using FNMusic.Models;
             WriteLiteral("\r\n<section id=\"content\" class=\"m-t-lg wrapper-md animated fadeInUp\">\r\n    <div class=\"container aside-xl\">\r\n        ");
             EndContext();
             BeginContext(242, 140, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c4c35b250d6b447b9ad8e56fb2097484", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "3a584354ba0249ad99c291361910ec11", async() => {
                 BeginContext(313, 65, true);
                 WriteLiteral("\r\n            <span class=\"h1 font-bold\">FNMusic</span>\r\n        ");
                 EndContext();
@@ -136,7 +136,7 @@ using FNMusic.Models;
                     ");
             EndContext();
             BeginContext(1516, 136, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "ecad5c26ceba4a75830873dcb17f57f9", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "3848ca3dcd1b42619a7da709cc412364", async() => {
                 BeginContext(1569, 79, true);
                 WriteLiteral("\r\n                        <small>Forgot password?</small>\r\n                    ");
                 EndContext();
@@ -160,7 +160,7 @@ using FNMusic.Models;
             WriteLiteral("\r\n                </div>\r\n                <div class=\"line line-dashed\"></div>\r\n                <p class=\"text-muted text-center\">\r\n                    <small>Do not have an account?</small>\r\n                </p>\r\n                ");
             EndContext();
             BeginContext(1882, 114, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "3ecbc31ec9ac46758fa9998275aa237f", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "fde12bee4b584b1bbca496e834e26030", async() => {
                 BeginContext(1975, 17, true);
                 WriteLiteral("Create an account");
                 EndContext();

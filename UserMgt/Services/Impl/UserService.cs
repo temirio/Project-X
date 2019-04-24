@@ -32,7 +32,7 @@ namespace UserMgt.Services.Impl
                 headers.Add("X-AUTH-TOKEN", accessToken);
                 string[] pathVariables = new string[] { username };
 
-                string path = "http://localhost:6000/rest/v1/fnmusic/usermgt/user/findbyusername/"+username+"";
+                string path = "http://localhost:6000/rest/v1/fnmusic/usermgt/user/findbyusername/" + username+"";
                 User user = await restHandler.GetForObject(path, headers, pathVariables);
 
                 return user;
