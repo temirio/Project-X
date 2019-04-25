@@ -65,6 +65,11 @@ namespace BaseLib.Services
             {
                 try
                 {
+                    if (headers != null)
+                    {
+                        SetDefaultRequestHeaders(headers);
+                    }
+
                     HttpResponseMessage response = await client.GetAsync(path);
                     if (response.IsSuccessStatusCode)
                     {
@@ -82,5 +87,36 @@ namespace BaseLib.Services
                 }
             });       
         }
+
+        public Task<T> PostForObject(string path, Dictionary<string,string> headers, string[] pathVariables, HttpContent content)
+        {
+            return Task.Run(async () => 
+            {
+                try
+                {
+                    if (headers != null)
+                    {
+                        SetDefaultRequestHeaders(headers);
+                    }
+
+                    string requestPath = pathVariables != null ? ModifyRequestUrl(path, pathVariables) : path;
+                    HttpResponseMessage response = await client.PostAsync(requestPath, content);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string json = await response.Content.ReadAsStringAsync();
+                        T model = (T) JsonConvert.DeserializeObject(json, typeof(T));
+                        return model;
+                    }
+
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return null;
+                }
+            });
+        }
+
     }
 }

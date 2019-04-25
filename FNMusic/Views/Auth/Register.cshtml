@@ -12,7 +12,7 @@
                 <strong>Sign up to listen to the latest</strong>
             </header>
             <hr />
-            @using (Html.BeginForm("signup", "Auth", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("register", "Auth", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 <div class="form-group">
                     @Html.TextBoxFor(x => x.username, new { placeholder = "Username", @class = "form-control rounded input-lg text-center no-border" })

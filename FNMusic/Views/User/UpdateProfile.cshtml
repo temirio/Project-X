@@ -4,9 +4,10 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @{
     ViewData["Title"] = "Update your Profile";
-    Layout = "~/Views/Shared/_ModalLayout.cshtml";  
-    
-    
+    Layout = "~/Views/Shared/_ModalLayout.cshtml";
+
+    string profilePhoto = Model.profileImagePath ?? "/images/a0.png";
+
 }
 
 <div class="modal-over">
@@ -22,12 +23,15 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group" style="padding-top:39px;">
-                                    <img src="~/images/a0.png" class="img-rounded center-block" style="left:70px;" height="200" />
+                                    <img id="imagebx" src="@profilePhoto" class="img-rounded center-block" style="left:70px;" height="200" />
                                     <br />                                   
-                                    @Html.TextBoxFor(x => x.profileImagePath, new { type = "file", @class = "form-control center-block", style = "border-left:unset; border-right:unset; border-top:unset" })
-                                    <button class="btn btn-default" onclick="">
-                                        <span class="text-center">Upload Photo</span>
-                                    </button>
+                                    @Html.TextBoxFor(x => x.profileImagePath, new { type = "file", @class = "form-control center-block", style = "border-left:unset; border-right:unset; border-top:unset", id = "fileUpload", onchange = "fileUploadOnClickEvent();" })
+                                    <script>
+                                        function fileUploadOnClickEvent() {
+                                            @Model.profileImagePath = document.getElementById("fileUpload").Text;
+                                            
+                                        }
+                                    </script>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -73,7 +77,6 @@
                                 <div class="form-group" style="padding-top:39px;">
                                     <p>
                                         <span class="text-black">Primary Genre</span>
-                                        @*<i class="text-danger">*</i>*@
                                         <br />
                                         <span class="small">What kind of music do you like?</span>
                                     </p>

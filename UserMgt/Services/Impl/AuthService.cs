@@ -1,4 +1,5 @@
 ﻿using BaseLib.Models;
+using BaseLib.Services;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,12 @@ namespace UserMgt.Services.Impl
     public class AuthService : IAuthService
     {
         private static readonly HttpClient client = new HttpClient();
+        private RestHandler<Response> restHandler;
+
+        public AuthService()
+        {
+            this.restHandler = restHandler = new RestHandler<Response>();
+        }
 
         public Task<Response> Register(HttpContent content)
         {    
@@ -21,6 +28,7 @@ namespace UserMgt.Services.Impl
                 Response response = new Response();
                 try
                 {
+
                     HttpResponseMessage httpResponse = await client.PostAsync("http://localhost:6000/rest/v1/fnmusic/usermgt/auth/signup", content);
                     if (httpResponse.StatusCode.Equals(HttpStatusCode.Created))
                     {
@@ -48,16 +56,9 @@ namespace UserMgt.Services.Impl
                 Response response = new Response();
                 try
                 {
-                    HttpResponseMessage httpResponse = await client.PostAsync("http://localhost:6000/rest/v1/fnmusic/usermgt/auth/login", content);
-                    if (httpResponse.StatusCode.Equals(HttpStatusCode.OK))
-                    {
-                        string json = await httpResponse.Content.ReadAsStringAsync();
-                        JObject jsonObject = JObject.Parse(json);
-                        response.Code = jsonObject["code"].ToString();
-                        response.Description = jsonObject["description"].ToString();
-                        response.Token = jsonObject["accessToken"].ToString();
-                    }
-                   
+                    string path = "http://localhost:6000/rest/v1/fnmusic/usermgt/auth/login";
+                    response = await restHandler.PostForObject(path, null, null, content);
+                    
                     return response;
                 }
                 catch (Exception ex)

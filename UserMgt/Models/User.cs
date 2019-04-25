@@ -62,6 +62,12 @@ namespace UserMgt.Models
         [JsonProperty("followers")]
         public long followers{ get; set; }
 
+        [JsonProperty("twitterProfileUrl")]
+        public string twitterProfileUrl { get; set; }
+
+        [JsonProperty("facebookProfileUrl")]
+        public string facebookProfileUrl { get; set; }
+
         [JsonProperty("role")]
         public string role{ get; set; }
 
