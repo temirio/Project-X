@@ -1,41 +1,205 @@
-﻿using BaseLib.Services;
-using Newtonsoft.Json;
+﻿using BaseLib.Models;
+using BaseLib.Services;
+using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using UserMgt.Models;
 
 namespace UserMgt.Services.Impl
 {
-    public class UserService : IUserService
+    public class UserService : HostService, IUserService<Result<User>>
     {
-        private static readonly HttpClient client = new HttpClient();
-        private RestHandler<User> restHandler;
+        private IRestTemplate<Result<User>> restTemplate;
+        private HttpRequestHeaders RequestHeaders;
 
-        public UserService()
+        public UserService(IConfiguration configuration, IRestTemplate<Result<User>> restTemplate) : base(configuration)
         {
-            this.restHandler = new RestHandler<User>();
+            this.restTemplate = restTemplate;
+            RequestHeaders = new HttpRequestMessage().Headers;
         }
 
-        public async Task<User> FindUserByEmail(string email)
+        public async Task<HttpResult<Result<User>>> FindUserByEmail(string email)
         {
-            throw new NotImplementedException();
-        }
-
-        public async Task<User> FindUserByUsername(string username, string accessToken)
-        {
-            return await Task.Run(async() =>
+            return await Task.Run(async () =>
             {
-                Dictionary<string, string> headers = new Dictionary<string, string>();
-                headers.Add("X-AUTH-TOKEN", accessToken);
-                string[] pathVariables = new string[] { username };
+                try
+                {
+                    string requestUri = FindByEmailUri + email;
+                    HttpResult<Result<User>> result = await restTemplate.GetAsync(UserBaseAddress, requestUri, RequestHeaders, null);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            });
+        }
 
-                string path = "http://localhost:6000/rest/v1/fnmusic/usermgt/user/findbyusername/" + username+"";
-                User user = await restHandler.GetForObject(path, headers, pathVariables);
+        public async Task<HttpResult<Result<User>>> FindUserByUsername(string username)
+        {
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    string requestUri = FindByUsernameUri + username;
+                    HttpResult<Result<User>> result = await restTemplate.GetAsync(UserBaseAddress, requestUri, RequestHeaders, null);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            });
+        }
 
-                return user;
+        public async Task UpdateProfile(HttpContent httpContent, string accessToken)
+        {
+            await Task.Run(async() =>
+            {
+                try
+                {
+                    RequestHeaders.Add("X-AUTH-TOKEN", accessToken);
+                    await restTemplate.PutAsync(UserBaseAddress, UpdateProfileUri, RequestHeaders, httpContent);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            });
+
+        }
+
+        public async Task FollowUser(long userId, long fanId, string accessToken)
+        {
+            await Task.Run(async()=> {
+                try
+                {
+                    RequestHeaders.Add("UserId",userId.ToString());
+                    RequestHeaders.Add("FanId", fanId.ToString());
+                    RequestHeaders.Add("X-AUTH-TOKEN", accessToken);
+                    
+                    await restTemplate.PostAsync(UserBaseAddress, FollowUri, RequestHeaders, null);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            });
+        }
+
+        public async Task UnfollowUser(long userId, long fanId, string accessToken)
+        {
+                await Task.Run(async () => {
+                try
+                {
+                    RequestHeaders.Add("UserId",userId.ToString());
+                    RequestHeaders.Add("FanId", fanId.ToString());
+                    RequestHeaders.Add("X-AUTH-TOKEN", accessToken);
+                   
+                    await restTemplate.PostAsync(UserBaseAddress, UnfollowUri, RequestHeaders, null);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            });
+
+        }
+
+        public async Task<HttpResult<Result<User>>> GetFollowers(long id, int pageNumber, int pageSize, string accessToken)
+        {
+            return await Task.Run(async () => 
+            {
+                try
+                {
+                    RequestHeaders.Add("UserId", id.ToString());
+                    RequestHeaders.Add("PageNumber", pageNumber.ToString());
+                    RequestHeaders.Add("PageSize", pageSize.ToString());
+                    RequestHeaders.Add("X-AUTH-TOKEN", accessToken);
+                    HttpResult<Result<User>> result = await restTemplate.GetAsync(UserBaseAddress, GetFollowersUri, RequestHeaders, null);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+
+            });
+        }
+
+        public async Task<HttpResult<Result<User>>> GetFollowing(long id, int pageNumber, int pageSize, string accessToken)
+        {
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    RequestHeaders.Add("UserId", id.ToString());
+                    RequestHeaders.Add("PageNumber", pageNumber.ToString());
+                    RequestHeaders.Add("PageSize", pageSize.ToString());
+                    RequestHeaders.Add("X-AUTH-TOKEN", accessToken);
+                    HttpResult<Result<User>> result = await restTemplate.GetAsync(UserBaseAddress, GetFollowingUri, RequestHeaders, null);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            });
+        }
+
+        public async Task<HttpResult<Result<User>>> IsFollower(long userId, long fanId, string accessToken)
+        {
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    RequestHeaders.Add("UserId", userId.ToString());
+                    RequestHeaders.Add("FanId", fanId.ToString());
+                    RequestHeaders.Add("X-AUTH-TOKEN", accessToken);
+                    HttpResult<Result<User>> result = await restTemplate.GetAsync(UserBaseAddress, IsFollowerUri, RequestHeaders, null);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            });
+        }
+
+        public async Task<HttpResult<Result<User>>> IsFollowing(long userId, long fanId, string accessToken)
+        {
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    RequestHeaders.Add("UserId", userId.ToString());
+                    RequestHeaders.Add("FanId", fanId.ToString());
+                    RequestHeaders.Add("X-AUTH-TOKEN", accessToken);
+                    HttpResult<Result<User>> result = await restTemplate.GetAsync(UserBaseAddress, IsFollowingUri, RequestHeaders, null);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            });
+        }
+
+        public async Task<HttpResult<Result<User>>> LogOut(string accessToken)
+        {
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    RequestHeaders.Add("X-AUTH-TOKEN", accessToken);
+                    HttpResult<Result<User>> result = await restTemplate.PostAsync(UserBaseAddress, LogOutUri, RequestHeaders, null);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
             });
         }
     }

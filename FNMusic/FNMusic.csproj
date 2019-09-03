@@ -53,4 +53,8 @@
     <ProjectReference Include="..\UserMgt\UserMgt.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Settings\" />
+  </ItemGroup>
+
 </Project>

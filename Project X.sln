@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FNMusic", "FNMusic\FNMusic.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserMgt", "UserMgt\UserMgt.csproj", "{2D7F7B51-75A9-42F3-9897-B6B3DF664E5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseLib", "BaseLib\BaseLib.csproj", "{6D7967F5-D3AA-409B-BAC4-2C405A22297B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaseLib", "BaseLib\BaseLib.csproj", "{6D7967F5-D3AA-409B-BAC4-2C405A22297B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

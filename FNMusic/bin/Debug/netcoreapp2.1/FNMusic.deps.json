@@ -695,6 +695,9 @@
         }
       },
       "BaseLib/1.0.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.App": "2.1.1"
+        },
         "runtime": {
           "BaseLib.dll": {}
         },
@@ -705,6 +708,7 @@
       "UserMgt/1.0.0": {
         "dependencies": {
           "BaseLib": "1.0.0",
+          "Microsoft.AspNetCore.App": "2.1.1",
           "System.IdentityModel.Tokens.Jwt": "5.4.0"
         },
         "runtime": {

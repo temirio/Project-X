@@ -5,15 +5,31 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using FNMusic.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace FNMusic.Controllers
 {
     [Route("/")]
     public class HomeController : Controller
     {
+        private IHttpContextAccessor httpContextAccessor;
+        private ISession session;
+
+        public HomeController(IHttpContextAccessor httpContextAccessor)
+        {
+            this.httpContextAccessor = httpContextAccessor;
+            session = httpContextAccessor.HttpContext.Session;
+            session.Clear();
+        }
+
         [Route("")]
         public IActionResult Index()
         {
+            if (httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+            {
+                return Redirect("/home");
+            }
+
             return View();
         }
 

@@ -1,32 +1,46 @@
-﻿using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using BaseLib.Models;
-using FNMusic.Models.Auth;
+﻿using BaseLib.Models;
+using BaseLib.Utils;
+using FNMusic.Models;
 using FNMusic.Utils;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
 using UserMgt.Services;
-using UserMgt.Utils;
 
 namespace FNMusic.Controllers
 {
-    [Route("/")]
     public class AuthController : Controller
     {
-        private IAuthService authService;
-        private SessionUtils sessionUtils;
+        private IAuthService<ServiceResponse> authService;
+        private readonly IUserService<Result<User>> userService;
+        private IHttpContextAccessor httpContextAccessor;
+        private ISession session;
 
-        public AuthController(IAuthService authService)
+        public AuthController(
+            IAuthService<ServiceResponse> authService, 
+            IUserService<Result<User>> userService,
+            IHttpContextAccessor httpContextAccessor)
         {    
             this.authService = authService;
-            this.sessionUtils = new SessionUtils();
+            this.userService = userService;
+            this.httpContextAccessor = httpContextAccessor;
+            this.session = httpContextAccessor.HttpContext.Session;
+            
         }
 
-        [Route("register")]
+        [Route("/register")]
         public IActionResult Register()
         {
             HttpContext.Session.Clear();
@@ -41,82 +55,430 @@ namespace FNMusic.Controllers
         }
 
         [HttpPost]
-        [Route("register")]
+        [Route("/register")]
         public async Task<IActionResult> Register(Register model)
         {
             if (!ModelState.IsValid)
-            {            
-                return View(model).WithWarning("Wrong input", "kindly fill in the correct information"); ;                        
-            }
-
-            string json = JsonConvert.SerializeObject(model);
-            HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
-            Response response = await authService.Register(content);
-            while (response != null)
             {
-                if (response.Code != "201")
-                    break;
-
-                if (response.Token != null)
-                {
-                    Dictionary<string, string> userDetails = AuthorizeJWToken.Authorize(response.Token);
-                    userDetails.Add("X-AUTH-TOKEN", response.Token);
-
-                    foreach (string key in userDetails.Keys)
-                    {
-                        HttpContext.Session.SetString(key.ToString(), userDetails.GetValueOrDefault(key));
-                    }
-                    Response.Redirect("/"+userDetails.GetValueOrDefault("username").ToString()+"/updateprofile");
-                }
-                break;
+                ModelState.AddModelError("", "Kindly fill in the necessary details");              
+                return View(model);
             }
 
-            return View(model).WithDanger("Service Unavailable", "Sorry we could not log you in right now, try again later");
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    string json = JsonConvert.SerializeObject(model);
+                    HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                    HttpResult<ServiceResponse> result = await authService.RegisterAsync(content);
+                    if (!HttpStatusUtils.Is2xxSuccessful(result.Status))
+                    {
+                        ServiceResponse response = result.FailureResponse;
+                        throw new Exception(response.Description);
+                    }
+
+                    await SendConfirmationMail(model.Email);
+                    if (result.Content != null)
+                    {
+                        Login login = new Login
+                        {
+                            UserId = model.Email,
+                            Password = model.Password
+                        };
+
+                        return await Login(login, "/" + model.Username + "/updateprofile");
+                    }
+
+                    return Redirect("/login");
+                }
+                catch (Exception ex)
+                {
+                    return View(model).WithDanger("Something went wrong", ex.Message);
+                }
+            });     
         }
 
-        [Route("login")]
-        public IActionResult Login()
+        [Route("/login")]
+        public IActionResult Login([FromQuery(Name = "ReturnUrl")] string returnUrl)
         {
-            ViewData["Title"] = "Login";
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                return Redirect("/discover");
+            }
 
-            HttpContext.Session.Clear();
+            ViewData["Title"] = "Login";
+            if (returnUrl != null || returnUrl != "")
+            {
+                ViewData["ReturnUrl"] = returnUrl;
+            }
+
             return View();
         }
         
         [HttpPost]
-        [Route("login")]
-        public async Task<IActionResult> Login(Login model)
+        [Route("/login")]
+        public async Task<IActionResult> Login(Login model, [FromQuery(Name = "ReturnUrl")] string returnUrl)
         {
             if (!ModelState.IsValid)
             {
-                return View(model).WithWarning("Wrong input","kindly fill in the correct information");
+                ModelState.AddModelError("", "Kindly fill in the necessary details");
+                return View(model);
             }
 
-            string json = JsonConvert.SerializeObject(model);
-            HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
-            Response response = await authService.Login(content);
-            while (response != null)
+            return await Task.Run(async () => 
             {
-                if (response.Code != "200")
-                    break;
-                
-                if (response.Token != null)
+                try
                 {
-                    Dictionary<string, string> userDetails = AuthorizeJWToken.Authorize(response.Token);
-                    userDetails.Add("X-AUTH-TOKEN", response.Token);
-
-                    foreach (string key in userDetails.Keys)
+                    HttpResult<AccessTokenWithUserDetails> result = await authService.LogInAsync(model.UserId, model.Password);
+                    if (!HttpStatusUtils.Is2xxSuccessful(result.Status))
                     {
-                        HttpContext.Session.SetString(key.ToString(), userDetails.GetValueOrDefault(key));
+                        ServiceResponse response = result.FailureResponse;
+                        throw new Exception(response.Description);
                     }
-                    Response.Redirect("/discover");
-                }
-                break;
-            }
 
-            return View(model).WithDanger("Service Unavailable","Sorry we could not log you in right now, try again later");
+                    AccessTokenWithUserDetails accessTokenWithUserDetails = result.Content;
+                    if (accessTokenWithUserDetails == null)
+                    {
+                        throw new Exception();
+                    }
+
+                    User user = accessTokenWithUserDetails.User;
+                    string jsonObject = JsonConvert.SerializeObject(user);
+                    JObject jObject = JObject.Parse(jsonObject);
+
+                    List<Claim> claims = new List<Claim>();
+                    foreach (var x in jObject)
+                    {
+                        claims.Add(new Claim(x.Key, x.Value.ToString()));
+                    }
+                    
+                    Feature feature = accessTokenWithUserDetails.Feature;
+                    string featureString = JsonConvert.SerializeObject(feature);
+                    claims.Add(new Claim("Feature", featureString));
+                    claims.Add(new Claim("X-AUTH-TOKEN", accessTokenWithUserDetails.AccessToken));
+                    
+                    ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    ClaimsPrincipal principal = new ClaimsPrincipal(claimsIdentity);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                    if (returnUrl != null && returnUrl != "")
+                    {
+                        return Redirect(returnUrl);
+                    }
+
+                    if (user.TwoFactorEnabled == true)
+                    {
+                        await SendLoginVerificationToken();
+                        session.SetString("TFE", true.ToString());
+                        return Redirect("/login/verification");
+                    }
+
+                    return Redirect("/home");
+                }
+                catch (Exception ex)
+                {
+                    if (HttpContext.User.Identity.IsAuthenticated)
+                    {
+                        await HttpContext.SignOutAsync();
+                    }
+
+                    return View(model).WithDanger("Login Failed!", ex.Message);
+                }
+            });        
         }
 
+        [Authorize]
+        [HttpPost]
+        [Route("/sendloginverificationtoken")]
+        public async Task<ActionResult> SendLoginVerificationToken()
+        {
+            try
+            {
+                string email = httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Email").Value;
+                HttpResult<ServiceResponse> result = await authService.LoginVerificationAsync(email);
+                if (!HttpStatusUtils.Is2xxSuccessful(result.Status))
+                {
+                    var response = result.FailureResponse;
+                    throw new Exception(response.Description);
+                }
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [Authorize]
+        [Route("/login/verification")]
+        public IActionResult LoginVerification()
+        {   
+            string email = httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Email").Value;
+            TwoFactorVerification model = new TwoFactorVerification()
+            {
+                Email = email
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Route("/login/verification")]
+        public async Task<IActionResult> LoginVerification(TwoFactorVerification model)
+        {
+            model.Email = httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Email").Value;
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    HttpResult<ServiceResponse> result = await authService.LoginTokenVerificationAsync(model.Email, model.Token);
+                    if (!HttpStatusUtils.Is2xxSuccessful(result.Status))
+                    {
+                        ServiceResponse response = result.FailureResponse;
+                        throw new Exception(response.Description);
+                    }
+
+                    session.SetString("TFV", true.ToString());
+                    return Redirect("/home");
+                }
+                catch (Exception ex)
+                {
+                    return View(model).WithDanger("Something went wrong", ex.Message);
+                }
+            });
+        }
+
+        [Route("/confirm/{email}")]
+        public async Task<IActionResult> SendConfirmationMail([FromRoute(Name = "email")] string email)
+        {
+            try
+            {
+                HttpResult<ServiceResponse> result = await authService.SendEmailConfirmationMessageAsync(email);
+                if (!HttpStatusUtils.Is2xxSuccessful(result.Status))
+                {
+                    ServiceResponse response = result.FailureResponse;
+                    throw new Exception(response.Description);
+                }
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [Route("/activate/{Token}")]
+        public IActionResult Activate([FromRoute(Name = "Token")] string token) 
+        {
+            Activate activate = new Activate
+            {
+                Token = token
+            };
+
+            session.Remove("Activated");
+            return View(activate);
+        }
+
+        [HttpPost]
+        [Route("/activate/{Token}")]
+        public async Task<IActionResult> Activate(Activate activate, [FromRoute(Name = "Token")] string token)
+        {
+            if (!ModelState.IsValid)
+            {
+                if (string.IsNullOrEmpty(activate.Email))
+                {
+                    ModelState.AddModelError("", "Kindly input your email");
+                }
+
+                if (string.IsNullOrEmpty(activate.Token))
+                {
+                    Response.Redirect("/");
+                }
+
+                return View(activate);
+            }
+
+            return await Task.Run(async () => 
+            {
+                try
+                {
+                    HttpResult<ServiceResponse> result = await authService.ActivateAccountAsync(activate.Email, activate.Token);
+                    if (!HttpStatusUtils.Is2xxSuccessful(result.Status))
+                    {
+                        ServiceResponse response = result.FailureResponse;
+                        throw new Exception(response.Description);
+                    }
+
+                    session.SetString("Activated", true.ToString());
+                    if (httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+                    {
+                        await httpContextAccessor.HttpContext.SignOutAsync();
+                    }
+
+                    return View();
+                }
+                catch (Exception ex)
+                {
+                    return View(activate).WithDanger("Oops",ex.Message);
+                }
+            });
+        }
+
+        [Route("/sendforgotpasswordverificationtoken")]
+        public async Task<IActionResult> SendForgotPasswordVerificationToken([FromRoute(Name = "email")] string email)
+        {
+            try
+            {
+                HttpResult<ServiceResponse> result = await authService.ForgotPasswordVerificationAsync(email);
+                if (!HttpStatusUtils.Is2xxSuccessful(result.Status))
+                {
+                    ServiceResponse response = result.FailureResponse;
+                    throw new Exception(response.Description);
+                }
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [Route("/forgotpassword")]
+        public IActionResult ForgotPassword()
+        {
+            session.Remove("PRP");
+            session.Remove("PRPV");
+            session.Remove("Sent");
+            return View();
+        }
+
+        [HttpPost]
+        [Route("/forgotPassword")]
+        public async Task<IActionResult> ForgotPassword(ForgotPassword forgotPassword)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "kindly fill in necessary details");
+                return View(forgotPassword);
+            }
+
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    bool PRP = Convert.ToBoolean(session.GetString("PRP"));
+                    bool PRPV = Convert.ToBoolean(session.GetString("PPRV"));
+
+                    if (!PRP)
+                    {
+                        HttpResult<Result<User>> httpUserResult = await userService.FindUserByEmail(forgotPassword.Email);
+                        if (!HttpStatusUtils.Is2xxSuccessful(httpUserResult.Status) || httpUserResult.Content == null || httpUserResult.Content.Data.Email != forgotPassword.Email)
+                        {
+                            ServiceResponse response = httpUserResult.FailureResponse;
+                            throw new Exception(response.Description);
+                        }
+
+                        Result<User> result = httpUserResult.Content;
+                        User user = result.Data;
+                        if (user.PasswordResetProtection)
+                        {
+                            await SendForgotPasswordVerificationToken(forgotPassword.Email);
+                            session.SetString("PRP", true.ToString());
+                        }
+                    }
+                    
+                    if (PRP && !PRPV)
+                    {
+                        HttpResult<ServiceResponse> httpAuthResult = await authService.ForgotPasswordTokenVerificationAsync(forgotPassword.Email, forgotPassword.Token);
+                        if (!HttpStatusUtils.Is2xxSuccessful(httpAuthResult.Status))
+                        {
+                            ServiceResponse response = httpAuthResult.FailureResponse;
+                            throw new Exception(response.Description);
+                        }
+
+                        session.SetString("PPRV", true.ToString());
+                    }
+
+                    if (PRP & PRPV || !PRP && !PRPV)
+                    {
+                        HttpResult<ServiceResponse> httpResult = await authService.PasswordResetAsync(forgotPassword.Email, "/resetpassword/");
+                        if (!HttpStatusUtils.Is2xxSuccessful(httpResult.Status))
+                        {
+                            ServiceResponse response = httpResult.FailureResponse;
+                            throw new Exception(response.Description);
+                        }
+
+                        session.SetString("Sent", true.ToString());
+                    }
+                    
+                    return View(forgotPassword);
+                }
+                catch (Exception ex)
+                {
+                    return View(forgotPassword).WithDanger("Oops", ex.Message);
+                }
+            });
+        }
+
+        [Route("/resetpassword/{Token}")]
+        public IActionResult ResetPassword([FromRoute(Name = "Token")] string token)
+        {
+            ResetPassword resetPassword = new ResetPassword()
+            {
+                Token = token
+            };
+
+            session.Remove("EMAILEXISTS");
+            session.Remove("RESET");
+            return View(resetPassword);
+        }
+
+        [HttpPost]
+        [Route("/resetpassword/{Token}")]
+        public async Task<IActionResult> ResetPassword(ResetPassword resetPassword)
+        {
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    bool emailExists = Convert.ToBoolean(session.GetString("EMAILEXISTS"));
+                    bool reset = Convert.ToBoolean(session.GetString("RESET"));
+
+                    if (!emailExists)
+                    {
+                        HttpResult<Result<User>> httpResult = await userService.FindUserByEmail(resetPassword.Email);
+                        if (!HttpStatusUtils.Is2xxSuccessful(httpResult.Status) || httpResult.Content.Data.Email != resetPassword.Email)
+                        {
+                            ServiceResponse response = httpResult.FailureResponse;
+                            throw new Exception(response.Description);
+                        }
+
+                        session.SetString("EMAILEXISTS", true.ToString());
+                    }
+
+                    if (emailExists && !reset)
+                    {
+                        HttpResult<ServiceResponse> result = await authService.ResetPasswordAsync(resetPassword.Email, resetPassword.Password, resetPassword.Token);
+                        if (!HttpStatusUtils.Is2xxSuccessful(result.Status))
+                        {
+                            ServiceResponse response = result.FailureResponse;
+                            throw new Exception(response.Description);
+                        }
+
+                        session.SetString("RESET", true.ToString());
+                    }
+
+                    return View(resetPassword);
+                }
+                catch (Exception ex)
+                {
+                    return View(resetPassword).WithDanger("Oops", ex.Message);
+                } 
+            });
+        }
+
+        
         
     }
 }

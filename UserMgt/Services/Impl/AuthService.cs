@@ -1,74 +1,201 @@
 ﻿using BaseLib.Models;
 using BaseLib.Services;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using UserMgt.Utils;
+using Microsoft.Extensions.Configuration;
+using System.Net.Http.Headers;
 
 namespace UserMgt.Services.Impl
 {
-    public class AuthService : IAuthService
+    public class AuthService : HostService, IAuthService<ServiceResponse>
     {
-        private static readonly HttpClient client = new HttpClient();
-        private RestHandler<Response> restHandler;
+        private IRestTemplate<ServiceResponse> restTemplate;
+        private IRestTemplate<AccessTokenWithUserDetails> loginRestTemplate;
+        private HttpRequestHeaders httpRequestHeaders;
 
-        public AuthService()
+        public AuthService(IConfiguration configuration, IRestTemplate<ServiceResponse> restTemplate, IRestTemplate<AccessTokenWithUserDetails> loginRestTemplate) : base (configuration)
         {
-            this.restHandler = restHandler = new RestHandler<Response>();
+            this.restTemplate = restTemplate;
+            this.loginRestTemplate = loginRestTemplate;
+            httpRequestHeaders = new HttpRequestMessage().Headers;
         }
 
-        public Task<Response> Register(HttpContent content)
+        public async Task<HttpResult<ServiceResponse>> RegisterAsync(HttpContent content)
         {    
-            return Task.Run(async ()=>
+            return await Task.Run(async ()=>
             {
-                Response response = new Response();
                 try
                 {
-
-                    HttpResponseMessage httpResponse = await client.PostAsync("http://localhost:6000/rest/v1/fnmusic/usermgt/auth/signup", content);
-                    if (httpResponse.StatusCode.Equals(HttpStatusCode.Created))
-                    {
-                        string json = await httpResponse.Content.ReadAsStringAsync();
-                        JObject jsonObject = JObject.Parse(json);
-                        response.Code = jsonObject["code"].ToString();
-                        response.Description = jsonObject["description"].ToString();
-                        response.Token = jsonObject["accessToken"].ToString();      
-                    }
-
+                    HttpResult<ServiceResponse> response = await restTemplate.PostAsync(AuthBaseAddress, SignUpUri, null, content);
                     return response;
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
-                    return null;
-                }         
+                    throw new Exception(ex.Message);
+                }
             });
         }
 
-        public Task<Response> Login(HttpContent content)
+        public async Task<HttpResult<AccessTokenWithUserDetails>> LogInAsync(string uid, string password)
         {     
-            return Task.Run(async ()=> 
-            {
-                Response response = new Response();
+            return await Task.Run(async ()=> 
+            { 
                 try
                 {
-                    string path = "http://localhost:6000/rest/v1/fnmusic/usermgt/auth/login";
-                    response = await restHandler.PostForObject(path, null, null, content);
-                    
+                    httpRequestHeaders.Add("X-AUTH-UID", uid);
+                    httpRequestHeaders.Add("X-AUTH-PASSWORD", password);
+                    HttpResult<AccessTokenWithUserDetails> response = await loginRestTemplate.PostAsync(AuthBaseAddress, SignInUri, httpRequestHeaders, null);
                     return response;
                 }
                 catch (Exception ex)
                 {
-                    Console.Write(ex.Message);
-                    return null;
-                }               
+                    throw new Exception(ex.Message);
+                }
             });
         }
 
-        
+        public async Task<HttpResult<ServiceResponse>> LoginVerificationAsync(string email)
+        {
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    httpRequestHeaders.Add("X-AUTH-EMAIL", email);
+                    HttpResult<ServiceResponse> response = await restTemplate.PostAsync(AuthBaseAddress, SignInVerificationUri, httpRequestHeaders, null);
+                    return response;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            });
+        }
+
+        public async Task<HttpResult<ServiceResponse>> LoginTokenVerificationAsync(string email, string token)
+        {
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    httpRequestHeaders.Add("X-AUTH-EMAIL", email);
+                    httpRequestHeaders.Add("X-AUTH-TOKEN", token);
+                    HttpResult<ServiceResponse> response = await restTemplate.PostAsync(AuthBaseAddress, SignInTokenVerificationUri, httpRequestHeaders, null);
+                    return response;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            });
+        }
+
+        public async Task<HttpResult<ServiceResponse>> SendEmailConfirmationMessageAsync(string email)
+        {
+            return await Task.Run(async()=> 
+            {
+                try
+                {
+                    httpRequestHeaders.Add("Email", email);
+                    httpRequestHeaders.Add("ActivationLink", "/activate/");
+                    HttpResult<ServiceResponse> response = await restTemplate.PostAsync(AuthBaseAddress, ConfirmationUri, httpRequestHeaders, null);
+                    return response;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            });
+        }
+
+        public async Task<HttpResult<ServiceResponse>> ActivateAccountAsync(string email, string token)
+        {
+            return await Task.Run(async () => {
+                try
+                {
+                    httpRequestHeaders.Add("Email", email);
+                    httpRequestHeaders.Add("Token", token);
+                    HttpResult<ServiceResponse> response = await restTemplate.PostAsync(AuthBaseAddress, ActivateUri, httpRequestHeaders, null);
+                    return response;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            });
+        }
+
+        public async Task<HttpResult<ServiceResponse>> ForgotPasswordVerificationAsync(string email)
+        {
+            return await Task.Run((Func<Task<HttpResult<ServiceResponse>>>)(async () => {
+                try
+                {
+                    httpRequestHeaders.Add("Email", email);
+                    HttpResult<ServiceResponse> response = await restTemplate.PostAsync(AuthBaseAddress, ForgotPasswordVerificationUri, httpRequestHeaders, null);
+                    return response;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }));
+        }
+
+        public async Task<HttpResult<ServiceResponse>> ForgotPasswordTokenVerificationAsync(string email, string token)
+        {
+            return await Task.Run((Func<Task<HttpResult<ServiceResponse>>>)(async () =>
+            {
+                try
+                {
+                    httpRequestHeaders.Add("Email", email);
+                    httpRequestHeaders.Add("Token", token);
+                    HttpResult<ServiceResponse> response = await restTemplate.PostAsync(AuthBaseAddress, ForgotPasswordTokenVerificationUri, httpRequestHeaders, null);
+                    return response;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }));
+        }
+
+        public async Task<HttpResult<ServiceResponse>> PasswordResetAsync(string email, string resetLink)
+        {
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    httpRequestHeaders.Add("Email", email);
+                    httpRequestHeaders.Add("ResetLink", resetLink);
+                    HttpResult<ServiceResponse> response = await restTemplate.PostAsync(AuthBaseAddress, PasswordResetUri, httpRequestHeaders, null);
+                    return response;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            });
+        }
+
+        public async Task<HttpResult<ServiceResponse>> ResetPasswordAsync(string email, string password, string token)
+        {
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    httpRequestHeaders.Add("X-AUTH-EMAIL", email);
+                    httpRequestHeaders.Add("X-AUTH-NEW-PASSWORD", password);
+                    httpRequestHeaders.Add("X-AUTH-RESET-TOKEN", token);
+                    HttpResult<ServiceResponse> response = await restTemplate.PostAsync(AuthBaseAddress, ResetPasswordUri, httpRequestHeaders, null);
+                    return response;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            });
+        }
+
     }
 }

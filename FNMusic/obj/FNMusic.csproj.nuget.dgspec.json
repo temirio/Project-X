@@ -1,0 +1,185 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\fnmusic\\FNMusic.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\BaseLib\\BaseLib.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\BaseLib\\BaseLib.csproj",
+        "projectName": "BaseLib",
+        "projectPath": "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\BaseLib\\BaseLib.csproj",
+        "packagesPath": "C:\\Users\\Stephen\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\BaseLib\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Stephen\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.1": {
+          "dependencies": {
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.1.0, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    },
+    "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\fnmusic\\FNMusic.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\fnmusic\\FNMusic.csproj",
+        "projectName": "FNMusic",
+        "projectPath": "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\fnmusic\\FNMusic.csproj",
+        "packagesPath": "C:\\Users\\Stephen\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\fnmusic\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Stephen\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.1": {
+            "projectReferences": {
+              "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\UserMgt\\UserMgt.csproj": {
+                "projectPath": "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\UserMgt\\UserMgt.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.1": {
+          "dependencies": {
+            "Microsoft.AspNetCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.1.1, )",
+              "autoReferenced": true
+            },
+            "Microsoft.AspNetCore.Razor.Design": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.1.2, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.1.0, )",
+              "autoReferenced": true
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[2.1.9, )"
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    },
+    "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\UserMgt\\UserMgt.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\UserMgt\\UserMgt.csproj",
+        "projectName": "UserMgt",
+        "projectPath": "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\UserMgt\\UserMgt.csproj",
+        "packagesPath": "C:\\Users\\Stephen\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\UserMgt\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Stephen\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.1": {
+            "projectReferences": {
+              "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\BaseLib\\BaseLib.csproj": {
+                "projectPath": "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\BaseLib\\BaseLib.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.1": {
+          "dependencies": {
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.1.0, )",
+              "autoReferenced": true
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[5.4.0, )"
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    }
+  }
+}

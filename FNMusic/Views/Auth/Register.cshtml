@@ -1,63 +1,69 @@
-﻿@model FNMusic.Models.Auth.Register
+﻿@model FNMusic.Models.Register
 @{
     ViewData["Title"] = "Register";
     Layout = "~/Views/Shared/_AuthLayout.cshtml";
 }
 
-<section id="content" class="m-t-lg wrapper-md animated fadeInDown">
-    <div class="container aside-xl">
-        <a class="navbar-brand block" href="index.html"><span class="h1 font-bold">FNMusic</span></a>
-        <section class="m-b-lg">
-            <header class="wrapper text-center">
-                <strong>Sign up to listen to the latest</strong>
-            </header>
-            <hr />
+<section class="m-t-lg wrapper-md animated fadeInDown">
+    <div class="container aside-xl bg-white" style="box-shadow:0px 10px 10px; border-radius:5px;">
+        <header class="wrapper text-center">
+            <h2>Sign Up</h2>
+            
+        </header>
+        <section class="form-horizontal" style="padding:0px 30px 0px 30px;">
+            @*<a href="#" class="btn btn-info btn-block">
+                <i class="fa fa-fw fa-twitter"></i>
+                <span>Twitter</span>
+            </a>
+            <a href="#" class="btn btn-primary btn-block">
+                <i class="fa fa-fw fa-facebook"></i>
+                <span>Facebook</span>
+            </a>
+            <h5 class="text-center">OR</h5>*@
+            <h5 class="text-center">Fill in the necessary information</h5>
             @using (Html.BeginForm("register", "Auth", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
+                @Html.ValidationSummary(true, "", new { @class = "text-danger small" })
+                <hr />
                 <div class="form-group">
-                    @Html.TextBoxFor(x => x.username, new { placeholder = "Username", @class = "form-control rounded input-lg text-center no-border" })
+                    @Html.ValidationMessageFor(x => x.Username, "", new { @class = "text-danger small" })
+                    @Html.TextBoxFor(x => x.Username, new { placeholder = "Username", @class = "form-control text-center", style = "" })
                 </div>
                 <div class="form-group">
-                    @Html.TextBoxFor(x => x.email, new { type = "email", placeholder = "Email Address", @class = "form-control rounded input-lg text-center no-border" })
+                    @Html.ValidationMessageFor(x => x.Email, "", new { @class = "text-danger small" })
+                    @Html.TextBoxFor(x => x.Email, new { type = "email", placeholder = "Email Address", @class = "form-control text-center", style = "" })
                 </div>
                 <div class="form-group">
-                    @Html.TextBoxFor(x => x.password, new { type = "password", placeholder = "Password", @class = "form-control rounded input-lg text-center no-border" })
+                    @Html.ValidationMessageFor(x => x.Password, "", new { @class = "text-danger small" })
+                    @Html.PasswordFor(x => x.Password, new { placeholder = "Password", @class = "form-control text-center", style = "" })
                 </div>
                 <div class="form-group">
-                    @Html.TextBoxFor(x => x.firstname, new { placeholder = "First Name", @class = "form-control rounded input-lg text-center no-border" })
+                    @Html.ValidationMessageFor(x => x.ConfirmPassword, "", new { @class = "text-danger small" })
+                    @Html.PasswordFor(x => x.ConfirmPassword, new { placeholder = "Confirm Password", @class = "form-control text-center", style = "" })
                 </div>
-                <div class="form-group">
-                    @Html.TextBoxFor(x => x.lastname, new { placeholder = "Last Name", @class = "form-control rounded input-lg text-center no-border" })
-                </div>
-                <div class="form-group">
-                    @Html.TextBoxFor(x => x.dateOfBirth, new { placeholder = "Date of Birth", type = "date", @class = "form-control rounded input-lg text-center no-border" })
-                </div>
-                <div class="form-group">
-                    @Html.DropDownListFor(x => x.gender, new List<SelectListItem>() {
-                                                            new SelectListItem{ Text = "Select Gender", Value = null, Selected = true },
-                                                            new SelectListItem{ Text = "Male", Value = "M" },
-                                                            new SelectListItem{ Text = "Female", Value = "F" }
-                                                            //new SelectListItem(){ Text = "Unspecified", Value = "U", Disabled = true }
-                                                        }, new { @class = "form-control rounded input-lg text-center no-border" })
-                </div>
-                <div class="checkbox i-checks m-b">
+                <div class="checkbox i-checks m-b" style="padding-bottom:10px;">
                     <label class="m-l">
-                        <input id="tac" type="checkbox" style="text-align:center;" checked=""><i></i> Agree the <a href="#">terms and policy</a>
-
+                        <input id="tac" type="checkbox" style="text-align:center;" checked="" />
+                        <i></i>
+                        <small>
+                            I agree to the
+                            <a href="#">terms and conditions</a>
+                        </small>
                     </label>
                 </div>
-
-                <button id="submit_btn" type="submit" class="btn btn-lg btn-warning lt b-white b-2x btn-block btn-rounded">
-                    <i class="icon-arrow-right pull-right"></i>
-                    <span class="m-r-n-lg">Sign up</span>
+                <button type="submit" class="btn btn-warning btn-block">
+                    <span class="text-center">Sign up</span>
                 </button>
                 <div class="line line-dashed"></div>
                 <p class="text-muted text-center">
-                    <small>Already have an account?</small>
+                    <small>
+                        Already have an account?
+                        <a asp-controller="Auth" asp-action="Login">click here </a>
+                    </small>
                 </p>
-                <a asp-controller="Auth" asp-action="Login" class="btn btn-lg btn-info btn-block btn-rounded">Sign in</a>
             }
         </section>
     </div>
 </section>
+
 

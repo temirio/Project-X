@@ -1,87 +1,92 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace UserMgt.Models
+namespace BaseLib.Models
 {
     public class User
     {
-        [JsonProperty("id")]
-        public long id { get; set; }
+        public long Id { get; set; }
 
-        [JsonProperty("username")]
-        public string username{ get; set; }
+        [Required(ErrorMessage = "*")]
+        public string Username { get; set; }
 
-        [JsonProperty("firstname")]
-        public string firstname{ get; set; }
+        [Required(ErrorMessage = "*")]
+        public string FirstName { get; set; }
 
-        [JsonProperty("lastname")]
-        public string lastname{ get; set; }
+        [Required(ErrorMessage = "*")]
+        public string LastName { get; set; }
 
-        [JsonProperty("email")]
-        public string email{ get; set; }
+        public string Email { get; set; }
 
-        [JsonProperty("passwordHash")]
-        public string passwordHash{ get; set; }
+        public bool EmailConfirmed { get; set; }
 
-        [JsonProperty("gender")]
-        public string gender{ get; set; }
+        public string Gender { get; set; }
 
-        [JsonProperty("dateOfBirth")]
-        public DateTime dateOfBirth{ get; set; }
+        public DateTime DateOfBirth { get; set; }
 
-        [JsonProperty("nationality")]
-        public string nationality{ get; set; }
+        [Required(ErrorMessage = "*")]
+        public Privacy MonthAndDay { get; set; }
 
-        [JsonProperty("phoneNumber")]
-        public string phoneNumber{ get; set; }
+        [Required(ErrorMessage = "*")]
+        public Privacy Year { get; set; }
 
-        [JsonProperty("location")]
-        public string location{ get; set; }
+        [Required(ErrorMessage = "*")]
+        public string Nationality { get; set; }
 
-        [JsonProperty("primaryGenre")]
-        public string primaryGenre{ get; set; }
+        [DataType(DataType.PhoneNumber, ErrorMessage = "Invalid Phone Number")]
+        public string PhoneNumber { get; set; }
 
-        [JsonProperty("biography")]
-        public string biography{ get; set; }
+        public bool PhoneNumberConfirmed { get; set; }
 
-        [JsonProperty("website")]
-        public string website{ get; set; }
+        public string Location { get; set; }
 
-        [JsonProperty("profileImagePath")]
-        public string profileImagePath{ get; set; }
+        public string Genre { get; set; }
 
-        [JsonProperty("coverImagePath")]
-        public string coverImagePath{ get; set; }
+        public string Biography { get; set; }
 
-        [JsonProperty("following")]
-        public long following{ get; set; }
+        public string Website { get; set; }
 
-        [JsonProperty("followers")]
-        public long followers{ get; set; }
+        public string ProfileImagePath { get; set; }
 
-        [JsonProperty("twitterProfileUrl")]
-        public string twitterProfileUrl { get; set; }
+        public string CoverImagePath { get; set; }
 
-        [JsonProperty("facebookProfileUrl")]
-        public string facebookProfileUrl { get; set; }
+        public long Following { get; set; }
 
-        [JsonProperty("role")]
-        public string role{ get; set; }
+        public long Followers { get; set; }
 
-        [JsonProperty("accountVerificationStatus")]
-        public string accountVerificationStatus{ get; set; }
+        [DataType(DataType.Url, ErrorMessage = "Invalid url")]
+        public string TwitterProfile { get; set; }
 
-        [JsonProperty("dateCreated")]
-        public DateTime dateCreated{ get; set; }
+        [DataType(DataType.Url, ErrorMessage = "Invalid url")]
+        public string FacebookProfile { get; set; }
 
-        [JsonProperty("lockOutEnabled")]
-        public bool lockOutEnabled{ get; set; }
+        [DataType(DataType.Url, ErrorMessage = "Invalid url")]
+        public string YoutubePage { get; set; }
 
-        //[JsonProperty("lockOutEndDateUtc")]
-        //public DateTime lockOutEndDateUtc{ get; set; }
+        public Role Role { get; set; }
+
+        public bool Verified { get; set; }
+
+        public DateTime DateCreated { get; set; }
+
+        public MultipartFileData ProfilePhoto { get; set; }
+
+        public MultipartFileData CoverPhoto { get; set; }
+
+        public bool TwoFactorEnabled { get; set; }
+
+        public bool Activated { get; set; }
+
+        public bool PasswordResetProtection { get; set; }
+
+        public bool Suspended { get; set; }
 
         
     }

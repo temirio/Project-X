@@ -1,0 +1,59 @@
+﻿
+@using Microsoft.AspNetCore.Http
+@using FNMusic.Controllers
+@inject IHttpContextAccessor httpContextAccessor
+@inject UserController userController
+@{
+    long profileUserId = Model.Id;
+    long loggedInUserId = Convert.ToInt64(httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Id").Value);
+}
+
+<div class="h5">
+    <a style="padding-right:10px;">
+        <span id="followingSpan" class="text-black">0</span>
+        <span>Following</span>
+        <script type="text/javascript">
+
+            Window.setInterval(getFollowingCount(), 3000);
+
+            function getFollowingCount() {
+                const Http = new XMLHttpRequest();
+                const url = '/following?userId=@profileUserId&pageNumber=1&pageSize=1';
+                Http.open("GET", url);
+                Http.send();
+
+                Http.onreadystatechange = (e) => {
+                    if (Http.readyState == 4) {
+                        var responseData = JSON.parse(Http.response);
+                        document.getElementById("followingSpan").innerText = responseData["noOfRecords"];
+                    }
+                }
+            }
+
+            
+        </script>
+    </a>
+
+    <a style="padding-left:10px;">
+        <span id="followerSpan" class="text-black">0</span>
+        <span>Followers</span>
+        <script type="text/javascript">
+            function getFollowersCount() {
+                const Http = new XMLHttpRequest();
+                const url = '/followers?userId=@profileUserId&pageNumber=1&pageSize=1';
+                Http.open("GET", url);
+                Http.send();
+
+                Http.onreadystatechange = (e) => {
+                    if (Http.readyState == 4) {
+                        var responseData = JSON.parse(Http.response);
+                        document.getElementById("followerSpan").innerText = responseData["noOfRecords"];
+                    }
+                }
+            }
+
+            setInterval(getFollowersCount(),3000);
+        </script>
+    </a>
+
+</div>

@@ -1,32 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using BaseLib.Models;
+using FNMusic.Utils;
+using UserMgt.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FNMusic.Controllers
 {
-    [Route("/")]
+    
     public class PlayerController : Controller
     {
-        private IHttpContextAccessor httpContextAccessor;
+        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly string accessToken;
+        private IUserService<Result<User>> userService;
 
-        public PlayerController(IHttpContextAccessor httpContextAccessor)
+        public PlayerController(IHttpContextAccessor httpContextAccessor, IUserService<Result<User>> userService)
         {
             this.httpContextAccessor = httpContextAccessor;
-            if (httpContextAccessor.HttpContext.Session.Keys == null)
+            this.userService = userService;
+            accessToken = httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "X-AUTH-TOKEN").Value;
+
+            var session = httpContextAccessor.HttpContext.Session;
+            bool TFE = Convert.ToBoolean(session.GetString("TFE"));
+            bool TFV = Convert.ToBoolean(session.GetString("TFV"));
+            if (TFE && !TFV)
             {
-                Response.Redirect("http://localhost:5001");
+                httpContextAccessor.HttpContext.Response.Redirect("/login/verification");
             }
+            
         }
 
-        [Route("discover")]
-        public IActionResult Index()
+        [Authorize]
+        [Route("/home")]
+        public IActionResult Discover()
         {
             return View();
         }
+
+        
     }
 }

@@ -1,10 +1,13 @@
 ﻿@using Microsoft.AspNetCore.Http
-@inject IHttpContextAccessor HttpContextAccessor
+@using System.Security.Claims;
+@inject IHttpContextAccessor httpContextAccessor
 @{
 
-
+    bool emailConfirmed = Convert.ToBoolean(httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "EmailConfirmed").Value);
+    string email = httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Email").Value;
 
 }
+
 <!DOCTYPE html>
 <html lang="en" class="app">
 <head>
@@ -16,43 +19,100 @@
     <!--[if lt IE 9]> <script src="js/ie/html5shiv.js"></script> <script src="js/ie/respond.min.js"></script> <script src="js/ie/excanvas.js"></script> <![endif]-->
 </head>
 <body class="">
-    @Html.Partial("_StatusMessages")
+    @*@await Html.PartialAsync("_StatusMessagesPartial")*@
+    @*@await Html.PartialAsync("_EmailNotConfirmedPartial")*@
     <section class="vbox">
-        <header class="bg-white-only header header-md navbar navbar-fixed-top-xs">
-            <div class="navbar-header aside bg-info nav-xs">
-                <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen,open" data-target="#nav,html"> <i class="icon-list"></i> </a>
-                <a href="index.html" class="navbar-brand text-lt"> <i class="icon-earphones"></i> <img src="images/logo.png" alt="." class="hide"> <span class="hidden-nav-xs m-l-sm">Musik</span>                    </a>
-                <a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".user"> <i class="icon-settings"></i> </a>
+        <header class=" bg-white-only header header-md navbar navbar-fixed-top-xs">
+            <div class="navbar-header aside bg-dark nav-xs">
+                <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen,open" data-target="#nav,html">
+                    <i class="icon-list"></i>
+                </a>
+                <a href="index.html" class="navbar-brand text-lt">
+                    <i class="icon-earphones"></i>
+                    <img src="images/logo.png" alt="." class="hide" />
+                    <span class="hidden-nav-xs m-l-sm">fnmusic</span>
+                </a>
+                <a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".user">
+                    <i class="icon-settings"></i>
+                </a>
             </div>
             <ul class="nav navbar-nav hidden-xs">
                 <li>
-                    <a href="#nav,.navbar-header" data-toggle="class:nav-xs,nav-xs" class="text-muted"> <i class="fa fa-indent text"></i> <i class="fa fa-dedent text-active"></i> </a>
+                    <a href="#nav,.navbar-header" data-toggle="class:nav-xs,nav-xs" class="text-muted">
+                        <i class="fa fa-indent text"></i>
+                        <i class="fa fa-dedent text-active"></i>
+                    </a>
                 </li>
             </ul>
             <form class="navbar-form navbar-left input-s-lg m-t m-l-n-xs hidden-xs" role="search">
                 <div class="form-group">
                     <div class="input-group">
                         <span class="input-group-btn">
-                            <button type="submit" class="btn btn-sm bg-white btn-icon rounded">
+                            <button type="submit" class="btn btn-sm btn-icon rounded btn-primary">
                                 <i class="fa fa-search"></i>
                             </button>
                         </span>
-                        @Html.TextBox("Search", "Search", new { type = "text", @class = "form-control input-sm no-border rounded", placeholder = "Search songs, albums...", style = "width:300px;" })
+                        @Html.TextBox("Search", "", new { type = "text", @class = "form-control input-sm  rounded", placeholder = "Search songs, albums...", style = "width:400px;" })
                     </div>
                 </div>
             </form>
             <div class="navbar-right ">
                 <ul class="nav navbar-nav m-n hidden-xs nav-user user">
                     <li class="hidden-xs">
-                        <a href="#" class="dropdown-toggle lt" data-toggle="dropdown"> <i class="icon-bell"></i> <span class="badge badge-sm up bg-danger count">2</span> </a>
-                        <section class="dropdown-menu aside-xl animated fadeInUp">
+                        <a href="#" class="dropdown-toggle lt" data-toggle="dropdown">
+                            <i class="icon-bell"></i>
+                            <span class="badge badge-sm up bg-danger count">2</span>
+                        </a>
+                        <section id="#notifications" class="dropdown-menu aside-xl animated fadeInUp">
                             <section class="panel bg-white">
-                                <div class="panel-heading b-light bg-light"> <strong>You have <span class="count">2</span> notifications</strong> </div>
-                                <div class="list-group list-group-alt">
-                                    <a href="#" class="media list-group-item"> <span class="pull-left thumb-sm"> <img src="images/a0.png" alt="..." class="img-circle"> </span>                                        <span class="media-body block m-b-none"> Use awesome animate.css<br> <small class="text-muted">10 minutes ago</small> </span>                                        </a>
-                                    <a href="#" class="media list-group-item"> <span class="media-body block m-b-none"> 1.0 initial released<br> <small class="text-muted">1 hour ago</small> </span>                                        </a>
+                                <div class="panel-heading b-light bg-light">
+                                    <strong>You have <span class="count">2</span> notifications</strong>
                                 </div>
-                                <div class="panel-footer text-sm"> <a href="#" class="pull-right"><i class="fa fa-cog"></i></a> <a href="#notes" data-toggle="class:show animated fadeInRight">See all the notifications</a>                                    </div>
+                                <div class="list-group list-group-alt">
+                                    @if (!emailConfirmed)
+                                    {
+                                        <div class="media list-group-item">
+                                            <span class="pull-left"><i class="fa fa-laptop fa-2x"></i></span>
+                                            <span class="media-body block m-b-none">
+                                                We noticed you haven't yet activated your account, this could restrict you from accessing some exciting
+                                                features on our platform and we would love for you to be part of everything we have to offer.
+                                            </span>
+                                            <div class="form-group">
+                                                <p class="navbar-text">
+                                                    Didn't get the activation link?
+
+                                                </p>
+                                                <a class="btn btn-info navbar-btn" onclick="sendConfirmationEmail()">
+                                                    <span>resend</span>
+                                                </a>
+                                            </div>
+                                            <script type="text/javascript">
+                                                function sendConfirmationEmail() {
+                                                    const http = new XMLHttpRequest();
+                                                    const url = '/confirm/@email';
+                                                    http.open("POST", url);
+                                                    http.send();
+                                                    http.onreadystatechange = (e) => {
+                                                        if (http.readyState == 4) {
+                                                            document.location.reload(true);
+                                                        }
+                                                    }
+                                                }
+                                            </script>
+                                        </div>
+                                    }
+                                    <a href="#" class="media list-group-item">
+                                        <span class="pull-left thumb-sm"><img src="images/a0.png" alt="..." class="img-circle"></span>
+                                        <span class="media-body block m-b-none">  Use awesome animate.css <br> <small class="text-muted">10 minutes ago</small> </span>
+                                    </a>
+                                    <a href="#" class="media list-group-item">
+                                        <span class="media-body block m-b-none"> 1.0 initial released<br> <small class="text-muted">1 hour ago</small> </span>
+                                    </a>
+                                </div>
+                                <div class="panel-footer text-sm">
+                                    <a href="#" class="pull-right"><i class="fa fa-cog"></i></a>
+                                    <a href="#notes" data-toggle="class:show animated fadeInRight">See all the notifications</a>
+                                </div>
                             </section>
                         </section>
                     </li>
@@ -61,18 +121,17 @@
                             <span class="thumb-sm avatar pull-right m-t-n-sm m-b-n-sm m-l-sm">
                                 <img src="~/images/a0.png" alt="...">
                             </span>
-                            @HttpContextAccessor.HttpContext.Session.GetString("firstname")
-                            @HttpContextAccessor.HttpContext.Session.GetString("lastname")
+                            @httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Username").Value
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight">
-                            <li><span class="arrow top"></span><a href="#">Settings</a></li>
-                            <li><a href="~/@HttpContextAccessor.HttpContext.Session.GetString("username")">Profile</a></li>
-                            <li><a href="~/@HttpContextAccessor.HttpContext.Session.GetString("username")/updateprofile">Update Profile</a></li>
+                            <li><a href="~/@httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Username" ).Value">Profile</a></li>
                             <li><a href="#"> <span class="badge bg-danger pull-right">3</span> Notifications </a></li>
-                            <li><a href="docs.html">Help</a></li>
+                            <li><a href="#">Bookmarks</a></li>
                             <li class="divider"></li>
-                            <li><a href="modal.lockme.html" data-toggle="ajaxModal">Logout</a></li>
+                            <li><a href="#">Settings & Privacy</a></li>
+                            <li><a href="docs.html">Help Center</a></li>
+                            <li><a asp-controller="user" asp-action="logout">Log Out</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -148,7 +207,7 @@
                                                 <li><a href="blog.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>Blog</span> </a></li>
                                                 <li><a href="invoice.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>Invoice</span> </a></li>
                                                 <li><a href="gmap.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>Google Map</span> </a></li>
-                                                <li><a href="jvectormap.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>Vector Map</span></li>
+                                                <li><a href="jvectormap.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>Vector Map</span> </a></li>
                                                 <li><a href="signin.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>Signin</span> </a></li>
                                                 <li><a href="signup.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>Signup</span> </a></li>
                                                 <li><a href="404.html" class="auto"> <i class="fa fa-angle-right text-xs"></i> <span>404</span> </a></li>
@@ -158,7 +217,7 @@
                                     <ul class="nav text-sm">
                                         <li class="hidden-nav-xs padder m-t m-b-sm text-xs text-muted"><span class="pull-right"><a href="#"><i class="icon-plus i-lg"></i></a></span> Playlist</li>
                                         <li><a href="#"> <i class="icon-music-tone icon"></i> <span>Hip-Pop</span> </a></li>
-                                        <li><a href="#"> <i class="icon-playlist icon text-success-lter"></i> <b class="badge bg-success dker pull-right">9</b></li>
+                                        <li><a href="#"> <i class="icon-playlist icon text-success-lter"></i> <b class="badge bg-success dker pull-right">9</b></a></li>
                                     </ul>
                                 </nav>
                             </div>

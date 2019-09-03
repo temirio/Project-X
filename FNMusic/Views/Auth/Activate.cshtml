@@ -1,0 +1,49 @@
+﻿@model FNMusic.Models.Activate
+@using Microsoft.AspNetCore.Http;
+
+@inject IHttpContextAccessor httpContextAccessor
+@{
+    ViewData["Title"] = "Activate";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+
+    bool activated = Convert.ToBoolean(httpContextAccessor.HttpContext.Session.GetString("Activated"));
+}
+
+<section class="m-t-lg wrapper-md animated fadeInDown">
+    <div class="container aside-xl bg-white" style="box-shadow:0px 10px 10px; border-radius:5px;">
+        <header class="wrapper text-center">
+            <h2>Activate your account</h2>
+            <h5>Input your email address</h5>
+        </header>
+        @{
+            if (!activated)
+            {
+                <section class="form-horizontal" style="padding: 0px 30px 20px 30px;">
+                    <hr />
+                    @using (Html.BeginForm("/activate/"+Model.Token+"", "Auth", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger small" })
+                        <div class="form-group">
+                            @Html.ValidationMessageFor(x => x.Email, "", new { @class = "text-danger" })
+                            @Html.TextBoxFor(x => x.Email, new { type = "email", @class = "form-control text-center", placeholder = "Email" })
+                        </div>
+                        <button type="submit" class="btn btn-warning btn-block">
+                            <span>Activate your account</span>
+                        </button>
+                    }
+                </section>
+            }
+            else
+            {
+                <div class="form-group">
+                    <h4>Dear @Model.Email</h4>
+                    <p class="text-center">You have successfully activated your account</p>
+                    <a href="/discover"><i class="fa fa-home">Home</i></a>
+                </div>
+                
+            }
+        }
+
+    </div>
+</section>
+

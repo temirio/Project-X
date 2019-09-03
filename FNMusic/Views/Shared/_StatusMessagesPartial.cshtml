@@ -1,0 +1,47 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var type = (string)TempData["_alert.Type"];
+    var title = (string)TempData["_alert.title"];
+    var body = (string)TempData["_alert.body"];
+
+    var alertStyle = "alert-primary";
+
+
+    if (type == "success")
+    {
+        alertStyle = "alert-success";
+    }
+    else if (type == "info")
+    {
+        alertStyle = "alert-info";
+    }
+    else if (type == "warning")
+    {
+        alertStyle = "alert-warning";
+    }
+    else if (type == "danger")
+    {
+        alertStyle = "alert-danger";
+    }
+}
+
+@if (!string.IsNullOrEmpty(type))
+{
+
+    <div id="statusMessage" class="navbar-fixed-top fadeInDown btn @alertStyle" >
+        <div class="container">
+            <span class="h4">@title</span> @body
+            <a class="close" onclick="hideMessage()">
+                <span>&times;</span>
+            </a>
+            <script type="text/javascript">
+                function hideMessage() {
+                    document.getElementById('statusMessage').classList.add('hidden');
+                }
+            </script>
+        </div>
+    </div>
+}
+

@@ -10,3 +10,17 @@ C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\UserMgt
 C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.csproj.CopyComplete
 C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.dll
 C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.pdb
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\UserMgt\bin\Debug\netcoreapp2.1\UserMgt.deps.json
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\UserMgt\bin\Debug\netcoreapp2.1\UserMgt.runtimeconfig.json
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\UserMgt\bin\Debug\netcoreapp2.1\UserMgt.runtimeconfig.dev.json
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\UserMgt\bin\Debug\netcoreapp2.1\UserMgt.dll
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\UserMgt\bin\Debug\netcoreapp2.1\UserMgt.pdb
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\UserMgt\bin\Debug\netcoreapp2.1\BaseLib.dll
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\UserMgt\bin\Debug\netcoreapp2.1\BaseLib.pdb
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.csprojAssemblyReference.cache
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.csproj.CoreCompileInputs.cache
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.AssemblyInfoInputs.cache
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.AssemblyInfo.cs
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.csproj.CopyComplete
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.dll
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\UserMgt\obj\Debug\netcoreapp2.1\UserMgt.pdb

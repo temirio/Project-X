@@ -1,31 +1,30 @@
 ﻿<!DOCTYPE html>
-<html lang="en" class="bg-info">
+<html lang="en" style="background-image:url(/images/1920x1080-WhiteBackground.jpg);" >
 
 <head>
     <meta charset="utf-8" />
     <title>@ViewData["Title"]</title>
-    <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <link rel="stylesheet" href="~/js/jPlayer/jplayer.flat.css" type="text/css" />
     <link rel="stylesheet" href="~/css/app.v1.css" type="text/css" />
-    
 </head>
 
-<body class="bg-info">
+<body>
+    <header class="wrapper text-center">
+        <strong>fnmusic </strong>
+    </header>
+    <hr />
     <div>
-        @Html.Partial("_StatusMessages")
+        @await Html.PartialAsync("_StatusMessagesPartial")
         @RenderBody()
-    </div> 
-    <footer id="footer">
-        <div class="text-center padder">
-            <small class="small"><span>&copy; @DateTime.Now.Year All rights reserved.</span> FNEntertainment Inc.</small>
+    </div>
+    
+    <footer>
+        <div class="navbar-fixed-bottom bg-dark">
+            <div class="text-center">
+                <small class="small text-white"><span>&copy; @DateTime.Now.Year All rights reserved.</span> FNEntertainment Inc.</small>
+            </div>
         </div>
     </footer>
-    
-    <script src="~/js/app.v1.js"></script>
-    <script src="~/js/app.plugin.js"></script>
-    <script type="text/javascript" src="~/js/jPlayer/jquery.jplayer.min.js"></script>
-    <script type="text/javascript" src="~/js/jPlayer/add-on/jplayer.playlist.min.js"></script>
-    <script type="text/javascript" src="~/js/jPlayer/demo.js"></script>
 </body>
 </html>

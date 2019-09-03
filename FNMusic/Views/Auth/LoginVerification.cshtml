@@ -1,0 +1,58 @@
+﻿@model FNMusic.Models.TwoFactorVerification
+@using Microsoft.AspNetCore.Http
+@using System.Security.Claims;
+
+@inject IHttpContextAccessor httpContextAccessor
+@{
+    ViewData["Title"] = "LoginVerification";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+    
+}
+
+<section class="m-t-lg wrapper-md animated fadeInUp">
+    <div class="container aside-xl bg-white" style="box-shadow:0px 10px 10px; border-radius:10px;">
+        <header class="wrapper text-center">
+            <h2>Login Verification</h2>
+            <p>(@Model.Email)</p>
+        </header>
+        <img src="~/images/a0.png" class="rounded center-block" height="50" />
+        <h5 class="text-center">A verification code was sent to your mobile number, kindly input the code in the box below</h5>
+        <section class="form-horizontal" style="padding:0px 30px 0px 30px;">
+
+            @using (Html.BeginForm("login/verification", "Auth", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.ValidationSummary(true, "", new { @class = "text-danger}" })
+                <hr />
+
+                <div class="form-group">
+                    @Html.PasswordFor(x => x.Token, new { placeholder = "_ _ _ _ _ _", @class = "form-control input-lg text-center" })
+                </div>
+                <button type="submit" class="btn  btn-warning b-white btn-block">
+                    <span class="m-r-n-lg">Verify</span>
+                </button>
+            }
+            <p class="text-center m-t-lg">
+                Didn't get the code?
+                <a class="btn btn-success" onclick="sendLoginVerificationToken()">
+                    <span>resend</span>
+                </a>
+            </p>
+            <script type="text/javascript">
+                function sendLoginVerificationToken() {
+                    const http = new XMLHttpRequest();
+                    const url = '/sendloginverificationtoken';
+                    http.open("POST", url);
+                    http.send();
+
+                    http.onreadystatechange = (e) => {
+                        if (http.readyState == 4) {
+                            document.location.reload(true);
+                            alert('Token was sent successfully');
+                        }
+                    }
+                }
+            </script>
+        </section>
+    </div>
+</section>
+
