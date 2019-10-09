@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BaseLib.Models
+namespace UserMgt.Models
 {
     public class AccessTokenWithUserDetails {
         
@@ -10,7 +10,6 @@ namespace BaseLib.Models
         public string Username {get; set;}
         public User User {get; set;}
         public Feature Feature {get; set;}
-        
         
     }
 }

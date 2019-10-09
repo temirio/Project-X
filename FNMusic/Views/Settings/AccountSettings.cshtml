@@ -1,0 +1,36 @@
+﻿@model UserMgt.Models.User
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor httpContextAccessor;
+@{
+    Layout = "/Views/Shared/_SettingsLayout.cshtml";
+    ViewData["Title"] = "Account Settings";
+
+    
+}
+
+<section class="vbox">
+    <section class="scrollable  w-f-md">
+        <div id="menubx" class="bg-white">
+            <nav class="nav-primary">
+                <ul class="list-group nav bg clearfix">
+                    <li class="h4 font-bold list-group-item bg-light"> Login & Security </li>
+                    <li class="list-group-item"><a asp-controller="Settings" asp-action="UpdateUsername"><span class="font-bold">Username</span><br /><span>@Html.ValueFor(x => x.Username)</span></a></li>
+                    <li class="list-group-item"><a asp-controller="Settings" asp-action="UpdatePhone"><span class="font-bold">Phone</span><br /><span>@Html.ValueFor(x => x.Phone)</span></a></li>
+                    <li class="list-group-item"><a asp-controller="Settings" asp-action="UpdateEmail"><span class="font-bold">Email</span><br /><span>@Html.ValueFor(x => x.Email)</span></a></li>
+                    <li class="list-group-item"><a asp-controller="Settings" asp-action="UpdatePassword"><span class="font-bold">Password</span></a></li>
+                    <li class="list-group-item"><a><span class="font-bold">Security</span></a></li>
+                    <li class="divider"></li>
+                    <li class="h4 font-bold list-group-item bg-light"> Data & Permissions </li>
+                    <li class="list-group-item">
+                        <a asp-controller="Settings" asp-action="UpdateCountry"><span class="font-bold">Country</span><br /><span>@Html.ValueFor(x => x.Nationality)</span></a>
+                        <span>Select the country you live in. <a href="#" class="btn-link">Learn more</a></span>
+                    </li>
+                    <li class="list-group-item"><a href="#"><span class="font-bold">Your Data</span></a></li>
+                    <li class="list-group-item"><a href="#"><span class="font-bold">Apps and Sessions</span></a></li>
+                    <li class="list-group-item"><a asp-controller="Settings" asp-action="DeactivateAccount"><span class="font-bold">Deactivate your account</span></a></li>
+                </ul>
+            </nav>
+        </div>
+    </section>
+</section>
+

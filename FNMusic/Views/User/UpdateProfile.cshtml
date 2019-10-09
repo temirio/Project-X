@@ -1,8 +1,9 @@
-﻿@model BaseLib.Models.User
+﻿@model UserMgt.Models.User
 @using FNMusic.Controllers;
 @using Microsoft.AspNetCore.Http;
 @using BaseLib.Models;
 @using BaseLib.Utils;
+@using UserMgt.Models
 @using UserMgt.Utils;
 @inject IHttpContextAccessor HttpContextAccessor
 @{
@@ -16,9 +17,9 @@
     }
 
     List<SelectListItem> countries = new List<SelectListItem>
-    {
-        new SelectListItem { Value = "Select Country"}
-    };
+{
+new SelectListItem { Value = "Select Country"}
+};
 
     foreach (string country in AppUtils.GetCountries())
     {
@@ -34,9 +35,9 @@
     }
 
     List<SelectListItem> genres = new List<SelectListItem>
-    {
-        new SelectListItem { Value = "Select Genre",}
-    };
+{
+new SelectListItem { Value = "Select Genre",}
+};
 
     foreach (string genre in AppUtils.GetGenres())
     {
@@ -51,141 +52,165 @@
 
     }
 
+    string profileImage = !string.IsNullOrEmpty(Model.ProfileImagePath) ? Model.ProfileImagePath : "~/images/a0.png";
+
 }
 
-<section class=" wrapper-md animated fadeInDown">
-    <div class="container bg-white" style="box-shadow:0px 10px 10px;">
-        @using (Html.BeginForm("UpdateProfile", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
-        {
+
+
+<section class="m-t-lg wrapper-md animated fadeInDown">
+    <div class="container aside-xxl bg-white" style="box-shadow:0px 10px 10px; border-radius:5px;">
+        <div id="editProfileBx" >
             <header class="modal-header">
                 <h4>EDIT PROFILE</h4>
             </header>
-            <section class="modal-body">
-                @Html.ValidationSummary(true,"",new { @class="text-danger"})
-                <div class="scrollable">
-                    <div class="row">
-                        <div class="col-md-3 col-md-offset-3">
-                            <div class="form-horizontal" style="padding-left:20px; padding-right:20px;">
-                                <div class="form-group">
-                                    <span>Username</span>
-                                    @Html.ValidationMessageFor(x => x.Username, "", new { @class = "text-danger" })
-                                    @Html.TextBoxFor(x => x.Username, new { @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
-                                </div>
-                                <div class="form-group">
-                                    <span>First Name</span>
-                                    @Html.ValidationMessageFor(x => x.FirstName, "", new { @class = "text-danger" })
-                                    @Html.TextBoxFor(x => x.FirstName, new { @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
-                                </div>
-                                <div class="form-group">
-                                    <span>Last Name</span>
-                                    @Html.ValidationMessageFor(x => x.LastName, "", new { @class = "text-danger" })
-
-                                    @Html.TextBoxFor(x => x.LastName, new { @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
-                                </div>
-                                <div class="form-group">
-                                    <span>Date of Birth</span>
-                                    @Html.ValidationMessageFor(x => x.DateOfBirth, "", new { @class = "text-danger" })
-                                    @Html.EditorFor(x => x.DateOfBirth, new { @class = "time", type = "date", style = "border-top:unset; border-left:unset; border-right:unset;" })
-                                    @*@Html.TextBoxFor(x => x.DateOfBirth, new { @class = "time", type = "date", style = "border-top:unset; border-left:unset; border-right:unset;" })*@
-                                </div>
-                                <div class="form-group">
-                                    <h6>Privacy Options</h6>
-                                    <div class="col-sm-12">
-                                        <span>Month And Day</span>
-                                        @Html.ValidationMessageFor(x => x.MonthAndDay, "", new { @class = "text-danger" })
-                                        @Html.DropDownListFor(x => x.MonthAndDay, privacy, new { @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <span>Year</span>
-                                        @Html.ValidationMessageFor(x => x.Year, "", new { @class = "text-danger" })
-                                        @Html.DropDownListFor(x => x.Year, privacy, new { @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
-                                    </div>
-                                </div>
-
-                            </div>
+            @using (Html.BeginForm("UpdateProfile", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <section class="scrollable" style="height:400px; margin-top:2px;">
+                    <div style="position:relative; padding-bottom:40px;">
+                        <div style="position:absolute">
+                            <img src="~/images/electric_feeling-1280x800.jpg" width="440" height="146" />
                         </div>
-                        <div class="col-md-3">
-                            <div class="form-horizontal" style="padding-left:20px; padding-right:20px;">
-                                <div class="form-group">
-                                    <p>Gender</p>
-                                    @Html.ValidationMessageFor(x => x.Gender, "", new { @class = "text-danger" })
-                                    <div class="col-sm-6">
-                                        @Html.RadioButtonFor(x => x.Gender, "M", new { @class = "" })
-                                        <span>Male</span>
+                        <div style="margin-left:20px; position:absolute; margin-top:100px;">
+                            <div class="item">
+                                <div class="pos-rlt">
+                                    <div class="item-overlay opacity r r-2x bg-black" style="border-radius:50px;">
+                                        <div class="center text-center m-t-n">
+                                            <a onclick="$('#profileImageFileUpload').click();">
+                                                <i class="icon-plus i-2x"></i>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        @Html.RadioButtonFor(x => x.Gender, "F", new { @class = "" })
-                                        <span>Female</span>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <span>Nationality</span>
-                                    @Html.ValidationMessageFor(x => x.Nationality, "", new { @class = "text-danger" })
-                                    @Html.DropDownListFor(x => x.Nationality, countries, new { @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
-                                </div>
-                                <div class="form-group">
-                                    <span>Biography</span>
-                                    @Html.ValidationMessageFor(x => x.Biography, "", new { @class = "text-danger" })
-                                    @Html.TextAreaFor(x => x.Biography, new { @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
-                                </div>
-                                <div class="form-group">
-                                    <span>Primary Genre</span>
-                                    @Html.ValidationMessageFor(x => x.Genre, "", new { @class = "text-danger" })
-                                    @Html.DropDownListFor(x => x.Genre, genres, new { @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
-                                </div>
-                                <div class="form-group">
-                                    <span>Phone Number</span>
-                                    @Html.ValidationMessageFor(x => x.PhoneNumber, "", new { @class = "text-danger" })
-                                    @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
-                                </div>
-                                <div class="form-group">
-                                    <span>Location</span>
-                                    @Html.ValidationMessageFor(x => x.Location, "", new { @class = "text-danger" })
-                                    @Html.TextBoxFor(x => x.Location, new { @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
+                                    <img id="profileImg" src="~/images/a3.png" class="img-circle" height="100" />
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="form-horizontal" style="padding-left:20px; padding-right:20px;">
-                                <div class="form-group">
-                                    <span>Website</span>
-                                    @Html.ValidationMessageFor(x => x.Website, "", new { @class = "text-danger" })
-                                    @Html.TextBoxFor(x => x.Website, new { type = "url", @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
-                                </div>
-                                <div class="form-group">
-                                    <span>Twitter Profile</span>
-                                    @Html.ValidationMessageFor(x => x.TwitterProfile, "", new { @class = "text-danger" })
-                                    @Html.TextBoxFor(x => x.TwitterProfile, new { type = "url", @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
-                                </div>
-                                <div class="form-group">
-                                    <span>Facebook Profile</span>
-                                    @Html.ValidationMessageFor(x => x.FacebookProfile, "", new { @class = "text-danger" })
-                                    @Html.TextBoxFor(x => x.FacebookProfile, new { type = "url", @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
-                                </div>
-                                <div class="form-group">
-                                    <span>Youtube Page</span>
-                                    @Html.ValidationMessageFor(x => x.YoutubePage, "", new { @class = "text-danger" })
-                                    @Html.TextBoxFor(x => x.YoutubePage, new { type = "url", @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
-                                </div>
+
+                        <input id="profileImageFileUpload" type="file" accept="image/*" class="hidden" onchange="handleProfilePicture()" />
+                        <a id="cropImageBtn" href="/cropImage/profile" class="hidden" data-toggle="ajaxModal"></a>
+                        <script type="text/javascript">
+                            function handleProfilePicture() {
+                                document.getElementById("editProfileBx").classList.add("hidden");
+                                document.getElementById("editProfileImgBx").classList.remove("hidden");
+                            }
+                        </script>
+
+
+
+                    </div>
+                    <div class="form-horizontal" style="padding-left:20px; padding-right:20px; margin-top:180px;">
+                        <div class="form-group">
+                            <span>First Name @Html.ValidationMessageFor(x => x.FirstName, "", new { @class = "text-danger" })</span>
+                            <input name="FirstName" value="@Model.FirstName" class="form-control" style="border-top:unset; border-left:unset; border-right:unset;" required />
+                        </div>
+                        <div class="form-group">
+                            <span>Last Name @Html.ValidationMessageFor(x => x.LastName, "", new { @class = "text-danger" })</span>
+                            <input name="LastName" value="@Model.LastName" class="form-control" style="border-top:unset; border-left:unset; border-right:unset;" required />
+                        </div>
+                        <div class="form-group">
+                            <h6>Privacy Options</h6>
+                            <div class="col-sm-12">
+                                <span>Month And Day @Html.ValidationMessageFor(x => x.MonthAndDay, "", new { @class = "text-danger" })</span>
+                                @Html.DropDownListFor(x => x.MonthAndDay, privacy, new { @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
                             </div>
+                            <div class="col-sm-12">
+                                <span>Year @Html.ValidationMessageFor(x => x.Year, "", new { @class = "text-danger" })</span>
+                                @Html.DropDownListFor(x => x.Year, privacy, new { @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <p>Gender @Html.ValidationMessageFor(x => x.Gender, "", new { @class = "text-danger" })</p>
+                            <div class="col-sm-6">
+                                @Html.RadioButtonFor(x => x.Gender, "M", new { @class = "" })
+                                <span>Male</span>
+                            </div>
+                            <div class="col-sm-6">
+                                @Html.RadioButtonFor(x => x.Gender, "F", new { @class = "" })
+                                <span>Female</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <span>Biography @Html.ValidationMessageFor(x => x.Biography, "", new { @class = "text-danger" })</span>
+                            @Html.TextAreaFor(x => x.Biography, new { @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
+                        </div>
+                        <div class="form-group">
+                            <span>Primary Genre @Html.ValidationMessageFor(x => x.Genre, "", new { @class = "text-danger" })</span>
+                            @Html.DropDownListFor(x => x.Genre, genres, new { @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
+                        </div>
+                        <div class="form-group">
+                            <span>Location @Html.ValidationMessageFor(x => x.Location, "", new { @class = "text-danger" })</span>
+                            @Html.TextBoxFor(x => x.Location, new { @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
+                        </div>
+                        <div class="form-group">
+                            <span>Website @Html.ValidationMessageFor(x => x.Website, "", new { @class = "text-danger" })</span>
+                            @Html.TextBoxFor(x => x.Website, new { type = "url", @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
+                        </div>
+                        <div class="form-group">
+                            <span>Twitter Profile @Html.ValidationMessageFor(x => x.TwitterProfile, "", new { @class = "text-danger" })</span>
+                            @Html.TextBoxFor(x => x.TwitterProfile, new { type = "url", @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
+                        </div>
+                        <div class="form-group">
+                            <span>Facebook Profile @Html.ValidationMessageFor(x => x.FacebookProfile, "", new { @class = "text-danger" })</span>
+                            @Html.TextBoxFor(x => x.FacebookProfile, new { type = "url", @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
+                        </div>
+                        <div class="form-group">
+                            <span>Youtube Page @Html.ValidationMessageFor(x => x.YoutubePage, "", new { @class = "text-danger" })</span>
+                            @Html.TextBoxFor(x => x.YoutubePage, new { type = "url", @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
+                <footer class="modal-footer">
+                    <a class="btn btn-warning" data-dismiss="modal">
+                        <span>Cancel</span>
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                    <button type="submit" class="btn btn-success">
+                        <span>Update</span>
+                        <i class="fa fa-save"></i>
+                    </button>
+                </footer>
+
+            }
+        </div>
+        <div id="editProfileImgBx" class="hidden">
+            <header class="modal-header">
+                <h4>EDIT PROFILE IMAGE</h4>
+            </header>
+
+            <link rel="stylesheet" href="~/css/croppie.css" type="text/css" />
+            <script src="~/js/croppie.js"></script>
+            <div class="imgCropBx"></div>
+            <script>
+                var el = $('imgCropBx');
+                var resize = el.croppie({
+                    viewport: {
+                        height: 150,
+                        width:150
+                    }
+                });
+
+            </script>
+
             <footer class="modal-footer">
-                <a class="btn btn-warning" asp-action="Profile" asp-controller="Player">
+                <a class="btn btn-danger">
                     <span>Cancel</span>
-                    <i class="fa fa-trash-o"></i>
+                    <i class="icon-trash"></i>
                 </a>
-                <button type="submit" class="btn btn-success">
-                    <span>Update</span>
-                    <i class="fa fa-save"></i>
-                </button>
+                <a class="btn btn-success" onclick="">
+                    <span>Crop</span>
+                    <i class="icon-crop"></i>
+                </a>
             </footer>
-            
-        }
+            <div class="footer">
+                <a class="text-center">
+                    <small>Powered By Foliotek</small>
+                </a>
+
+            </div>
+        </div>
 
     </div>
 
 </section>
+
 

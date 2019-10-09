@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BaseLib.Models
+namespace UserMgt.Models
 {
     public enum Role
     {

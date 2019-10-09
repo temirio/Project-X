@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using FNMusic.Models;
 using Microsoft.AspNetCore.Http;
 
 namespace FNMusic.Controllers
 {
-    [Route("/")]
     public class HomeController : Controller
     {
         private IHttpContextAccessor httpContextAccessor;
@@ -27,35 +22,32 @@ namespace FNMusic.Controllers
         {
             if (httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
             {
-                return Redirect("/home");
+                return Redirect("/discover");
             }
-
             return View();
         }
 
-        [Route("about")]
+        [Route("/about")]
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
-
             return View();
         }
 
-        [Route("contact")]
+        [Route("/contact")]
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
-
             return View();
         }
 
-        [Route("privacy")]
+        [Route("/privacy")]
         public IActionResult Privacy()
         {
             return View();
         }
 
-        [Route("error")]
+        [Route("/error")]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

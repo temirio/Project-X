@@ -1,23 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BaseLib;
-using BaseLib.Models;
-using BaseLib.Services;
-using BaseLib.Utils;
+using UserMgt.Models;
+using UserMgt.Services;
+using UserMgt.Utils;
 using FNMusic.Controllers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using UserMgt.Services;
 using UserMgt.Services.Impl;
+using BaseLib.Models;
+using BaseLib.Services;
+using BaseLib.Utils;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Mvc.Internal;
+using FNMusic.Services;
 
 namespace FNMusic
 {
@@ -69,10 +68,15 @@ namespace FNMusic
             services.AddTransient<IRestTemplate<Result<User>>, RestTemplate<Result<User>>>();
             services.AddTransient<IObjectConverter<byte[]>, ByteObjectConverter>();
 
-            services.AddTransient(typeof(UserController));
+            // Configure FNMusic Services
+            services.AddTransient(typeof(SystemService));
 
+            //services.AddTransient(typeof(UserController));
+
+            // Configure UserMgt Services
             services.AddTransient<IAuthService<ServiceResponse>, AuthService>();
             services.AddTransient<IUserService<Result<User>>, UserService>();
+            services.AddTransient<IAccountSettingsService<ServiceResponse>, AccountSettingsService>();
 
         }
 

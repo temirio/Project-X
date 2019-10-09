@@ -1,5 +1,6 @@
 ﻿using BaseLib.Models;
-using BaseLib.Utils;
+using UserMgt.Models;
+using UserMgt.Utils;
 using FNMusic.Models;
 using FNMusic.Utils;
 using Microsoft.AspNetCore.Authentication;
@@ -18,26 +19,31 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using UserMgt.Services;
+using BaseLib.Utils;
+using FNMusic.Services;
 
 namespace FNMusic.Controllers
 {
     public class AuthController : Controller
     {
         private IAuthService<ServiceResponse> authService;
-        private readonly IUserService<Result<User>> userService;
+        private IUserService<Result<User>> userService;
+        private SystemService systemService;
         private IHttpContextAccessor httpContextAccessor;
         private ISession session;
 
         public AuthController(
             IAuthService<ServiceResponse> authService, 
             IUserService<Result<User>> userService,
-            IHttpContextAccessor httpContextAccessor)
+            SystemService systemService,
+            IHttpContextAccessor httpContextAccessor
+            )
         {    
             this.authService = authService;
             this.userService = userService;
+            this.systemService = systemService;
             this.httpContextAccessor = httpContextAccessor;
             this.session = httpContextAccessor.HttpContext.Session;
-            
         }
 
         [Route("/register")]
@@ -143,36 +149,27 @@ namespace FNMusic.Controllers
                     }
 
                     User user = accessTokenWithUserDetails.User;
-                    string jsonObject = JsonConvert.SerializeObject(user);
-                    JObject jObject = JObject.Parse(jsonObject);
-
-                    List<Claim> claims = new List<Claim>();
-                    foreach (var x in jObject)
-                    {
-                        claims.Add(new Claim(x.Key, x.Value.ToString()));
-                    }
-                    
                     Feature feature = accessTokenWithUserDetails.Feature;
-                    string featureString = JsonConvert.SerializeObject(feature);
-                    claims.Add(new Claim("Feature", featureString));
-                    claims.Add(new Claim("X-AUTH-TOKEN", accessTokenWithUserDetails.AccessToken));
-                    
-                    ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    ClaimsPrincipal principal = new ClaimsPrincipal(claimsIdentity);
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                    string accessToken = accessTokenWithUserDetails.AccessToken;
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                    systemService.SetHttpContext(user, feature, accessToken, "");
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                    if (HttpContext.User.Identity.IsAuthenticated)
+                    {
+                        if (Convert.ToBoolean(HttpContext.User.Claims.First(x => x.Type == "TwoFactorEnabled").Value) == true)
+                        {
+                            await SendLoginVerificationToken();
+                            session.SetString("TFE", true.ToString());
+                            return Redirect("/login/verification");
+                        }
+                    }
+
                     if (returnUrl != null && returnUrl != "")
                     {
                         return Redirect(returnUrl);
                     }
 
-                    if (user.TwoFactorEnabled == true)
-                    {
-                        await SendLoginVerificationToken();
-                        session.SetString("TFE", true.ToString());
-                        return Redirect("/login/verification");
-                    }
-
-                    return Redirect("/home");
+                    return Redirect("/discover");
                 }
                 catch (Exception ex)
                 {
@@ -238,7 +235,7 @@ namespace FNMusic.Controllers
                     }
 
                     session.SetString("TFV", true.ToString());
-                    return Redirect("/home");
+                    return Redirect("/discover");
                 }
                 catch (Exception ex)
                 {
@@ -372,7 +369,7 @@ namespace FNMusic.Controllers
 
                     if (!PRP)
                     {
-                        HttpResult<Result<User>> httpUserResult = await userService.FindUserByEmail(forgotPassword.Email);
+                        HttpResult<Result<User>> httpUserResult = await userService.FindUserByEmail(forgotPassword.Email, null);
                         if (!HttpStatusUtils.Is2xxSuccessful(httpUserResult.Status) || httpUserResult.Content == null || httpUserResult.Content.Data.Email != forgotPassword.Email)
                         {
                             ServiceResponse response = httpUserResult.FailureResponse;
@@ -447,7 +444,7 @@ namespace FNMusic.Controllers
 
                     if (!emailExists)
                     {
-                        HttpResult<Result<User>> httpResult = await userService.FindUserByEmail(resetPassword.Email);
+                        HttpResult<Result<User>> httpResult = await userService.FindUserByEmail(resetPassword.Email, null);
                         if (!HttpStatusUtils.Is2xxSuccessful(httpResult.Status) || httpResult.Content.Data.Email != resetPassword.Email)
                         {
                             ServiceResponse response = httpResult.FailureResponse;
@@ -477,8 +474,6 @@ namespace FNMusic.Controllers
                 } 
             });
         }
-
-        
-        
+ 
     }
 }

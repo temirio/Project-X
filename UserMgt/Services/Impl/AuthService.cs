@@ -1,11 +1,11 @@
-﻿using BaseLib.Models;
-using BaseLib.Services;
+﻿using UserMgt.Models;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http.Headers;
+using BaseLib.Models;
+using BaseLib.Services;
 
 namespace UserMgt.Services.Impl
 {

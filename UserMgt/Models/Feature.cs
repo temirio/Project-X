@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace BaseLib.Models {
+namespace UserMgt.Models {
     
     public class Feature {
 

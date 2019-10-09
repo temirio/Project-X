@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using BaseLib.Models;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using BaseLib.Models;
 
 namespace UserMgt.Services
 {
     public interface IUserService<T>
     {
-        Task<HttpResult<T>> FindUserByEmail(string email);
+        Task<HttpResult<T>> FindUserById(long id, string accessToken);
 
-        Task<HttpResult<T>> FindUserByUsername(string username);
+        Task<HttpResult<T>> FindUserByEmail(string email, string accessToken);
+
+        Task<HttpResult<T>> FindUserByUsername(string username, string accessToken);
 
         Task UpdateProfile(HttpContent httpContent, string accessToken);
 

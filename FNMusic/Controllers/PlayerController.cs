@@ -1,22 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using BaseLib.Models;
-using FNMusic.Utils;
+using UserMgt.Models;
 using UserMgt.Services;
 using Microsoft.AspNetCore.Authorization;
+using BaseLib.Models;
 
 namespace FNMusic.Controllers
 {
-    
+
     public class PlayerController : Controller
     {
         private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IUserService<Result<User>> userService;
         private readonly string accessToken;
-        private IUserService<Result<User>> userService;
 
         public PlayerController(IHttpContextAccessor httpContextAccessor, IUserService<Result<User>> userService)
         {
@@ -35,7 +33,7 @@ namespace FNMusic.Controllers
         }
 
         [Authorize]
-        [Route("/home")]
+        [Route("/discover")]
         public IActionResult Discover()
         {
             return View();

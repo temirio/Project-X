@@ -174,7 +174,15 @@ namespace BaseLib.Services
         private async Task<ServiceResponse> Fail(HttpResponseMessage httpResponseMessage)
         {
             string json = await httpResponseMessage.Content.ReadAsStringAsync();
-            return (ServiceResponse) JsonConvert.DeserializeObject(json, typeof(ServiceResponse));
+            if (!string.IsNullOrEmpty(json))
+            {
+                return (ServiceResponse)JsonConvert.DeserializeObject(json, typeof(ServiceResponse));
+            }
+            return new ServiceResponse()
+            {
+                Code = "500",
+                Description = "something went wrong"
+            };
         }
     }
 }

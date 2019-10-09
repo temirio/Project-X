@@ -1,9 +1,7 @@
 ﻿
 @using Microsoft.AspNetCore.Http
-@using FNMusic.Controllers
 @using BaseLib.Models
 @inject IHttpContextAccessor httpContextAccessor
-@inject UserController userController
 @{
 
     long profileUserId = Model.Id;
@@ -15,7 +13,7 @@
 <div class="pull-right" >
     @if (profileUserId == loggedInUserId)
     {
-        <a class="btn btn-default btn-rounded" href="/@httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Username").Value/updateprofile">
+        <a class="btn btn-default btn-rounded" href="/@httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Username").Value/updateprofile" data-toggle="ajaxModal">
             <span class="text">Edit Profile</span>
         </a>
     }

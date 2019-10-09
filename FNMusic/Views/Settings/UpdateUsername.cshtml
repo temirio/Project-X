@@ -1,0 +1,44 @@
+﻿@model UserMgt.Models.User
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+@{
+    ViewData["Title"] = "Update Username";
+    Layout = "~/Views/Shared/_SettingsLayout.cshtml";
+}
+<section class="vbox">
+    <section class="scrollable">
+        <header class="modal-header">
+            <a href="/settings/account"><i class="fa fa-arrow-left"></i></a>
+            <span class="h4 font-bold text-center padder">Change Username</span>
+        </header>
+        @using (Html.BeginForm("UpdateUsername", "Settings", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <section class="wrapper" style="padding-left:30px; padding-right:30px;" >
+                <section class="form-horizontal">
+                    <div class="form-group">
+                        <p class="small">Username</p>
+                        <input type="text" id="UsernameTbx" name="Username" maxlength="20" value="@Html.ValueFor(x => x.Username)" class="form-control" style = "width:200px; border-right-style:none; border-top-style:none; border-left-style:none;" />
+                    </div>
+                </section>
+            </section>
+            <section class="modal-footer">
+                <button type="submit" id="submitBtn" class="btn btn-success btn-rounded">
+                    <span>Done</span>
+                </button>
+            </section>
+            <script type="text/javascript">
+                function stoppedTyping() {
+                    var username = document.getElementById("UsernameTbx").value;
+                    var submitBtn = document.getElementById("submitBtn");
+                    if (username == @httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Username").Value) {
+                        submitBtn.disabled = true;
+                    } else {
+                        submitBtn.disabled = false;
+                    }
+                }
+            </script>
+        }
+    </section>
+</section>
+
+

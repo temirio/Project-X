@@ -1,0 +1,55 @@
+﻿@model FNMusic.Models.Update
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+@{
+    ViewData["Title"] = "Update Email";
+    Layout = "~/Views/Shared/_SettingsLayout.cshtml";
+    bool vcsent = Convert.ToBoolean(httpContextAccessor.HttpContext.Session.GetString("VCSent"));
+}
+
+<section class="vbox">
+    <section class="scrollable">
+        <header class="modal-header">
+            <a href="/settings/account"><i class="fa fa-arrow-left"></i></a>
+            <span class="h4 font-bold text-center padder">Change Email</span>
+        </header>
+        @using (Html.BeginForm("UpdateEmail", "Settings", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <section class="wrapper" style="padding-left:30px; padding-right:30px;">
+                <div class="form-horizontal">
+                    <div class="form-group" style="">
+                        <p>Current</p>
+                        <input disabled="disabled" class="form-control" value="@httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Email").Value" style="width:200px; border-right-style:hidden; border-left-style:hidden; border-top-style:hidden;" />
+                    </div>
+                    <div class="form-group">
+                        <p>Email</p>
+                        <input id="EmailTbx" name="Email" type="email" value="@Html.ValueFor(x => x.Email)" class="form-control" style="width:200px; border-right-style:hidden; border-left-style:hidden; border-top-style:hidden;" />
+                    </div>
+                    <p class="small">
+                        Your email address is not displayed in your public profile on Twitter. Others will be able to find you by email or phone number.
+                    </p>
+                    @if (vcsent)
+                    {
+                        <div class="form-group">
+                            <p>Token</p>
+                            <input id="TokenTbx" name="Token" class="form-control" style="width:200px; border-right-style:hidden; border-left-style:hidden; border-top-style:hidden;" />
+                        </div>
+                    }
+                </div>
+            </section>
+            <footer class="modal-footer">
+                <button id="submitBtn" type="submit" class="btn btn-success btn-rounded">
+                    @if (vcsent)
+                    {
+                        <span>Done</span>
+                    }
+                    else
+                    {
+                        <span>Verify Email</span>
+                    }
+                </button>
+            </footer>
+        }
+    </section>
+</section>
+

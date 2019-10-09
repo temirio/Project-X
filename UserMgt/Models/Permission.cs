@@ -1,6 +1,6 @@
 using System;
 
-namespace BaseLib.Models
+namespace UserMgt.Models
 {
     public class Permission {
 

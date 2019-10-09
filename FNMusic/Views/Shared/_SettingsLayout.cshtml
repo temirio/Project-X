@@ -1,0 +1,84 @@
+﻿
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+@{
+    //Layout = "~/Views/Shared/_PlayerLayout.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en" class="app">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link rel="stylesheet" href="~/js/jPlayer/jplayer.flat.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/app.v1.css" type="text/css" />
+    <!--[if lt IE 9]> <script src="js/ie/html5shiv.js"></script> <script src="js/ie/respond.min.js"></script> <script src="js/ie/excanvas.js"></script> <![endif]-->
+</head>
+<body class="">
+    <section class="vbox">
+        <header class="bg-white-only header header-md navbar navbar-fixed-top-xs">
+            <div class="navbar-header aside bg-dark">
+                <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen,open" data-target="#nav,html">
+                    <i class="icon-list"></i>
+                </a>
+                <a asp-action="Discover" asp-controller="Player" class="navbar-brand text-lt">
+                    <i class="icon-earphones"></i>
+                    <img src="images/logo.png" alt="." class="hide" />
+                    <span class="hidden-nav-xs m-l-sm">fnmusic</span>
+                </a>
+                <a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".user">
+                    <i class="icon-settings"></i>
+                </a>
+            </div>
+            <form class="navbar-form navbar-left input-s-lg m-t m-l-n-xs hidden-xs" role="search">
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-sm btn-icon rounded btn-primary">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                        @Html.TextBox("Search", "", new { type = "text", @class = "form-control input-sm  rounded", placeholder = "Search songs, albums...", style = "width:400px;" })
+                    </div>
+                </div>
+            </form>
+            @await Html.PartialAsync("_MainHeaderOptionsPartial")
+        </header>
+        <section>
+            <section class="hbox stretch">
+                <aside class="bg-black dk aside hidden-print" id="nav">
+                    <section class="vbox">
+                        <section class="w-f-md scrollable">
+                            <div class="slim-scroll" data-height="auto" data-disable-fade-out="true" data-distance="0" data-size="10px" data-railOpacity="0.2">
+                                <nav class="nav-primary hidden-xs">
+                                    <ul class="nav bg clearfix">
+                                        <li class="hidden-nav-xs padder m-t m-b-sm text-xs text-muted"> @@@httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Username").Value </li>
+                                        <li><a asp-controller="Settings" asp-action="AccountSettings"><span class="font-bold">Account</span></a></li>
+                                        <li><a href="#"><span class="font-bold">Privacy and Safety</span></a></li>
+                                        <li><a href="#"><span class="font-bold">Notifications </span></a></li>
+                                        <li><a href="#"><span class="font-bold">Content Preferences</span></a></li>
+                                        <li class="divider"></li>
+                                        <li class="hidden-nav-xs padder m-t m-b-sm text-xs text-muted"> General</li>
+                                        <li><a href="#"><span class="font-bold">Display</span></a></li>
+                                        <li><a href="#"><span class="font-bold">Data Usage</span></a></li>
+                                        <li><a href="#"><span class="font-bold">Accessibility</span></a></li>
+                                        <li><a href="#"><span class="font-bold">About FNMusic</span></a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </section>
+                    </section>
+                </aside>
+                @await Html.PartialAsync("_StatusMessagesPartial")
+                @RenderBody()
+                <aside class="aside-md bg-light">
+                    <section class="vbox">
+                        <section class="scrollable"></section>
+                    </section>
+                </aside>
+            </section>
+        </section>
+    </section>
+    <script src="~/js/app.v1.js"></script>
+</body>
+</html>

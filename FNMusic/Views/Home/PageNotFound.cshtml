@@ -2,7 +2,7 @@
 @inject IHttpContextAccessor HttpContextAccessor;
 @{
     ViewData["Title"] = "PageNotFound";
-    Layout = "~/Views/Shared/_WhiteLayout.cshtml";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
 
     string homepage = HttpContextAccessor.HttpContext.Session.GetString("email") != null ? "https://localhost:5001/discover" : "https://localhost:5001/";
 

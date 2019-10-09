@@ -19,8 +19,6 @@
     <None Include="wwwroot\images\banner1.svg" />
     <None Include="wwwroot\images\banner2.svg" />
     <None Include="wwwroot\images\banner3.svg" />
-    <None Include="wwwroot\js\site.js" />
-    <None Include="wwwroot\js\site.min.js" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.min.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
@@ -53,8 +51,6 @@
     <ProjectReference Include="..\UserMgt\UserMgt.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Settings\" />
-  </ItemGroup>
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JSONSchema="http://json.schemastore.org/appveyor" /></VisualStudio></ProjectExtensions>
 
 </Project>

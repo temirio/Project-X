@@ -8,19 +8,16 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace BaseLib.Models
+namespace UserMgt.Models
 {
     public class User
     {
         public long Id { get; set; }
 
-        [Required(ErrorMessage = "*")]
         public string Username { get; set; }
 
-        [Required(ErrorMessage = "*")]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "*")]
         public string LastName { get; set; }
 
         public string Email { get; set; }
@@ -31,19 +28,15 @@ namespace BaseLib.Models
 
         public DateTime DateOfBirth { get; set; }
 
-        [Required(ErrorMessage = "*")]
         public Privacy MonthAndDay { get; set; }
 
-        [Required(ErrorMessage = "*")]
         public Privacy Year { get; set; }
 
-        [Required(ErrorMessage = "*")]
         public string Nationality { get; set; }
 
-        [DataType(DataType.PhoneNumber, ErrorMessage = "Invalid Phone Number")]
-        public string PhoneNumber { get; set; }
+        public string Phone { get; set; }
 
-        public bool PhoneNumberConfirmed { get; set; }
+        public bool PhoneConfirmed { get; set; }
 
         public string Location { get; set; }
 
@@ -51,10 +44,13 @@ namespace BaseLib.Models
 
         public string Biography { get; set; }
 
+        [DataType(DataType.Url, ErrorMessage = "Invalid url")]
         public string Website { get; set; }
 
+        [DataType(DataType.ImageUrl, ErrorMessage = "Invalid url")]
         public string ProfileImagePath { get; set; }
 
+        [DataType(DataType.ImageUrl, ErrorMessage = "Invalid url")]
         public string CoverImagePath { get; set; }
 
         public long Following { get; set; }
@@ -88,6 +84,5 @@ namespace BaseLib.Models
 
         public bool Suspended { get; set; }
 
-        
     }
 }

@@ -1,10 +1,9 @@
 ﻿
-@model BaseLib.Models.User
+@model UserMgt.Models.User
 @using Microsoft.AspNetCore.Http
-@using FNMusic.Controllers
 @using BaseLib.Models
+@using UserMgt.Models
 @inject IHttpContextAccessor httpContextAccessor
-@inject UserController userController
 @{
     Layout = "~/Views/Shared/_PlayerLayout.cshtml";
     ViewData["Title"] = ""+Model.FirstName+" "+Model.LastName+" (@"+Model.Username+")";
@@ -28,29 +27,24 @@
     long profileUserId = Model.Id;
     long loggedInUserId = Convert.ToInt64(httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Id").Value);
 
-    //Check if profile user is following
     
 
 }
 
-<section id="content">
+<section>
     <section class="vbox">
         <section class="scrollable">
-            
             <section class="wrapper hidden-xs" style="height:300px; background-image:url(/images/electric_feeling-1280x800.jpg); background-size:cover">
                 <a href="#" class="img-circle" style="position:absolute; top:200px; left:5px; border-style:solid; border-color:white;">
                     <img src="images/a4.png" class="img-circle" height="180" style="border-color:white;">
                 </a>
             </section>
-
             <section class="wrapper hidden-mobile-xs" style="height:100px;  background-image:url(/images/electric_feeling-1280x800.jpg); background-size:cover">
                 <a href="#" class="img-circle" style="position:absolute; top:100px; left:5px; border-style:solid; border-color:white;">
                     <img src="images/a4.png" class="img-circle" height="100" style="border-color:white;">
                 </a>
             </section>
-            
-            
-            <section class="hbox stretch">
+            <section class="hbox stretch" >
                 <aside class="aside-lg bg-light lter b-r">
                     <section class="vbox">
                         <section class="scrollable">
@@ -65,14 +59,14 @@
 
                                         @if (loggedInUserId != Model.Id)
                                         {
-                                            Result<User> isFollowerResult = await userController.IsFollower(loggedInUserId, Model.Id);
-                                            User followerUser = isFollowerResult.Data;
-                                            bool isFollower = (followerUser != null && followerUser.Id == Model.Id) ? true : false;
+                                            //Result<User> isFollowerResult = await userController.IsFollower(loggedInUserId, Model.Id);
+                                            //User followerUser = isFollowerResult.Data;
+                                            @*bool isFollower = (followerUser != null && followerUser.Id == Model.Id) ? true : false;
 
                                             if (isFollower)
                                             {
                                                 <small class="text-muted">Follows you</small>
-                                            }
+                                            }*@
                                         }
                                     </div>
                                     <div class="h5 text-black" style="padding-top:15px;">@Model.Biography</div>
@@ -122,7 +116,6 @@
                                     <p class="m-t-sm">
                                         <a href="@Model.TwitterProfile" class="btn btn-rounded btn-twitter btn-icon"><i class="fa fa-twitter"></i></a>
                                         <a href="" class="btn btn-rounded btn-facebook btn-icon"><i class="fa fa-facebook"></i></a>
-
                                         <a href="#" class="btn btn-rounded btn-icon"><i class="fa fa-envelope"></i></a>
                                     </p>
                                 </div>
