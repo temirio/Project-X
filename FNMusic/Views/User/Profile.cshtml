@@ -6,7 +6,8 @@
 @inject IHttpContextAccessor httpContextAccessor
 @{
     Layout = "~/Views/Shared/_PlayerLayout.cshtml";
-    ViewData["Title"] = ""+Model.FirstName+" "+Model.LastName+" (@"+Model.Username+")";
+    
+    ViewData["Title"] = ""+Model.FirstName ?? ""+" "+Model.LastName ?? ""+" (@"+Model.Username+")";
 
     string[] months = new string[]
     {

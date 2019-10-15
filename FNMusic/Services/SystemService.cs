@@ -28,7 +28,7 @@ namespace FNMusic.Services
                 new Claim("Email", user.Email),
                 new Claim("EmailConfirmed", user.EmailConfirmed.ToString()),
                 new Claim("Username", user.Username),
-                new Claim("Phone", user.Phone),
+                new Claim("Phone", user.Phone ?? ""),
                 new Claim("PhoneConfirmed", user.PhoneConfirmed.ToString()),
                 new Claim("TwoFactorEnabled", user.TwoFactorEnabled.ToString()),
                 new Claim("X-AUTH-TOKEN",accessToken),

@@ -267,11 +267,39 @@ namespace FNMusic.Controllers
                 try
                 {
                     httpContextAccessor.HttpContext.Session.Clear();
-                    return View(new Update());
+                    return View();
                 }
                 catch (Exception e)
                 {
                     return View().WithDanger("Oops", e.Message);
+                }
+            });
+        }
+
+        [Authorize]
+        [HttpPost("account/password")]
+        public async Task<IActionResult> UpdatePassword(UpdatePassword updatePassword)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("","Kindly fill in all required information");
+                return View(updatePassword);
+            }
+
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    HttpResult<ServiceResponse> httpResult = await accountSettingsService.UpdatePasswordAsync(updatePassword.CurrentPassword, updatePassword.NewPassword, accessToken);
+                    if (!HttpStatusUtils.Is2xxSuccessful(httpResult.Status))
+                    {
+                        throw new Exception(httpResult.FailureResponse.Description);
+                    }
+                    return Redirect("/settings/account");
+                }
+                catch (Exception e)
+                {
+                    return View(updatePassword).WithDanger("Oops", e.Message);
                 }
             });
         }

@@ -113,6 +113,25 @@ namespace UserMgt.Services.Impl
             });
         }
 
+        public async Task<HttpResult<ServiceResponse>> UpdatePasswordAsync(string currentPassword, string newPassword, string accessToken)
+        {
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    requestHeaders.Add("X-AUTH-OLD-PASSWORD", currentPassword);
+                    requestHeaders.Add("X-AUTH-NEW-PASSWORD", newPassword);
+                    requestHeaders.Add("X-AUTH-TOKEN", accessToken);
+                    HttpResult<ServiceResponse> httpResult = await restTemplate.PutAsync(AccountSettingsBaseAddress, UpdatePasswordUri, requestHeaders, null);
+                    return httpResult;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+            });
+        }
+
         public Task<HttpResult<ServiceResponse>> DeactivateAccountAsync(bool status, string accessToken)
         {
             throw new NotImplementedException();
@@ -133,10 +152,7 @@ namespace UserMgt.Services.Impl
             throw new NotImplementedException();
         }
 
-        public Task<HttpResult<ServiceResponse>> UpdatePasswordAsync(string currentPassword, string newPassword, string accessToken)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         
 

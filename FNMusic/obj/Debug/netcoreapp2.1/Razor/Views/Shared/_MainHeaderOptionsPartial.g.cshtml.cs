@@ -160,7 +160,7 @@ using Microsoft.AspNetCore.Http;
             WriteLiteral("s=\"dropdown\">\r\n            <a href=\"#\" class=\"dropdown-toggle bg clear\" data-toggle=\"dropdown\">\r\n                <span class=\"thumb-sm avatar pull-right m-t-n-sm m-b-n-sm m-l-sm\">\r\n                    ");
             EndContext();
             BeginContext(4393, 37, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "8f5f0fb51d38495c944ea560e051c076", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "662c07fb13604c44a7ea95e426599833", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -189,7 +189,7 @@ using Microsoft.AspNetCore.Http;
             WriteLiteral("\r\n                <b class=\"caret\"></b>\r\n            </a>\r\n            <ul class=\"dropdown-menu animated fadeInRight\">\r\n                <li>");
             EndContext();
             BeginContext(4696, 108, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "d63a24d59aed4eb8a91b87ff61f1b244", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "6833cae3555f4c7b9f9da729b59e59d2", async() => {
                 BeginContext(4793, 7, true);
                 WriteLiteral("Profile");
                 EndContext();
@@ -217,7 +217,7 @@ AddHtmlAttributeValue("", 4707, httpContextAccessor.HttpContext.User.Claims.Firs
             WriteLiteral("</li>\r\n                <li><a href=\"#\"> <span class=\"badge bg-danger pull-right\">3</span> Notifications </a></li>\r\n                <li><a href=\"#\">Bookmarks</a></li>\r\n                <li class=\"divider\"></li>\r\n                <li>");
             EndContext();
             BeginContext(5034, 80, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "bc5ee0cdaf4d43cc9670055725ecacfc", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "10a8710029564a0889c3953bd460041d", async() => {
                 BeginContext(5092, 18, true);
                 WriteLiteral("Settings & Privacy");
                 EndContext();
@@ -241,7 +241,7 @@ AddHtmlAttributeValue("", 4707, httpContextAccessor.HttpContext.User.Claims.Firs
             WriteLiteral("</li>\r\n                <li><a href=\"docs.html\">Help Center</a></li>\r\n                <li>");
             EndContext();
             BeginContext(5203, 56, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "80a6d4f39823493a8351a39a471c8a95", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "89e95fc7b1bb4da89a9d651da9cbea35", async() => {
                 BeginContext(5248, 7, true);
                 WriteLiteral("Log Out");
                 EndContext();

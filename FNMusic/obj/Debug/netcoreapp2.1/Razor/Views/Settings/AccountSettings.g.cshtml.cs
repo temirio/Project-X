@@ -81,7 +81,7 @@ using Microsoft.AspNetCore.Http;
                     <li class=""list-group-item"">");
             EndContext();
             BeginContext(579, 150, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "81fe46d15a994f8e97b65a0379f8bc55", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "ad67412572594de98ef90bfb80bf9406", async() => {
                 BeginContext(636, 51, true);
                 WriteLiteral("<span class=\"font-bold\">Username</span><br /><span>");
                 EndContext();
@@ -115,7 +115,7 @@ using Microsoft.AspNetCore.Http;
             WriteLiteral("</li>\r\n                    <li class=\"list-group-item\">");
             EndContext();
             BeginContext(784, 141, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "e5077ab592f54c8494a6454052ba32fc", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "19ec629ad6a74e818b7778beea647189", async() => {
                 BeginContext(838, 48, true);
                 WriteLiteral("<span class=\"font-bold\">Phone</span><br /><span>");
                 EndContext();
@@ -149,7 +149,7 @@ using Microsoft.AspNetCore.Http;
             WriteLiteral("</li>\r\n                    <li class=\"list-group-item\">");
             EndContext();
             BeginContext(980, 141, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "926d7b40128a47718be49267f8f3ceda", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "505cdcbcb44f4725a5290ae0a6044e09", async() => {
                 BeginContext(1034, 48, true);
                 WriteLiteral("<span class=\"font-bold\">Email</span><br /><span>");
                 EndContext();
@@ -183,7 +183,7 @@ using Microsoft.AspNetCore.Http;
             WriteLiteral("</li>\r\n                    <li class=\"list-group-item\">");
             EndContext();
             BeginContext(1176, 100, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "fc0339ae63eb4847a9e89821abbca033", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "3ae9b1b0de9543999a096cdf157d636f", async() => {
                 BeginContext(1233, 39, true);
                 WriteLiteral("<span class=\"font-bold\">Password</span>");
                 EndContext();
@@ -212,7 +212,7 @@ using Microsoft.AspNetCore.Http;
                         ");
             EndContext();
             BeginContext(1602, 151, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "b3107c4a8a1849d892155fa81642295a", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "ce7030753a5946cc98250e00c3b5f023", async() => {
                 BeginContext(1658, 50, true);
                 WriteLiteral("<span class=\"font-bold\">Country</span><br /><span>");
                 EndContext();
@@ -251,7 +251,7 @@ using Microsoft.AspNetCore.Http;
                     <li class=""list-group-item"">");
             EndContext();
             BeginContext(2174, 118, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "63b5bfddc83c484f83cf677e7ef13fe4", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "93c693accdb244ebb7914fb7aad79bd5", async() => {
                 BeginContext(2234, 54, true);
                 WriteLiteral("<span class=\"font-bold\">Deactivate your account</span>");
                 EndContext();

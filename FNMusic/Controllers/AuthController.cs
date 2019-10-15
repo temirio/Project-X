@@ -151,9 +151,7 @@ namespace FNMusic.Controllers
                     User user = accessTokenWithUserDetails.User;
                     Feature feature = accessTokenWithUserDetails.Feature;
                     string accessToken = accessTokenWithUserDetails.AccessToken;
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                    systemService.SetHttpContext(user, feature, accessToken, "");
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                    await systemService.SetHttpContext(user, feature, accessToken, "");
                     if (HttpContext.User.Identity.IsAuthenticated)
                     {
                         if (Convert.ToBoolean(HttpContext.User.Claims.First(x => x.Type == "TwoFactorEnabled").Value) == true)
