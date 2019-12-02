@@ -7,10 +7,10 @@
     bool vcsent = Convert.ToBoolean(httpContextAccessor.HttpContext.Session.GetString("VCSent"));
 }
 
-<section class="vbox">
+<section class="vbox bg-white">
     <section class="scrollable">
         <header class="modal-header">
-            <a href="/settings/account"><i class="fa fa-arrow-left"></i></a>
+            <a asp-controller="Settings" asp-action="AccountSettings"><i class="fa fa-arrow-left"></i></a>
             <span class="h4 font-bold text-center padder">Change Email</span>
         </header>
         @using (Html.BeginForm("UpdateEmail", "Settings", FormMethod.Post, new { enctype = "multipart/form-data" }))

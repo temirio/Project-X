@@ -45,6 +45,14 @@ C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\FNMusic
 C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_StatusMessages.g.cshtml.cs
 C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Home\PageNotFound.g.cshtml.cs
 C:\Users\stephen.enunwah\Documents\Visual Studio 2017\Projects\Project X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_WhiteLayout.g.cshtml.cs
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.csprojAssemblyReference.cache
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.csproj.CoreCompileInputs.cache
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.RazorAssemblyInfo.cache
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.RazorAssemblyInfo.cs
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.AssemblyInfoInputs.cache
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.AssemblyInfo.cs
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.dll
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.pdb
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\bin\Debug\netcoreapp2.1\FNMusic.deps.json
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\bin\Debug\netcoreapp2.1\FNMusic.runtimeconfig.json
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\bin\Debug\netcoreapp2.1\FNMusic.runtimeconfig.dev.json
@@ -56,12 +64,6 @@ C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\bin\Deb
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\bin\Debug\netcoreapp2.1\UserMgt.dll
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\bin\Debug\netcoreapp2.1\UserMgt.pdb
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\bin\Debug\netcoreapp2.1\BaseLib.pdb
-C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.csprojAssemblyReference.cache
-C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.csproj.CoreCompileInputs.cache
-C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.RazorAssemblyInfo.cache
-C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.RazorAssemblyInfo.cs
-C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.AssemblyInfoInputs.cache
-C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.AssemblyInfo.cs
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.TagHelpers.input.cache
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.TagHelpers.output.cache
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.RazorCoreGenerate.cache
@@ -78,6 +80,14 @@ C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Deb
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Home\Privacy.g.cshtml.cs
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Player\Discover.g.cshtml.cs
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Settings\AccountSettings.g.cshtml.cs
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Settings\DeactivateAccount.g.cshtml.cs
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Settings\UpdateCountry.g.cshtml.cs
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Settings\UpdateEmail.g.cshtml.cs
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Settings\UpdatePassword.g.cshtml.cs
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Settings\UpdatePasswordResetProtection.g.cshtml.cs
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Settings\UpdatePhone.g.cshtml.cs
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Settings\UpdateTwoFactor.g.cshtml.cs
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Settings\UpdateUsername.g.cshtml.cs
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Shared\Error.g.cshtml.cs
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Shared\FanLayout.g.cshtml.cs
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_AuthLayout.g.cshtml.cs
@@ -99,13 +109,3 @@ C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Deb
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.RazorTargetAssemblyInfo.cs
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.Views.pdb
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.csproj.CopyComplete
-C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.dll
-C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.pdb
-C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Settings\UpdateUsername.g.cshtml.cs
-C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Settings\UpdatePhone.g.cshtml.cs
-C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Settings\UpdateEmail.g.cshtml.cs
-C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Settings\UpdatePassword.g.cshtml.cs
-C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Settings\UpdateTwoFactor.g.cshtml.cs
-C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Settings\UpdatePasswordResetProtection.g.cshtml.cs
-C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Settings\UpdateCountry.g.cshtml.cs
-C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Settings\DeactivateAccount.g.cshtml.cs

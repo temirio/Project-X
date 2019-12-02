@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\fnmusic\\FNMusic.csproj": {}
+    "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\FNMusic\\FNMusic.csproj": {}
   },
   "projects": {
     "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\BaseLib\\BaseLib.csproj": {
@@ -17,12 +17,14 @@
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Stephen\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Stephen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp2.1"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -39,6 +41,10 @@
       "frameworks": {
         "netcoreapp2.1": {
           "dependencies": {
+            "Microsoft.AspNetCore.App": {
+              "target": "Package",
+              "version": "[2.1.1, )"
+            },
             "Microsoft.NETCore.App": {
               "suppressParent": "All",
               "target": "Package",
@@ -54,25 +60,27 @@
         }
       }
     },
-    "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\fnmusic\\FNMusic.csproj": {
+    "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\FNMusic\\FNMusic.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\fnmusic\\FNMusic.csproj",
+        "projectUniqueName": "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\FNMusic\\FNMusic.csproj",
         "projectName": "FNMusic",
-        "projectPath": "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\fnmusic\\FNMusic.csproj",
+        "projectPath": "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\FNMusic\\FNMusic.csproj",
         "packagesPath": "C:\\Users\\Stephen\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\fnmusic\\obj\\",
+        "outputPath": "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\FNMusic\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Stephen\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Stephen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp2.1"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -102,7 +110,7 @@
             "Microsoft.AspNetCore.Razor.Design": {
               "suppressParent": "All",
               "target": "Package",
-              "version": "[2.1.2, )"
+              "version": "[2.1.1, )"
             },
             "Microsoft.NETCore.App": {
               "suppressParent": "All",
@@ -112,7 +120,7 @@
             },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
-              "version": "[2.1.9, )"
+              "version": "[3.0.0, )"
             }
           },
           "imports": [
@@ -136,12 +144,14 @@
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Stephen\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Stephen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp2.1"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -162,15 +172,15 @@
       "frameworks": {
         "netcoreapp2.1": {
           "dependencies": {
+            "Microsoft.AspNetCore.App": {
+              "target": "Package",
+              "version": "[2.1.1, )"
+            },
             "Microsoft.NETCore.App": {
               "suppressParent": "All",
               "target": "Package",
               "version": "[2.1.0, )",
               "autoReferenced": true
-            },
-            "System.IdentityModel.Tokens.Jwt": {
-              "target": "Package",
-              "version": "[5.4.0, )"
             }
           },
           "imports": [

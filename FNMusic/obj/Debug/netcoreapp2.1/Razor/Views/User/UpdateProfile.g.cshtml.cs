@@ -164,7 +164,7 @@ new SelectListItem { Value = "Select Genre",}
             WriteLiteral("                <section class=\"scrollable\" style=\"height:400px; margin-top:2px;\">\r\n                    <div style=\"position:relative; padding-bottom:40px;\">\r\n                        <div style=\"position:absolute\">\r\n                            ");
             EndContext();
             BeginContext(2327, 77, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "8d927e66f4a843948a3169cdb567012f", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "0d8cd5b4329c4513ae27cb8aa6b29593", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -196,7 +196,7 @@ new SelectListItem { Value = "Select Genre",}
                                     ");
             EndContext();
             BeginContext(3186, 77, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "d769e948352a49328270582e596cc4bf", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "37840656509a498f9e7e26a0c702764f", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -514,7 +514,7 @@ WriteAttributeValue("", 4804, Model.LastName, 4804, 15, false);
             WriteLiteral("        </div>\r\n        <div id=\"editProfileImgBx\" class=\"hidden\">\r\n            <header class=\"modal-header\">\r\n                <h4>EDIT PROFILE IMAGE</h4>\r\n            </header>\r\n\r\n            ");
             EndContext();
             BeginContext(10063, 66, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "14427f8a8a964272a63d73ecd1acd211", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "df6b6f67aed9415c955feb3edc661524", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -534,7 +534,7 @@ WriteAttributeValue("", 4804, Model.LastName, 4804, 15, false);
             WriteLiteral("\r\n            ");
             EndContext();
             BeginContext(10143, 39, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("script", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c7dce0971a584a48a0c42cbcdc62f3b8", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("script", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "8b58e4978a99447e9e29451b823fc4d5", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();

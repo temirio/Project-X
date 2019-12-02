@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor httpContextAccessor
 @{
-    //Layout = "~/Views/Shared/_PlayerLayout.cshtml";
+
 }
 <!DOCTYPE html>
 <html lang="en" class="app">
@@ -33,12 +33,12 @@
             <form class="navbar-form navbar-left input-s-lg m-t m-l-n-xs hidden-xs" role="search">
                 <div class="form-group">
                     <div class="input-group">
+                        <input name="Search" type="text" class="form-control input-sm rounded" placeholder="Search artistes, songs, albums" style="width:300px;"  />
                         <span class="input-group-btn">
                             <button type="submit" class="btn btn-sm btn-icon rounded btn-primary">
                                 <i class="fa fa-search"></i>
                             </button>
                         </span>
-                        @Html.TextBox("Search", "", new { type = "text", @class = "form-control input-sm  rounded", placeholder = "Search songs, albums...", style = "width:400px;" })
                     </div>
                 </div>
             </form>

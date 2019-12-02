@@ -54,3 +54,11 @@ C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Rel
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Release\netcoreapp2.1\FNMusic.dll
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Release\netcoreapp2.1\FNMusic.pdb
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Release\netcoreapp2.1\Razor\Views\Shared\_MainHeaderOptionsPartial.g.cshtml.cs
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Release\netcoreapp2.1\Razor\Views\Settings\DeactivateAccount.g.cshtml.cs
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Release\netcoreapp2.1\Razor\Views\Settings\UpdateCountry.g.cshtml.cs
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Release\netcoreapp2.1\Razor\Views\Settings\UpdateEmail.g.cshtml.cs
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Release\netcoreapp2.1\Razor\Views\Settings\UpdatePassword.g.cshtml.cs
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Release\netcoreapp2.1\Razor\Views\Settings\UpdatePasswordResetProtection.g.cshtml.cs
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Release\netcoreapp2.1\Razor\Views\Settings\UpdatePhone.g.cshtml.cs
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Release\netcoreapp2.1\Razor\Views\Settings\UpdateTwoFactor.g.cshtml.cs
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Release\netcoreapp2.1\Razor\Views\Settings\UpdateUsername.g.cshtml.cs

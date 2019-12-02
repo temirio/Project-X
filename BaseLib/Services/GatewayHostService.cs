@@ -17,7 +17,7 @@ namespace BaseLib.Services
 
         private string GetAddress()
         {
-            string address =  configuration.GetValue<string>("services:apiGateway:ipAddress");
+            string address =  configuration.GetValue<string>("RestServices:apiGateway:ipAddress");
             if (string.IsNullOrEmpty(address))
             {
                 return null;
@@ -27,7 +27,7 @@ namespace BaseLib.Services
 
         private string GetPort()
         {
-            string port = configuration.GetValue<string>("services:apiGateway:port");
+            string port = configuration.GetValue<string>("RestServices:apiGateway:port");
             if (string.IsNullOrEmpty(port))
             {
                 return null;
@@ -37,7 +37,7 @@ namespace BaseLib.Services
 
         private string GetPrefix()
         {
-            return configuration.GetValue<string>("services:apiGateway:prefix");
+            return configuration.GetValue<string>("RestServices:apiGateway:prefix");
         }
 
         public string GetGatewayAddress()

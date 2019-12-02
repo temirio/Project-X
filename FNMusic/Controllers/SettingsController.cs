@@ -53,27 +53,24 @@ namespace FNMusic.Controllers
         [Route("account")]
         public async Task<IActionResult> AccountSettings()
         {
-            return await Task.Run(async () => 
+            try
             {
-                try
+                long userId = Convert.ToInt64(httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Id").Value);
+                HttpResult<Result<User>> httpResult = await userService.FindUserById(userId, accessToken);
+                if (!HttpStatusUtils.Is2xxSuccessful(httpResult.Status))
                 {
-                    long userId = Convert.ToInt64(httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Id").Value);
-                    HttpResult<Result<User>> httpResult = await userService.FindUserById(userId,accessToken);
-                    if (!HttpStatusUtils.Is2xxSuccessful(httpResult.Status))
-                    {
-                        throw new Exception(httpResult.FailureResponse.Description);
-                    }
-
-                    Result<User> result = httpResult.Content;
-                    User user = result.Data;
-
-                    return View(user);
+                    throw new Exception(httpResult.FailureResponse.Description);
                 }
-                catch (Exception e)
-                {
-                    return View().WithDanger("Oops",e.Message);
-                }
-            });
+
+                Result<User> result = httpResult.Content;
+                User user = result.Data;
+
+                return View(user);
+            }
+            catch (Exception e)
+            {
+                return View().WithDanger("Oops", e.Message);
+            }
         }
 
         [NonAction]
@@ -308,16 +305,73 @@ namespace FNMusic.Controllers
         [Route("account/twofactor")]
         public async Task<IActionResult> UpdateTwofactor()
         {
-            return await Task.Run(() =>
+            return await Task.Run(() => 
             {
                 try
                 {
+                    bool isTwoFactorEnabled = Convert.ToBoolean(httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "TwoFactorEnabled").Value);
                     httpContextAccessor.HttpContext.Session.Clear();
-                    return View(new Update());
+                    return View(new UpdateTwoFactor()
+                    {
+                        Enabled = isTwoFactorEnabled,
+                        VerificationMethod = VerificationMethod.TextMessage
+                    });
                 }
                 catch (Exception e)
                 {
                     return View().WithDanger("Oops", e.Message);
+                }
+            });
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("account/twofactor/{Status}")]
+        public async Task<IActionResult> UpdateTwoFactor(UpdateTwoFactor updateTwoFactor)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View().WithDanger("Invalid Request", "");
+            }
+
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    
+                    string phone = httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Phone").Value;
+                    if (string.IsNullOrEmpty(phone))
+                    {
+                        throw new Exception("You have not submitted a valid phone number");
+                    }
+
+                    bool twofactorVerificationSent = Convert.ToBoolean(httpContextAccessor.HttpContext.Session.GetString("TWFVS"));
+                    if (!twofactorVerificationSent && updateTwoFactor.Enabled)
+                    {
+                        HttpResult<ServiceResponse> result = await accountSettingsService.SendTwoFactorVerificationTokenAsync(phone, accessToken);
+                        if (!HttpStatusUtils.Is2xxSuccessful(result.Status))
+                        {
+                            throw new Exception(result.FailureResponse.Description);
+                        }
+                        httpContextAccessor.HttpContext.Session.SetString("TWFVS", true.ToString());
+                        return View();
+                    }
+
+                    if (twofactorVerificationSent || !updateTwoFactor.Enabled)
+                    {
+                        HttpResult<ServiceResponse> result = await accountSettingsService.UpdateTwoFactorAsync(updateTwoFactor.Enabled, updateTwoFactor.Token, accessToken);
+                        if (!HttpStatusUtils.Is2xxSuccessful(result.Status))
+                        {
+                            throw new Exception(result.FailureResponse.Description);
+                        }
+                        return Redirect("/settings/account");
+                    }
+
+                    return View(updateTwoFactor);
+                }
+                catch (Exception e)
+                {
+                    return View().WithDanger("Oops",e.Message);
                 }
             });
         }
@@ -326,54 +380,45 @@ namespace FNMusic.Controllers
         [Route("account/password/reset/protection")]
         public async Task<IActionResult> UpdatePasswordResetProtection()
         {
-            return await Task.Run(() =>
+            try
             {
-                try
-                {
-                    httpContextAccessor.HttpContext.Session.Clear();
-                    return View(new Update());
-                }
-                catch (Exception e)
-                {
-                    return View().WithDanger("Oops", e.Message);
-                }
-            });
+                httpContextAccessor.HttpContext.Session.Clear();
+                return View(new Update());
+            }
+            catch (Exception e)
+            {
+                return View().WithDanger("Oops", e.Message);
+            }
         }
 
         [Authorize]
         [Route("account/country")]
         public async Task<IActionResult> UpdateCountry()
         {
-            return await Task.Run(() =>
+            try
             {
-                try
-                {
-                    httpContextAccessor.HttpContext.Session.Clear();
-                    return View(new Update());
-                }
-                catch (Exception e)
-                {
-                    return View().WithDanger("Oops", e.Message);
-                }
-            });
+                httpContextAccessor.HttpContext.Session.Clear();
+                return View(new Update());
+            }
+            catch (Exception e)
+            {
+                return View().WithDanger("Oops", e.Message);
+            }
         }
 
         [Authorize]
         [Route("account/deactivate")]
         public async Task<IActionResult> DeactivateAccount()
         {
-            return await Task.Run(() =>
+            try
             {
-                try
-                {
-                    httpContextAccessor.HttpContext.Session.Clear();
-                    return View(new Update());
-                }
-                catch (Exception e)
-                {
-                    return View().WithDanger("Oops", e.Message);
-                }
-            });
+                httpContextAccessor.HttpContext.Session.Clear();
+                return View(new Update());
+            }
+            catch (Exception e)
+            {
+                return View().WithDanger("Oops", e.Message);
+            }
         }
 
     }

@@ -192,7 +192,7 @@ using Microsoft.AspNetCore.Http;
             WriteLiteral("</h4>\r\n                <h5 class=\"text-center\">You have successfully reset your password</h5>\r\n                <br />\r\n                ");
             EndContext();
             BeginContext(2421, 149, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "95881c0767d941518eb45cce5ce2fa3a", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "2143602de69b479980d745303b8bc437", async() => {
                 BeginContext(2499, 67, true);
                 WriteLiteral("\r\n                    <span>Click to Login</span>\r\n                ");
                 EndContext();

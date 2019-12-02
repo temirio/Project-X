@@ -144,7 +144,7 @@ using FNMusic.Models;
                         ");
             EndContext();
             BeginContext(2103, 78, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "ffe4bcc2bb4943eb81f2d2d8af480c7e", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "b3cf6fa471cc490786a442503fc16844", async() => {
                 BeginContext(2156, 21, true);
                 WriteLiteral("Forgot your password?");
                 EndContext();
@@ -175,7 +175,7 @@ using FNMusic.Models;
                         ");
             EndContext();
             BeginContext(2442, 68, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "56f7a8d29b194fe69b97befe44848781", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "4e3857a02ff3437d80f73ac174cbf9df", async() => {
                 BeginContext(2489, 17, true);
                 WriteLiteral("Create an account");
                 EndContext();
