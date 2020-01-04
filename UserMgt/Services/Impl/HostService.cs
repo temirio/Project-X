@@ -1,11 +1,11 @@
-﻿using UserMgt.Services;
+﻿using FNMusic.Services;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using BaseLib.Services;
 
-namespace UserMgt.Services.Impl
+namespace FNMusic.Services.Impl
 {
     public class HostService : GatewayHostService
     {
@@ -58,6 +58,7 @@ namespace UserMgt.Services.Impl
         public string UserBaseAddress => string.Concat(GetBaseAddress(), configuration.GetValue<string>("RestServices:userMgt:user:basePath"));
         public string FindByIdUri => configuration.GetValue<string>("RestServices:userMgt:user:findById");
         public string FindByEmailUri => configuration.GetValue<string>("RestServices:userMgt:user:findByEmail");
+        public string FindByPhoneUri => configuration.GetValue<string>("RestServices:userMgt:user:findByPhone");
         public string FindByUsernameUri => configuration.GetValue<string>("RestServices:userMgt:user:findByUsername");
         public string UpdateProfileUri => configuration.GetValue<string>("RestServices:userMgt:user:update");
         public string FollowUri => configuration.GetValue<string>("RestServices:userMgt:user:follow");

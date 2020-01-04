@@ -2,13 +2,15 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace UserMgt.Services
+namespace FNMusic.Services
 {
     public interface IUserService<T>
     {
         Task<HttpResult<T>> FindUserById(long id, string accessToken);
 
         Task<HttpResult<T>> FindUserByEmail(string email, string accessToken);
+
+        Task<HttpResult<T>> FindUserByPhone(string phone, string accessToken);
 
         Task<HttpResult<T>> FindUserByUsername(string username, string accessToken);
 

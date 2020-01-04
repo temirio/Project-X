@@ -8,7 +8,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UserMgt.Services.Impl
+namespace FNMusic.Services.Impl
 {
     public class AccountSettingsService : HostService, IAccountSettingsService<ServiceResponse>
     {

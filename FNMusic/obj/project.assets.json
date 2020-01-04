@@ -11860,6 +11860,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
+      "BaseLib >= 1.0.0",
       "Microsoft.AspNetCore.App >= 2.1.1",
       "Microsoft.AspNetCore.Razor.Design >= 2.1.1",
       "Microsoft.NETCore.App >= 2.1.0",
@@ -11897,6 +11898,9 @@
       "frameworks": {
         "netcoreapp2.1": {
           "projectReferences": {
+            "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\BaseLib\\BaseLib.csproj": {
+              "projectPath": "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\BaseLib\\BaseLib.csproj"
+            },
             "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\UserMgt\\UserMgt.csproj": {
               "projectPath": "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\UserMgt\\UserMgt.csproj"
             }

@@ -8,6 +8,7 @@
 </head>
 <body>
     <section class="vbox">
+        @await Html.PartialAsync("_StatusMessagesPartial")
         @RenderBody()
     </section>
     <script src="~/js/app.v1.js"></script>

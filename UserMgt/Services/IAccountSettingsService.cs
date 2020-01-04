@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UserMgt.Services
+namespace FNMusic.Services
 {
     public interface IAccountSettingsService<T>
     {

@@ -45,6 +45,11 @@ namespace BaseLib.Services
                         throw new Exception("Service Unavailable");
                     }
 
+                    if (ex.GetType() == typeof(JsonReaderException))
+                    {
+                        throw new Exception("Oops, parse error");
+                    }
+
                     throw new Exception(ex.Message);
                 }
             });

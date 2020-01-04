@@ -1,14 +1,13 @@
-﻿using UserMgt.Models;
-using UserMgt.Services;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using BaseLib.Models;
 using BaseLib.Services;
+using UserMgt.Models;
 
-namespace UserMgt.Services.Impl
+namespace FNMusic.Services.Impl
 {
     public class UserService : HostService, IUserService<Result<User>>
     {
@@ -46,6 +45,24 @@ namespace UserMgt.Services.Impl
                 {
                     requestHeaders.Add("X-AUTH-TOKEN", accessToken);
                     string requestUri = FindByEmailUri + email;
+                    HttpResult<Result<User>> result = await restTemplate.GetAsync(UserBaseAddress, requestUri, requestHeaders, null);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            });
+        }
+
+        public async Task<HttpResult<Result<User>>> FindUserByPhone(string phone, string accessToken)
+        {
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    requestHeaders.Add("X-AUTH-TOKEN", accessToken);
+                    string requestUri = FindByPhoneUri + phone;
                     HttpResult<Result<User>> result = await restTemplate.GetAsync(UserBaseAddress, requestUri, requestHeaders, null);
                     return result;
                 }
@@ -219,5 +236,7 @@ namespace UserMgt.Services.Impl
                 }
             });
         }
+
+        
     }
 }

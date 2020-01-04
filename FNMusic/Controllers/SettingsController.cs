@@ -1,24 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Routing;
 using BaseLib.Models;
 using BaseLib.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using UserMgt.Models;
-using UserMgt.Services;
-using UserMgt.Utils;
-using System.Security.Claims;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using FNMusic.Utils;
-using FNMusic.Services;
 using FNMusic.Models;
+using FNMusic.Services;
+using FNMusic.Utils;
+using Newtonsoft.Json;
+using UserMgt.Models;
 
 namespace FNMusic.Controllers
 {
@@ -378,47 +370,56 @@ namespace FNMusic.Controllers
 
         [Authorize]
         [Route("account/password/reset/protection")]
-        public async Task<IActionResult> UpdatePasswordResetProtection()
+        public Task<IActionResult> UpdatePasswordResetProtection()
         {
-            try
+            return Task.Run(()=> 
             {
-                httpContextAccessor.HttpContext.Session.Clear();
-                return View(new Update());
-            }
-            catch (Exception e)
-            {
-                return View().WithDanger("Oops", e.Message);
-            }
+                try
+                {
+                    httpContextAccessor.HttpContext.Session.Clear();
+                    return View();
+                }
+                catch (Exception e)
+                {
+                    return View().WithDanger("Oops", e.Message);
+                }
+            });
         }
 
         [Authorize]
         [Route("account/country")]
-        public async Task<IActionResult> UpdateCountry()
+        public Task<IActionResult> UpdateCountry()
         {
-            try
+            return Task.Run(()=> 
             {
-                httpContextAccessor.HttpContext.Session.Clear();
-                return View(new Update());
-            }
-            catch (Exception e)
-            {
-                return View().WithDanger("Oops", e.Message);
-            }
+                try
+                {
+                    httpContextAccessor.HttpContext.Session.Clear();
+                    return View();
+                }
+                catch (Exception e)
+                {
+                    return View().WithDanger("Oops", e.Message);
+                }
+            });
         }
 
         [Authorize]
         [Route("account/deactivate")]
-        public async Task<IActionResult> DeactivateAccount()
+        public Task<IActionResult> DeactivateAccount()
         {
-            try
+            return Task.Run(() =>
             {
-                httpContextAccessor.HttpContext.Session.Clear();
-                return View(new Update());
-            }
-            catch (Exception e)
-            {
-                return View().WithDanger("Oops", e.Message);
-            }
+                try
+                {
+                    httpContextAccessor.HttpContext.Session.Clear();
+                    return View();
+                }
+                catch (Exception e)
+                {
+                    return View().WithDanger("Oops", e.Message);
+                }
+            });
         }
 
     }

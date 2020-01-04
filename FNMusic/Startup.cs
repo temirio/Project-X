@@ -1,7 +1,7 @@
 ﻿using System;
-using UserMgt.Models;
-using UserMgt.Services;
-using UserMgt.Utils;
+using FNMusic.Models;
+using FNMusic.Services;
+using FNMusic.Utils;
 using FNMusic.Controllers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -10,13 +10,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using UserMgt.Services.Impl;
+using FNMusic.Services.Impl;
 using BaseLib.Models;
 using BaseLib.Services;
 using BaseLib.Utils;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Mvc.Internal;
 using FNMusic.Services;
+using UserMgt.Models;
 
 namespace FNMusic
 {

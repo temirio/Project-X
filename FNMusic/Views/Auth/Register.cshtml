@@ -1,69 +1,68 @@
-﻿@model FNMusic.Models.Register
+﻿@using UserMgt.Models;
+@model UserMgt.Models.Register
 @{
     ViewData["Title"] = "Register";
     Layout = "~/Views/Shared/_AuthLayout.cshtml";
 }
 
-<section class="m-t-lg wrapper-md animated fadeInDown">
-    <div class="container aside-xl bg-white" style="box-shadow:0px 10px 10px; border-radius:5px;">
+<section class="m-t-lg ">
+    <div class="container aside-xl bg-white" style="border-style:solid; border-width:1px; border-radius:5px;">
         <header class="wrapper text-center">
-            <h2>Sign Up</h2>
-            
+            <h3>Sign Up</h3>
         </header>
-        <section class="form-horizontal" style="padding:0px 30px 0px 30px;">
-            @*<a href="#" class="btn btn-info btn-block">
-                <i class="fa fa-fw fa-twitter"></i>
-                <span>Twitter</span>
-            </a>
-            <a href="#" class="btn btn-primary btn-block">
-                <i class="fa fa-fw fa-facebook"></i>
-                <span>Facebook</span>
-            </a>
-            <h5 class="text-center">OR</h5>*@
-            <h5 class="text-center">Fill in the necessary information</h5>
+        <section class="form-horizontal" style="padding:0px 30px 30px 30px;">
+            <h5 class="text-center">Sign up to listen to the best music from your favourite artistes.</h5>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger small" })
+            <hr />
             @using (Html.BeginForm("register", "Auth", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
-                @Html.ValidationSummary(true, "", new { @class = "text-danger small" })
-                <hr />
+                if (Model.AuthKey == AuthKey.Email)
+                {
+                    <div class="form-group">
+                        @Html.ValidationMessageFor(x => x.Email, "", new { @class = "text-danger small" })
+                        @Html.TextBoxFor(x => x.Email, new { type = "email", placeholder = "Email", @class = "form-control text-center input-sm", style = "", Required="true" })
+                        <a href="/register?AuthKey=1" class="pull-right"><small class="text-sm">use phone instead?</small></a>
+                    </div>
+                }
+                else if (Model.AuthKey == AuthKey.Phone)
+                {
+                    <div class="form-group">
+                        @Html.ValidationMessageFor(x => x.Phone, "", new { @class = "text-danger small" })
+                        @Html.TextBoxFor(x => x.Phone, new { type = "phone", placeholder = "Phone", @class = "form-control text-center input-sm", style = "", Required="true" })
+                        <a href="/register?AuthKey=0" class="pull-right"><small class="text-sm">use email instead?</small></a>
+                    </div>
+                }
+
                 <div class="form-group">
                     @Html.ValidationMessageFor(x => x.Username, "", new { @class = "text-danger small" })
-                    @Html.TextBoxFor(x => x.Username, new { placeholder = "Username", @class = "form-control text-center", style = "" })
+                    @Html.TextBoxFor(x => x.Username, new { placeholder = "Username", @class = "form-control text-center input-sm", style = "" })
                 </div>
-                <div class="form-group">
-                    @Html.ValidationMessageFor(x => x.Email, "", new { @class = "text-danger small" })
-                    @Html.TextBoxFor(x => x.Email, new { type = "email", placeholder = "Email Address", @class = "form-control text-center", style = "" })
-                </div>
+
                 <div class="form-group">
                     @Html.ValidationMessageFor(x => x.Password, "", new { @class = "text-danger small" })
-                    @Html.PasswordFor(x => x.Password, new { placeholder = "Password", @class = "form-control text-center", style = "" })
+                    @Html.PasswordFor(x => x.Password, new { placeholder = "Password", @class = "form-control text-center input-sm", style = "" })
                 </div>
                 <div class="form-group">
                     @Html.ValidationMessageFor(x => x.ConfirmPassword, "", new { @class = "text-danger small" })
-                    @Html.PasswordFor(x => x.ConfirmPassword, new { placeholder = "Confirm Password", @class = "form-control text-center", style = "" })
+                    @Html.PasswordFor(x => x.ConfirmPassword, new { placeholder = "Confirm Password", @class = "form-control text-center input-sm", style = "" })
                 </div>
-                <div class="checkbox i-checks m-b" style="padding-bottom:10px;">
-                    <label class="m-l">
-                        <input id="tac" type="checkbox" style="text-align:center;" checked="" />
-                        <i></i>
-                        <small>
-                            I agree to the
-                            <a href="#">terms and conditions</a>
-                        </small>
-                    </label>
-                </div>
-                <button type="submit" class="btn btn-warning btn-block">
-                    <span class="text-center">Sign up</span>
+                <button type="submit" class="btn btn-primary btn-block">
+                    <span class="text-center h3">Sign up</span>
                 </button>
                 <div class="line line-dashed"></div>
-                <p class="text-muted text-center">
-                    <small>
-                        Already have an account?
-                        <a asp-controller="Auth" asp-action="Login">click here </a>
-                    </small>
-                </p>
+                <p class="h5 text-center">By signing up, you agree to our <a class="font-bold">Terms , Data Policy</a> and <a class="font-bold">Cookies Policy</a>.</p>
             }
         </section>
     </div>
 </section>
 
-
+<section class="m-t-lg ">
+    <div class="container aside-xl bg-white" style="border-style:solid; border-width:1px; border-radius:5px;">
+        <section class="form-horizontal" style="padding:10px 0px 0px 10px;">
+            <p class="text-muted text-center">
+                Have an account?
+                <a asp-controller="Auth" asp-action="Login" class="font-bold">Log In</a>
+            </p>
+        </section>
+    </div>
+</section>

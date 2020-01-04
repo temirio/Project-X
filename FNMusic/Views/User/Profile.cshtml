@@ -6,8 +6,8 @@
 @inject IHttpContextAccessor httpContextAccessor
 @{
     Layout = "~/Views/Shared/_PlayerLayout.cshtml";
-    
-    ViewData["Title"] = ""+Model.FirstName ?? ""+" "+Model.LastName ?? ""+" (@"+Model.Username+")";
+
+    ViewData["Title"] = Model.Name != null ? Model.Name : Model.Username;
 
     string[] months = new string[]
     {
@@ -28,7 +28,7 @@
     long profileUserId = Model.Id;
     long loggedInUserId = Convert.ToInt64(httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Id").Value);
 
-    
+
 
 }
 
@@ -54,7 +54,7 @@
                                     @await Html.PartialAsync("_IsFanLayout")
                                 </div>
                                 <div class="m-b m-t" style="padding-top:60px;">
-                                    <div class="h3 text-black">@Model.FirstName @Model.LastName</div>
+                                    <div class="h3 text-black">@Model.Name</div>
                                     <div class="h5">
                                         @@@Model.Username
 

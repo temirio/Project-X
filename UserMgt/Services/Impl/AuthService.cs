@@ -7,7 +7,7 @@ using System.Net.Http.Headers;
 using BaseLib.Models;
 using BaseLib.Services;
 
-namespace UserMgt.Services.Impl
+namespace FNMusic.Services.Impl
 {
     public class AuthService : HostService, IAuthService<ServiceResponse>
     {
@@ -38,14 +38,15 @@ namespace UserMgt.Services.Impl
             });
         }
 
-        public async Task<HttpResult<AccessTokenWithUserDetails>> LogInAsync(string uid, string password)
+        public async Task<HttpResult<AccessTokenWithUserDetails>> LogInAsync(Login login)
         {     
             return await Task.Run(async ()=> 
             { 
                 try
                 {
-                    httpRequestHeaders.Add("X-AUTH-UID", uid);
-                    httpRequestHeaders.Add("X-AUTH-PASSWORD", password);
+                    httpRequestHeaders.Add("X-AUTH-UID", login.UserId);
+                    httpRequestHeaders.Add("X-AUTH-PASSWORD", login.Password);
+                    httpRequestHeaders.Add("X-AUTH-KEY", login.AuthKey.ToString());
                     HttpResult<AccessTokenWithUserDetails> response = await loginRestTemplate.PostAsync(AuthBaseAddress, SignInUri, httpRequestHeaders, null);
                     return response;
                 }

@@ -3,13 +3,13 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using BaseLib.Models;
 
-namespace UserMgt.Services
+namespace FNMusic.Services
 {
     public interface IAuthService<T>
     {
         Task<HttpResult<T>> RegisterAsync(HttpContent content);
 
-        Task<HttpResult<AccessTokenWithUserDetails>> LogInAsync(string email, string password);
+        Task<HttpResult<AccessTokenWithUserDetails>> LogInAsync(Login login);
 
         Task<HttpResult<ServiceResponse>> LoginVerificationAsync(string email);
 

@@ -1,4 +1,4 @@
-﻿using UserMgt.Models;
+﻿using FNMusic.Models;
 using FNMusic.Utils;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -10,11 +10,11 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using UserMgt.Services;
+using FNMusic.Services;
 using BaseLib.Models;
 using BaseLib.Utils;
-using FNMusic.Services;
 using System.Threading;
+using UserMgt.Models;
 
 namespace FNMusic.Controllers
 {
@@ -58,7 +58,9 @@ namespace FNMusic.Controllers
 
                     Result<User> result = httpResult.Content;
                     User user = result.Data;
-                    if ( user == null || username != user.Username)
+                    if (user == null ||
+                        user.Username == null ||
+                        username != user.Username)
                     {
                         throw new Exception("user not found");
                     }
@@ -111,6 +113,8 @@ namespace FNMusic.Controllers
         public async Task<IActionResult> UpdateProfile(User user)
         {
             user.Id = Convert.ToInt64(httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Id").Value);
+            user.Email = Convert.ToString(httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Email").Value);
+            user.Username = Convert.ToString(httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Username").Value);
 
             if (!ModelState.IsValid)
             {
@@ -139,7 +143,7 @@ namespace FNMusic.Controllers
                         multipart.Add(new ByteArrayContent(objectConverter.ObjectToValueConverter(user.CoverPhoto)), "CoverPhoto");
                     }
 
-                    await userService.UpdateProfile(multipart, accessToken).ConfigureAwait(false);
+                    await userService.UpdateProfile(multipart, accessToken);
                     HttpResult<Result<User>> httpResult = await userService.FindUserByEmail(httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Email").Value, accessToken);
                     if (!HttpStatusUtils.Is2xxSuccessful(httpResult.Status))
                     {
@@ -151,7 +155,6 @@ namespace FNMusic.Controllers
                     Feature feature = JsonConvert.DeserializeObject<Feature>(httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Feature").Value);
                     string refreshToken = httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "X-AUTH-REFRESH").Value ?? null;
                     await systemService.SetHttpContext(updatedUser, feature, accessToken, refreshToken);
-                    
                     return (ActionResult) Redirect("/" + httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Username").Value + "");
                 }
                 catch (Exception ex)
@@ -288,7 +291,7 @@ namespace FNMusic.Controllers
                     await HttpContext.SignOutAsync();
                     return Redirect("/login");
                 }
-                catch (Exception ex)
+                catch
                 {
                     return Redirect("/discover");
                 }

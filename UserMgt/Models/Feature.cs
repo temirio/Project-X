@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 
-namespace UserMgt.Models {
+namespace UserMgt.Models
+{
     
     public class Feature {
 

@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Http;
 @using BaseLib.Models;
 @using BaseLib.Utils;
-@using UserMgt.Models
+@using UserMgt.Models;
 @using UserMgt.Utils;
 @inject IHttpContextAccessor HttpContextAccessor
 @{
@@ -35,9 +35,9 @@ new SelectListItem { Value = "Select Country"}
     }
 
     List<SelectListItem> genres = new List<SelectListItem>
-{
-new SelectListItem { Value = "Select Genre",}
-};
+    {
+        new SelectListItem { Value = "Select Genre",}
+    };
 
     foreach (string genre in AppUtils.GetGenres())
     {
@@ -67,95 +67,53 @@ new SelectListItem { Value = "Select Genre",}
             @using (Html.BeginForm("UpdateProfile", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 <section class="scrollable" style="height:400px; margin-top:2px;">
-                    <div style="position:relative; padding-bottom:40px;">
-                        <div style="position:absolute">
-                            <img src="~/images/electric_feeling-1280x800.jpg" width="440" height="146" />
+                    <div class="form-horizontal" style="padding: 10px 20px 10px 20px;">
+                        <div class="form-group-sm">
+                            <span class="text-sm">Name @Html.ValidationMessageFor(x => x.Name, "", new { @class = "text-danger" })</span>
+                            <input name="Name" value="@Model.Name" class="form-control input-sm" maxlength="25" style="border-top:unset; border-left:unset; border-right:unset;" required />
                         </div>
-                        <div style="margin-left:20px; position:absolute; margin-top:100px;">
-                            <div class="item">
-                                <div class="pos-rlt">
-                                    <div class="item-overlay opacity r r-2x bg-black" style="border-radius:50px;">
-                                        <div class="center text-center m-t-n">
-                                            <a onclick="$('#profileImageFileUpload').click();">
-                                                <i class="icon-plus i-2x"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <img id="profileImg" src="~/images/a3.png" class="img-circle" height="100" />
+                        <div class="form-group-sm" style="padding:5px 0px 0px 0px;">
+                            <span class="text-sm">Biography @Html.ValidationMessageFor(x => x.Biography, "", new { @class = "text-danger" })</span>
+                            @Html.TextAreaFor(x => x.Biography, new { @class = "form-control input-sm", style = "border-top:unset; border-left:unset; border-right:unset;" })
+                        </div>
+                        <div class="form-group-sm" style="padding:5px 0px 0px 0px;">
+                            <span class="text-sm">Primary Genre @Html.ValidationMessageFor(x => x.Genre, "", new { @class = "text-danger" })</span>
+                            @Html.DropDownListFor(x => x.Genre, genres, new { @class = "form-control input-sm", style = "border-top:unset; border-left:unset; border-right:unset;" })
+                        </div>
+                        <div class="form-group-sm" style="padding:5px 0px 0px 0px;">
+                            <span class="text-sm">Location @Html.ValidationMessageFor(x => x.Location, "", new { @class = "text-danger" })</span>
+                            @Html.TextBoxFor(x => x.Location, new { @class = "form-control input-sm", style = "border-top:unset; border-left:unset; border-right:unset;" })
+                        </div>
+                        <div class="form-group-sm" style="padding:5px 0px 0px 0px;">
+                            <span class="text-sm">Website @Html.ValidationMessageFor(x => x.Website, "", new { @class = "text-danger" })</span>
+                            @Html.TextBoxFor(x => x.Website, new { type = "url", @class = "form-control input-sm", style = "border-top:unset; border-left:unset; border-right:unset;" })
+                        </div>
+                        <h6 class="text-u-c">Privacy Options</h6>
+                        <section class="form-group"  style="padding:5px 0px 0px 0px;">
+                            <div class="form-group-sm">
+                                <span class="text-sm col-sm-4">Month And Day @Html.ValidationMessageFor(x => x.MonthAndDay, "", new { @class = "text-danger" })</span>
+                                <div class="col-sm-8">
+                                    @Html.DropDownListFor(x => x.MonthAndDay, privacy, new { @class = "form-control text-sm", style = "border-top:unset; border-left:unset; border-right:unset;" })
                                 </div>
                             </div>
-                        </div>
-
-                        <input id="profileImageFileUpload" type="file" accept="image/*" class="hidden" onchange="handleProfilePicture()" />
-                        <a id="cropImageBtn" href="/cropImage/profile" class="hidden" data-toggle="ajaxModal"></a>
-                        <script type="text/javascript">
-                            function handleProfilePicture() {
-                                document.getElementById("editProfileBx").classList.add("hidden");
-                                document.getElementById("editProfileImgBx").classList.remove("hidden");
-                            }
-                        </script>
-
-
-
-                    </div>
-                    <div class="form-horizontal" style="padding-left:20px; padding-right:20px; margin-top:180px;">
-                        <div class="form-group">
-                            <span>First Name @Html.ValidationMessageFor(x => x.FirstName, "", new { @class = "text-danger" })</span>
-                            <input name="FirstName" value="@Model.FirstName" class="form-control" style="border-top:unset; border-left:unset; border-right:unset;" required />
-                        </div>
-                        <div class="form-group">
-                            <span>Last Name @Html.ValidationMessageFor(x => x.LastName, "", new { @class = "text-danger" })</span>
-                            <input name="LastName" value="@Model.LastName" class="form-control" style="border-top:unset; border-left:unset; border-right:unset;" required />
-                        </div>
-                        <div class="form-group">
-                            <h6>Privacy Options</h6>
-                            <div class="col-sm-12">
-                                <span>Month And Day @Html.ValidationMessageFor(x => x.MonthAndDay, "", new { @class = "text-danger" })</span>
-                                @Html.DropDownListFor(x => x.MonthAndDay, privacy, new { @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
+                            <div class="form-group-sm">
+                                <span class="text-sm col-sm-4">Year @Html.ValidationMessageFor(x => x.Year, "", new { @class = "text-danger" })</span>
+                                <div class="col-sm-8">
+                                    @Html.DropDownListFor(x => x.Year, privacy, new { @class = "form-control text-sm", style = "border-top:unset; border-left:unset; border-right:unset;" })
+                                </div>
                             </div>
-                            <div class="col-sm-12">
-                                <span>Year @Html.ValidationMessageFor(x => x.Year, "", new { @class = "text-danger" })</span>
-                                @Html.DropDownListFor(x => x.Year, privacy, new { @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
-                            </div>
+                        </section>
+                        <div class="form-group-sm" style="padding:5px 0px 0px 0px;">
+                            <span class="text-sm">Twitter Profile @Html.ValidationMessageFor(x => x.TwitterProfile, "", new { @class = "text-danger" })</span>
+                            @Html.TextBoxFor(x => x.TwitterProfile, new { type = "url", @class = "form-control input-sm", style = "border-top:unset; border-left:unset; border-right:unset;" })
                         </div>
-                        <div class="form-group">
-                            <p>Gender @Html.ValidationMessageFor(x => x.Gender, "", new { @class = "text-danger" })</p>
-                            <div class="col-sm-6">
-                                @Html.RadioButtonFor(x => x.Gender, "M", new { @class = "" })
-                                <span>Male</span>
-                            </div>
-                            <div class="col-sm-6">
-                                @Html.RadioButtonFor(x => x.Gender, "F", new { @class = "" })
-                                <span>Female</span>
-                            </div>
+                        <div class="form-group-sm" style="padding:5px 0px 0px 0px;">
+                            <span class="text-sm">Facebook Profile @Html.ValidationMessageFor(x => x.FacebookProfile, "", new { @class = "text-danger" })</span>
+                            @Html.TextBoxFor(x => x.FacebookProfile, new { type = "url", @class = "form-control input-sm", style = "border-top:unset; border-left:unset; border-right:unset;" })
                         </div>
-                        <div class="form-group">
-                            <span>Biography @Html.ValidationMessageFor(x => x.Biography, "", new { @class = "text-danger" })</span>
-                            @Html.TextAreaFor(x => x.Biography, new { @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
-                        </div>
-                        <div class="form-group">
-                            <span>Primary Genre @Html.ValidationMessageFor(x => x.Genre, "", new { @class = "text-danger" })</span>
-                            @Html.DropDownListFor(x => x.Genre, genres, new { @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
-                        </div>
-                        <div class="form-group">
-                            <span>Location @Html.ValidationMessageFor(x => x.Location, "", new { @class = "text-danger" })</span>
-                            @Html.TextBoxFor(x => x.Location, new { @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
-                        </div>
-                        <div class="form-group">
-                            <span>Website @Html.ValidationMessageFor(x => x.Website, "", new { @class = "text-danger" })</span>
-                            @Html.TextBoxFor(x => x.Website, new { type = "url", @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
-                        </div>
-                        <div class="form-group">
-                            <span>Twitter Profile @Html.ValidationMessageFor(x => x.TwitterProfile, "", new { @class = "text-danger" })</span>
-                            @Html.TextBoxFor(x => x.TwitterProfile, new { type = "url", @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
-                        </div>
-                        <div class="form-group">
-                            <span>Facebook Profile @Html.ValidationMessageFor(x => x.FacebookProfile, "", new { @class = "text-danger" })</span>
-                            @Html.TextBoxFor(x => x.FacebookProfile, new { type = "url", @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
-                        </div>
-                        <div class="form-group">
-                            <span>Youtube Page @Html.ValidationMessageFor(x => x.YoutubePage, "", new { @class = "text-danger" })</span>
-                            @Html.TextBoxFor(x => x.YoutubePage, new { type = "url", @class = "form-control", style = "border-top:unset; border-left:unset; border-right:unset;" })
+                        <div class="form-group-sm" style="padding:5px 0px 0px 0px;">
+                            <span class="text-sm">Youtube Page @Html.ValidationMessageFor(x => x.YoutubePage, "", new { @class = "text-danger" })</span>
+                            @Html.TextBoxFor(x => x.YoutubePage, new { type = "url", @class = "form-control input-sm", style = "border-top:unset; border-left:unset; border-right:unset;" })
                         </div>
                     </div>
                 </section>

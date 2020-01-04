@@ -1,26 +1,22 @@
 ﻿using BaseLib.Models;
-using UserMgt.Models;
-using UserMgt.Utils;
+using FNMusic.Models;
 using FNMusic.Models;
 using FNMusic.Utils;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using UserMgt.Services;
-using BaseLib.Utils;
 using FNMusic.Services;
+using BaseLib.Utils;
+using System.Text.RegularExpressions;
+using UserMgt.Models;
 
 namespace FNMusic.Controllers
 {
@@ -36,8 +32,7 @@ namespace FNMusic.Controllers
             IAuthService<ServiceResponse> authService, 
             IUserService<Result<User>> userService,
             SystemService systemService,
-            IHttpContextAccessor httpContextAccessor
-            )
+            IHttpContextAccessor httpContextAccessor)
         {    
             this.authService = authService;
             this.userService = userService;
@@ -47,23 +42,22 @@ namespace FNMusic.Controllers
         }
 
         [Route("/register")]
-        public IActionResult Register()
+        public IActionResult Register([FromQuery(Name = "AuthKey")] AuthKey authKey)
         {
             HttpContext.Session.Clear();
-            List<SelectListItem> GenderList = new List<SelectListItem>() {
-                new SelectListItem(){ Text = "Select Gender", Value = null, Selected = true },
-                new SelectListItem(){ Text = "Male", Value = "M" },
-                new SelectListItem(){ Text = "Female", Value = "F" },
-                new SelectListItem(){ Text = "Unspecified", Value = "U", Disabled = true }
+            Register model = new Register
+            {
+                AuthKey = authKey
             };
 
-            return View();
+            return View(model);
         }
 
         [HttpPost]
         [Route("/register")]
         public async Task<IActionResult> Register(Register model)
         {
+            model.DateCreated = DateTime.Now;
             if (!ModelState.IsValid)
             {
                 ModelState.AddModelError("", "Kindly fill in the necessary details");              
@@ -88,9 +82,19 @@ namespace FNMusic.Controllers
                     {
                         Login login = new Login
                         {
-                            UserId = model.Email,
-                            Password = model.Password
+                            Password = model.Password,
+                            AuthKey = model.AuthKey
                         };
+
+                        switch (model.AuthKey)
+                        {
+                            case AuthKey.Email:
+                                login.UserId = model.Email;
+                                break;
+                            case AuthKey.Phone:
+                                login.UserId = model.Phone;
+                                break;
+                        }
 
                         return await Login(login, "/" + model.Username + "/updateprofile");
                     }
@@ -131,11 +135,22 @@ namespace FNMusic.Controllers
                 return View(model);
             }
 
+            var emailRegex = "^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$";
+            var matchesEmail = Regex.Match(model.UserId, emailRegex);
+            bool matchesPhone = long.TryParse(model.UserId, out long n);
+
+            if (matchesEmail.Success)
+                model.AuthKey = AuthKey.Email;
+            else if (matchesPhone)
+                model.AuthKey = AuthKey.Phone;
+            else
+                model.AuthKey = AuthKey.Username;
+
             return await Task.Run(async () => 
             {
                 try
                 {
-                    HttpResult<AccessTokenWithUserDetails> result = await authService.LogInAsync(model.UserId, model.Password);
+                    HttpResult<AccessTokenWithUserDetails> result = await authService.LogInAsync(model);
                     if (!HttpStatusUtils.Is2xxSuccessful(result.Status))
                     {
                         ServiceResponse response = result.FailureResponse;
@@ -340,21 +355,27 @@ namespace FNMusic.Controllers
         }
 
         [Route("/forgotpassword")]
-        public IActionResult ForgotPassword()
+        public IActionResult ForgotPassword([FromQuery(Name = "fpa")] AuthKey authKey)
         {
             session.Remove("PRP");
             session.Remove("PRPV");
             session.Remove("Sent");
-            return View();
+
+            ForgotPassword forgotPassword = new ForgotPassword
+            {
+                AuthKey = authKey
+            };
+
+            return View(forgotPassword);
         }
 
         [HttpPost]
         [Route("/forgotPassword")]
-        public async Task<IActionResult> ForgotPassword(ForgotPassword forgotPassword)
+        public async Task<IActionResult> ForgotPassword(ForgotPassword forgotPassword, [FromQuery(Name = "fpa")] AuthKey authKey )
         {
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "kindly fill in necessary details");
+                ModelState.AddModelError("", "*");
                 return View(forgotPassword);
             }
 
@@ -367,13 +388,22 @@ namespace FNMusic.Controllers
 
                     if (!PRP)
                     {
-                        HttpResult<Result<User>> httpUserResult = await userService.FindUserByEmail(forgotPassword.Email, null);
+                        HttpResult<Result<User>> httpUserResult = null;
+                        if (forgotPassword.AuthKey == AuthKey.Email)
+                        {
+                            httpUserResult = await userService.FindUserByEmail(forgotPassword.Email, null);
+                            
+                        }
+                        else if (forgotPassword.AuthKey == AuthKey.Phone)
+                        {
+                            httpUserResult = await userService.FindUserByPhone(forgotPassword.Phone, null);
+                        }
+
                         if (!HttpStatusUtils.Is2xxSuccessful(httpUserResult.Status) || httpUserResult.Content == null || httpUserResult.Content.Data.Email != forgotPassword.Email)
                         {
                             ServiceResponse response = httpUserResult.FailureResponse;
                             throw new Exception(response.Description);
                         }
-
                         Result<User> result = httpUserResult.Content;
                         User user = result.Data;
                         if (user.PasswordResetProtection)
@@ -417,14 +447,15 @@ namespace FNMusic.Controllers
         }
 
         [Route("/resetpassword/{Token}")]
-        public IActionResult ResetPassword([FromRoute(Name = "Token")] string token)
+        public IActionResult ResetPassword([FromRoute(Name = "Token")] string token, [FromQuery(Name = "rpa")] AuthKey authKey)
         {
             ResetPassword resetPassword = new ResetPassword()
             {
-                Token = token
+                Token = token,
+                AuthKey = authKey
             };
 
-            session.Remove("EMAILEXISTS");
+            session.Remove("EXISTS");
             session.Remove("RESET");
             return View(resetPassword);
         }
@@ -437,23 +468,33 @@ namespace FNMusic.Controllers
             {
                 try
                 {
-                    bool emailExists = Convert.ToBoolean(session.GetString("EMAILEXISTS"));
+                    bool Exists = Convert.ToBoolean(session.GetString("EXISTS"));
                     bool reset = Convert.ToBoolean(session.GetString("RESET"));
 
-                    if (!emailExists)
+                    if (!Exists)
                     {
-                        HttpResult<Result<User>> httpResult = await userService.FindUserByEmail(resetPassword.Email, null);
+                        HttpResult<Result<User>> httpResult = null;
+                        if (resetPassword.AuthKey == AuthKey.Email)
+                            httpResult = await userService.FindUserByEmail(resetPassword.Email, null);
+                        else if (resetPassword.AuthKey == AuthKey.Phone)
+                            httpResult = await userService.FindUserByPhone(resetPassword.Phone, null);
+
                         if (!HttpStatusUtils.Is2xxSuccessful(httpResult.Status) || httpResult.Content.Data.Email != resetPassword.Email)
                         {
                             ServiceResponse response = httpResult.FailureResponse;
                             throw new Exception(response.Description);
                         }
 
-                        session.SetString("EMAILEXISTS", true.ToString());
+                        session.SetString("EXISTS", true.ToString());
                     }
 
-                    if (emailExists && !reset)
+                    if (Exists && !reset)
                     {
+                        if (!ModelState.IsValid)
+                        {
+                            ModelState.AddModelError("", "*");
+                        }
+
                         HttpResult<ServiceResponse> result = await authService.ResetPasswordAsync(resetPassword.Email, resetPassword.Password, resetPassword.Token);
                         if (!HttpStatusUtils.Is2xxSuccessful(result.Status))
                         {

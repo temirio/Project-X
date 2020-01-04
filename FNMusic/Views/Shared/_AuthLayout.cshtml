@@ -10,20 +10,26 @@
 </head>
 
 <body>
-    <header class="wrapper text-center">
-        <strong>fnmusic </strong>
-    </header>
-    <hr />
-    <div>
-        @await Html.PartialAsync("_StatusMessagesPartial")
-        @RenderBody()
-    </div>
-    
-    <footer>
-        <div class="navbar-fixed-bottom bg-dark">
-            <div class="text-center">
-                <small class="small text-white"><span>&copy; @DateTime.Now.Year All rights reserved.</span> FNEntertainment Inc.</small>
-            </div>
+    @await Html.PartialAsync("_StatusMessagesPartial")
+    @RenderBody()
+    <footer style="padding-top:50px;">
+        <div class="navbar">
+            <ul class="nav navbar-nav pull-left">
+                <li><a href="">ABOUT US</a></li>
+                <li><a href="">SUPPORT</a></li>
+                <li><a href="">PRESS</a></li>
+                <li><a href="">API</a></li>
+                <li><a href="">JOBS</a></li>
+                <li><a href="">PRIVACY</a></li>
+                <li><a href="">TERMS</a></li>
+                <li><a href="">DIRECTORY</a></li>
+                <li><a href="">PROFILES</a></li>
+                <li><a href="">HASHTAGS</a></li>
+                <li><a href="">LANGUAGE</a></li>
+            </ul>
+            <ul class="nav navbar-nav">
+                <li><a class="font-bold">&copy; @DateTime.Now.Year  All Rights Reserved. FNEntertainment</a></li>
+            </ul>
         </div>
     </footer>
 </body>

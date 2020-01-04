@@ -67,7 +67,7 @@ using Microsoft.AspNetCore.Http;
             WriteLiteral("<section class=\"vbox bg-white\">\r\n    <section class=\"scrollable\">\r\n        <header class=\"modal-header\">\r\n            ");
             EndContext();
             BeginContext(336, 94, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "beba9c3bca364d9dac2ab91c3b00ad91", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "796e8f6724ed4431a8dbb57f9506e71e", async() => {
                 BeginContext(394, 32, true);
                 WriteLiteral("<i class=\"fa fa-arrow-left\"></i>");
                 EndContext();

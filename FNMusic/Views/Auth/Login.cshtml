@@ -1,53 +1,48 @@
-﻿@model FNMusic.Models.Login
+﻿@model UserMgt.Models.Login
 @{
     Layout = "~/Views/Shared/_AuthLayout.cshtml";
     ViewData["Title"] = "Login";
 }
 
-<section id="content" class="m-t-lg wrapper-md animated fadeInUp">
-    <div class="container aside-xl bg-white" style="box-shadow:0 2px 2px; ">
+<section class="m-t-lg">
+    <div class="container aside-xl bg-white" style="border-style:solid; border-width:1px; border-radius:5px;">
         <header class="wrapper text-center">
-            <strong>Sign in to get in touch</strong>
+            <h3>Sign In</h3>
         </header>
-        <section class="form-horizontal" style="padding:0px 30px 0px 30px;">
-            <a href="#" class="btn btn-info btn-block ">
-                <i class="fa fa-fw fa-twitter"></i>
-                <span>Sign in with Twitter</span>
-            </a>
-            <a href="#" class="btn btn-primary btn-block ">
-                <i class="fa fa-fw fa-facebook"></i>
-                <span>Sign in with Facebook</span>
-            </a>
-            <h5 class="text-center">OR</h5>
+        <section class="form-horizontal" style="padding:0px 30px 30px 30px;">
+            <h5 class="text-center">Sign in to listen to the best music from your favourite artistes</h5>
+            @Html.ValidationSummary(true,"", new { @class = "text-danger small" })
+            <hr />
             @using (Html.BeginForm("login?ReturnUrl=" + ViewData["ReturnUrl"] + "", "Auth", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
-                @Html.ValidationSummary(true, "", new { @class = "text-danger}" })
-                <hr />
                 <div class="form-group">
                     @Html.ValidationMessageFor(x => x.UserId, "", new { @class = "text-danger small" })
-                    @Html.TextBoxFor(x => x.UserId, new { placeholder = "Username or Email", @class = "form-control input text-center" })
+                    @Html.TextBoxFor(x => x.UserId, new { placeholder = "Email, Phone or Username", @class = "form-control input-sm text-center" })
                 </div>
                 <div class="form-group">
                     @Html.ValidationMessageFor(x => x.Password, "", new { @class = "text-danger small" })
-                    @Html.PasswordFor(x => x.Password, new { placeholder = "Password", @class = "form-control input text-center" })
+                    @Html.PasswordFor(x => x.Password, new { placeholder = "Password", @class = "form-control input-sm text-center" })
                 </div>
-                <button type="submit" class="btn  btn-warning b-white btn-block">
-                    <i class="icon-arrow-right pull-right"></i>
-                    <span class="m-r-n-lg">Sign in</span>
+                <button type="submit" class="btn btn-primary btn-block">
+                    <span class="text-center h3">Sign in</span>
                 </button>
                 <p class="text-center m-t m-b">
                     <small>
                         <a asp-controller="Auth" asp-action="ForgotPassword">Forgot your password?</a>
                     </small>
                 </p>
-                <div class="line line-dashed"></div>
-                <p class="text-muted text-center">
-                    <small>
-                        Don't have an account?
-                        <a asp-controller="Auth" asp-action="Register">Create an account</a>
-                    </small>
-                </p>
             }
+        </section>
+    </div>
+</section>
+
+<section class="m-t-lg ">
+    <div class="container aside-xl bg-white" style="border-style:solid; border-width:1px; border-radius:5px;">
+        <section class="form-horizontal" style="padding:10px 0px 0px 10px;">
+            <p class="text-muted text-center">
+                Don't have an account?
+                <a asp-controller="Auth" asp-action="Register" class="font-bold">Register</a>
+            </p>
         </section>
     </div>
 </section>
