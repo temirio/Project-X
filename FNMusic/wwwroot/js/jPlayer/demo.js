@@ -5,7 +5,7 @@ $(document).ready(function(){
     cssSelectorAncestor: "#jp_container_N"
   }, [
         {
-          title:"Bubble",
+          title:"ubble",
           artist:"Miaow",
           mp3: "http://flatfull.com/themes/assets/musics/Miaow-07-Bubble.mp3",
           oga: "http://flatfull.com/themes/assets/musics/Miaow-07-Bubble.ogg",
