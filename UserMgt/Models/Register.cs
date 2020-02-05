@@ -21,7 +21,7 @@ namespace UserMgt.Models
 
         [Required(ErrorMessage = "*")]
         [StringLength(60,MinimumLength = 8, ErrorMessage = "Password is too short")]
-        public string Password { get; set; }
+        public virtual string Password { get; set; }
 
         [JsonIgnore]
         [Required(ErrorMessage = "*")]
@@ -31,6 +31,6 @@ namespace UserMgt.Models
         [Required(ErrorMessage = "*")]
         public DateTime DateCreated { get; set; }
 
-        public AuthKey AuthKey { get; set; }
+        public virtual AuthKey AuthKey { get; set; }
     }
 }

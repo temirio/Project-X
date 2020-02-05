@@ -1,6 +1,10 @@
-﻿@model UserMgt.Models.User
+﻿@model FNMusic.Models.UpdateUsername
+@using UserMgt.Services
+@using BaseLib.Models
+@using UserMgt.Models
 @using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor httpContextAccessor
+@inject IUserService<Result<User>> userService
 @{
     ViewData["Title"] = "Update Username";
     Layout = "~/Views/Shared/_SettingsLayout.cshtml";
@@ -17,12 +21,54 @@
                 <section class="form-horizontal">
                     <div class="form-group">
                         <p class="small">Username</p>
-                        <input type="text" id="UsernameTbx" name="Username" maxlength="20" value="@Html.ValueFor(x => x.Username)" class="form-control" style = "width:200px; border-right-style:none; border-top-style:none; border-left-style:none;" />
+                        <input type="text" id="UsernameTbx" name="Username" maxlength="25" value="@httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Username").Value" oninput="checkUsername()" style="width:210px; border-right-style:none; border-top-style:none; border-left-style:none;" />
+                        <span><i id="checkStatusIcon"></i></span>
+                        <script type="text/javascript">
+                            function checkUsername() {
+                                var username = document.getElementById("UsernameTbx").value;
+                                var xhr = new XMLHttpRequest();
+                                const url = "/findbyusername/" + username + "";
+                                xhr.open('GET', url);
+                                xhr.send();
+                                xhr.onreadystatechange = (e) => {
+                                    if (xhr.readyState == 4) {
+                                        var result = xhr.response;
+                                        var user = JSON.parse(result).data;
+                                        var checkStatusIcon = document.getElementById("checkStatusIcon");
+                                        var submitBtn = document.getElementById("submitBtn");
+
+                                        if (username.length < 3) {
+                                            unavailable(checkStatusIcon, submitBtn);
+                                        } else {
+                                            if (user == null) {
+                                                available(checkStatusIcon, submitBtn);
+                                            } else {
+                                                unavailable(checkStatusIcon, submitBtn);
+                                            }
+                                        }
+
+                                         
+                                    }
+                                }
+                            }
+
+                            function available(csi, sb) {
+                                csi.className = "icon-check text-success";
+                                csi.title = "Available";
+                                sb.disabled = false;
+                            }
+
+                            function unavailable(csi, sb) {
+                                csi.className = "icon-info text-danger";
+                                csi.title = "Unavailable"
+                                sb.disabled = true;
+                            }
+                        </script>
                     </div>
                 </section>
             </section>
             <section class="modal-footer">
-                <button type="submit" id="submitBtn" class="btn btn-success btn-rounded">
+                <button type="submit" id="submitBtn" disabled class="btn btn-success btn-rounded">
                     <span>Done</span>
                 </button>
             </section>

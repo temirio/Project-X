@@ -1,9 +1,13 @@
-﻿@model UserMgt.Models.Update
+﻿@model FNMusic.Models.Update
 @using Microsoft.AspNetCore.Http
+@using System.Security.Claims
 @inject IHttpContextAccessor httpContextAccessor
 @{
     ViewData["Title"] = "Update Phone";
     Layout = "~/Views/Shared/_SettingsLayout.cshtml";
+
+    ClaimsPrincipal principal = httpContextAccessor.HttpContext.User;
+
     bool vcsent = Convert.ToBoolean(httpContextAccessor.HttpContext.Session.GetString("VCSent"));
 }
 <section class="vbox bg-white">
@@ -18,34 +22,97 @@
                 <div class="form-horizontal">
                     <div class="form-group">
                         <p>Phone</p>
-                        <input id="PhoneTbx" name="Phone" value="@Html.ValueFor(x => x.Phone)" class="form-control" style="width:200px; border-right-style:hidden; border-left-style:hidden; border-top-style:hidden;" />
+                        <input id="PhoneTbx" type="number" name="Phone" inputmode="tel" value="@Html.ValueFor(x => x.Phone)" maxlength="20" oninput="checkPhone()" style="width:200px; border-right-style:hidden; border-left-style:hidden; border-top-style:hidden;" />
+                        <span><i id="checkStatusIcon"></i></span>
                         <br />
-                        <span class="small">
+                        <h6>
                             We will text a verification code to this number. Standard SMS free may apply. Others will be able to find you by email or phone number.
-                        </span>
+                        </h6>
+                        <script type="text/javascript">
+                            function checkPhone() {
+                                var phone = document.getElementById("PhoneTbx").value;
+                                var xhr = new XMLHttpRequest();
+                                const url = "/findbyphone/" + phone + "";
+                                xhr.open('GET', url);
+                                xhr.send();
+                                xhr.onreadystatechange = (e) => {
+                                    if (xhr.readyState == 4) {
+                                        console.log(xhr.response);
+                                        var result = xhr.response;
+                                        var user = JSON.parse(result).data;
+                                        var checkStatusIcon = document.getElementById("checkStatusIcon");
+                                        var submitBtn = document.getElementById("submitBtn");
+
+                                        if (phone.length < 7) {
+                                            unavailable(checkStatusIcon, submitBtn);
+                                        } else {
+                                            if (user == null) {
+                                                available(checkStatusIcon, submitBtn);
+                                            } else {
+                                                unavailable(checkStatusIcon, submitBtn);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            function available(csi, sb) {
+                                csi.className = "icon-check text-success";
+                                csi.title = "Available";
+                                sb.disabled = false;
+                            }
+
+                            function unavailable(csi, sb) {
+                                csi.className = "icon-info text-danger";
+                                csi.title = "Unavailable"
+                                sb.disabled = true;
+                            }
+                        </script>
                     </div>
                     @if (vcsent)
                     {
                         <div class="form-group">
-                            <p>Verification Code</p>
-                            <input id="TokenTbx" name="Token" required class="form-control" style="border-right-style:hidden; border-left-style:hidden; border-top-style:hidden;" />
+                            <p>Verification Code (@Model.Phone)</p>
+                            <h6>Kindly input the verification code that was sent to your phone</h6>
+                            <input id="TokenTbx" type="number" name="Token" required class="h3 text-center form-control" maxlength="6" placeholder="- - - - - -" style="width:200px; border-right-style:hidden; border-left-style:hidden; border-top-style:hidden;" />
+                            <br />
+                            <span class="small">
+                                Didn't get the code?
+                            </span>
+                            <button type="button" id="sendBtn" class="btn btn-success" onclick="sendUpdatePhoneVerificationCode()">Send Code</button>
+                            <script type="text/javascript">
+                                function sendUpdatePhoneVerificationCode() {
+                                    var phone = document.getElementById("PhoneTbx").value;
+                                    var sendBtn = document.getElementById("sendBtn");
+                                    sendBtn.disabled = true;
+                                    var xhr = new XMLHttpRequest();
+                                    const url = "/settings/account/phone/token/" + phone + "";
+                                    xhr.open('POST', url);
+                                    xhr.send();
+                                    xhr.onreadystatechange = (e) => {
+                                        if (xhr.readyState == 4) {
+                                            console.log(xhr.response);
+                                            sendBtn.disabled = false;
+                                            alert(xhr.response);
+                                        }
+                                    }
+                                }
+                            </script>
                         </div>
                     }
                 </div>
             </section>
             <footer class="modal-footer">
-                @if (vcsent)
-                {
-                    <button class="btn btn-success btn-rounded pull-right">
-                        <span>Add Phone</span>
-                    </button>
-                }
-                else
-                {
-                    <button class="btn btn-success btn-rounded pull-right">
-                        <span>Verify Phone</span>
-                    </button>
-                }
+                <button id="submitBtn" class="btn btn-success btn-rounded pull-right">
+                    @if (!vcsent)
+                    {
+                        <span>Update Phone</span>
+                    }
+                    else
+                    {
+                        <span>Verify</span>
+                    }
+                </button>
             </footer>
         }
     </section>

@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace FNMusic.Services
+namespace UserMgt.Services
 {
     public interface IUserService<T>
     {

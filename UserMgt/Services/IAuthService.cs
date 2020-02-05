@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using BaseLib.Models;
 
-namespace FNMusic.Services
+namespace UserMgt.Services
 {
     public interface IAuthService<T>
     {

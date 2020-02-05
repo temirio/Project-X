@@ -15,6 +15,7 @@ using BaseLib.Models;
 using BaseLib.Utils;
 using System.Threading;
 using UserMgt.Models;
+using UserMgt.Services;
 
 namespace FNMusic.Controllers
 {
@@ -38,8 +39,11 @@ namespace FNMusic.Controllers
             this.userService = userService;
             this.systemService = systemService;
             this.objectConverter = objectConverter;
+            if (!httpContextAccessor.HttpContext.User.HasClaim(x => x.Type == "X-AUTH-TOKEN"))
+            {
+                Task.Run(async()=> await Logout());
+            }
             accessToken = httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "X-AUTH-TOKEN").Value;
-            
         }
 
         [Authorize]
@@ -99,7 +103,22 @@ namespace FNMusic.Controllers
                         throw new Exception();
                     }
 
-                    return View(user);
+                    EditProfile editProfile = new EditProfile
+                    {
+                        Name = user.Name,
+                        Biography = user.Biography,
+                        Genre = user.Genre,
+                        Location = user.Location,
+                        Website = user.Website,
+                        DateOfBirth = user.DateOfBirth,
+                        MonthAndDay = user.MonthAndDay,
+                        Year = user.Year,
+                        Twitter = user.TwitterProfile,
+                        FaceBook = user.FacebookProfile,
+                        Youtube = user.YoutubePage
+                    };
+                    
+                    return View(editProfile);
                 }
                 catch
                 {
@@ -110,17 +129,32 @@ namespace FNMusic.Controllers
 
         [Authorize]
         [HttpPost("/{Username}/updateprofile")]
-        public async Task<IActionResult> UpdateProfile(User user)
+        public async Task<IActionResult> UpdateProfile(EditProfile editProfile)
         {
-            user.Id = Convert.ToInt64(httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Id").Value);
-            user.Email = Convert.ToString(httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Email").Value);
-            user.Username = Convert.ToString(httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Username").Value);
 
             if (!ModelState.IsValid)
             {
                 ModelState.AddModelError("", "kindly fill in all necessary information");
-                return View(user);
+                return View(editProfile);
             }
+
+            User user = new User
+            {
+                Id = Convert.ToInt64(httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Id").Value),
+                Email = Convert.ToString(httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Email").Value),
+                Username = Convert.ToString(httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Username").Value),
+                Name = editProfile.Name,
+                Biography = editProfile.Biography,
+                Genre = editProfile.Genre,
+                Location = editProfile.Location,
+                Website = editProfile.Website,
+                DateOfBirth = editProfile.DateOfBirth,
+                MonthAndDay = editProfile.MonthAndDay,
+                Year = editProfile.Year,
+                TwitterProfile = editProfile.Twitter,
+                FacebookProfile = editProfile.FaceBook,
+                YoutubePage = editProfile.Youtube
+            };
 
             return await Task.Run(async () =>
             {
@@ -129,38 +163,77 @@ namespace FNMusic.Controllers
                     string jsonRequest = JsonConvert.SerializeObject(user);
                     HttpContent requestContent = new StringContent(jsonRequest);
                     var multipart = new MultipartFormDataContent
-                    {
-                        { requestContent, "Request" }
-                    };
+                        {
+                            { requestContent, "Request" }
+                        };
 
-                    if (user.ProfilePhoto != null)
+                    if (editProfile.ProfilePhoto != null)
                     {
-                        multipart.Add(new ByteArrayContent(objectConverter.ObjectToValueConverter(user.ProfilePhoto)), "ProfilePhoto");
+                        multipart.Add(new ByteArrayContent(objectConverter.ObjectToValueConverter(editProfile.ProfilePhoto)), "ProfilePhoto");
                     }
 
-                    if (user.CoverPhoto != null)
+                    if (editProfile.CoverPhoto != null)
                     {
-                        multipart.Add(new ByteArrayContent(objectConverter.ObjectToValueConverter(user.CoverPhoto)), "CoverPhoto");
+                        multipart.Add(new ByteArrayContent(objectConverter.ObjectToValueConverter(editProfile.CoverPhoto)), "CoverPhoto");
                     }
 
                     await userService.UpdateProfile(multipart, accessToken);
-                    HttpResult<Result<User>> httpResult = await userService.FindUserByEmail(httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Email").Value, accessToken);
+                    await systemService.UpdateHttpContext();
+                    return Redirect("/" + httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Username").Value + "");
+                }
+                catch (Exception ex)
+                {
+                    return View(editProfile).WithDanger("Oops!", ex.Message);
+                }
+            });
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("/findbyusername/{Username}")]
+        public async Task<Result<User>> FindByUsername([FromRoute(Name = "Username")] string username)
+        {
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    HttpResult<Result<User>> httpResult = await userService.FindUserByUsername(username, accessToken);
                     if (!HttpStatusUtils.Is2xxSuccessful(httpResult.Status))
                     {
                         throw new Exception(httpResult.FailureResponse.Description);
                     }
 
                     Result<User> result = httpResult.Content;
-                    User updatedUser = result.Data;
-                    Feature feature = JsonConvert.DeserializeObject<Feature>(httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Feature").Value);
-                    string refreshToken = httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "X-AUTH-REFRESH").Value ?? null;
-                    await systemService.SetHttpContext(updatedUser, feature, accessToken, refreshToken);
-                    return (ActionResult) Redirect("/" + httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Username").Value + "");
+                    return result;
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
-                    ModelState.AddModelError("", ex.Message);
-                    return View(user);
+                    return null;
+                }
+            });
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("/findbyphone/{Phone}")]
+        public async Task<Result<User>> FindByPhone([FromRoute(Name = "Phone")] string phone)
+        {
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    HttpResult<Result<User>> httpResult = await userService.FindUserByPhone(phone, accessToken);
+                    if (!HttpStatusUtils.Is2xxSuccessful(httpResult.Status))
+                    {
+                        throw new Exception(httpResult.FailureResponse.Description);
+                    }
+
+                    Result<User> result = httpResult.Content;
+                    return result;
+                }
+                catch (Exception e)
+                {
+                    return null;
                 }
             });
         }
@@ -287,7 +360,10 @@ namespace FNMusic.Controllers
             {
                 try
                 {
-                    Thread thread = new Thread(async() => { await userService.LogOut(accessToken); });
+                    if (accessToken != null)
+                    {
+                        Thread thread = new Thread(async () => { await userService.LogOut(accessToken); });
+                    }
                     await HttpContext.SignOutAsync();
                     return Redirect("/login");
                 }

@@ -96,7 +96,7 @@ using Microsoft.AspNetCore.Http.Features;
             WriteLiteral("ordance with our <a class=\"link\" href=\"#\">Cookie Policy</a>\r\n                </p>\r\n                <div class=\"navbar-right\">\r\n                    ");
             EndContext();
             BeginContext(1442, 92, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "7495d4fbaaad47cb8ef8b7907a9999e5", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "03195d85e1dc423687ada87a944182f7", async() => {
                 BeginContext(1520, 10, true);
                 WriteLiteral("Learn More");
                 EndContext();

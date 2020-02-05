@@ -3,9 +3,10 @@
 @{
     ViewData["Title"] = "Register";
     Layout = "~/Views/Shared/_AuthLayout.cshtml";
+
 }
 
-<section class="m-t-lg ">
+<section class="m-t-lg wrapper">
     <div class="container aside-xl bg-white" style="border-style:solid; border-width:1px; border-radius:5px;">
         <header class="wrapper text-center">
             <h3>Sign Up</h3>
@@ -14,14 +15,14 @@
             <h5 class="text-center">Sign up to listen to the best music from your favourite artistes.</h5>
             @Html.ValidationSummary(true, "", new { @class = "text-danger small" })
             <hr />
-            @using (Html.BeginForm("register", "Auth", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("register?authkey="+Model.AuthKey+"", "Auth", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 if (Model.AuthKey == AuthKey.Email)
                 {
                     <div class="form-group">
                         @Html.ValidationMessageFor(x => x.Email, "", new { @class = "text-danger small" })
                         @Html.TextBoxFor(x => x.Email, new { type = "email", placeholder = "Email", @class = "form-control text-center input-sm", style = "", Required="true" })
-                        <a href="/register?AuthKey=1" class="pull-right"><small class="text-sm">use phone instead?</small></a>
+                        <a href="/register?authkey=1" class="pull-right"><small class="text-sm">use phone instead?</small></a>
                     </div>
                 }
                 else if (Model.AuthKey == AuthKey.Phone)
@@ -29,7 +30,7 @@
                     <div class="form-group">
                         @Html.ValidationMessageFor(x => x.Phone, "", new { @class = "text-danger small" })
                         @Html.TextBoxFor(x => x.Phone, new { type = "phone", placeholder = "Phone", @class = "form-control text-center input-sm", style = "", Required="true" })
-                        <a href="/register?AuthKey=0" class="pull-right"><small class="text-sm">use email instead?</small></a>
+                        <a href="/register?authkey=0" class="pull-right"><small class="text-sm">use email instead?</small></a>
                     </div>
                 }
 
@@ -56,7 +57,7 @@
     </div>
 </section>
 
-<section class="m-t-lg ">
+<section class="m-t-lg wrapper">
     <div class="container aside-xl bg-white" style="border-style:solid; border-width:1px; border-radius:5px;">
         <section class="form-horizontal" style="padding:10px 0px 0px 10px;">
             <p class="text-muted text-center">

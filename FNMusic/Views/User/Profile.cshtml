@@ -1,12 +1,16 @@
 ﻿
-@model UserMgt.Models.User
-@using Microsoft.AspNetCore.Http
-@using BaseLib.Models
-@using UserMgt.Models
-@inject IHttpContextAccessor httpContextAccessor
+@model UserMgt.Models.User;
+@using Microsoft.AspNetCore.Http;
+@using BaseLib.Models;
+@using UserMgt.Models;
+@using BaseLib.Utils;
+@using UserMgt.Services;
+@inject IHttpContextAccessor httpContextAccessor;
+@inject IUserService<Result<User>> userService;
+@inject IUserService<Result<User>> userService2;
+@inject IHttpContextAccessor httpContextAccessor;
 @{
     Layout = "~/Views/Shared/_PlayerLayout.cshtml";
-
     ViewData["Title"] = Model.Name != null ? Model.Name : Model.Username;
 
     string[] months = new string[]
@@ -25,49 +29,184 @@
         "December"
     };
 
-    long profileUserId = Model.Id;
-    long loggedInUserId = Convert.ToInt64(httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Id").Value);
 
 
+    @functions{
 
+        public async Task<bool> IsFollowing(long userId, long fanId, string accessToken)
+        {
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    HttpResult<Result<User>> isfollowingHttpResult = await userService.IsFollowing(userId, fanId, accessToken);
+                    if (!HttpStatusUtils.Is2xxSuccessful(isfollowingHttpResult.Status))
+                    {
+                        throw new Exception(isfollowingHttpResult.FailureResponse.Description);
+                    }
+
+                    Result<User> isfollowingResult = isfollowingHttpResult.Content;
+                    User data = isfollowingResult.Data;
+                    if (data != null && Model.Id.Equals(data.Id))
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception e)
+                {
+                    //todo
+                }
+
+                return false;
+            });
+        }
+
+        public async Task<bool> isFollower(long userId, long fanId, string accessToken)
+        {
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    HttpResult<Result<User>> isfollowerHttpResult = await userService2.IsFollower(userId,fanId,accessToken);
+                    if (!HttpStatusUtils.Is2xxSuccessful(isfollowerHttpResult.Status))
+                    {
+                        throw new Exception(isfollowerHttpResult.FailureResponse.Description);
+                    }
+
+                    Result<User> isfollowerResult = isfollowerHttpResult.Content;
+                    User data = isfollowerResult.Data;
+                    if (data != null && Model.Id.Equals(data.Id))
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception e)
+                {
+                    //todo
+                }
+
+                return false;
+            });
+        }
+
+        public async Task<bool> ShouldDisplayDate(Privacy monthAndDay, Privacy year, long currentUserId, bool isfollowing, bool isfollower)
+        {
+            return await Task.Run(() =>
+            {
+                if (Model.Id == currentUserId)
+                {
+                    return true;
+                }
+                else if ((Model.MonthAndDay == Privacy.PUBLIC || Model.Year == Privacy.PUBLIC) && (Model.Id != currentUserId))
+                {
+                    return true;
+                }
+                else if ((Model.MonthAndDay == Privacy.FOLLOWERS || Model.Year == Privacy.FOLLOWERS) && (Model.Id != currentUserId))
+                {
+                    if (isfollowing)
+                    {
+                        return true;
+                    }
+                }
+                else if ((Model.MonthAndDay == Privacy.FOLLOWING || Model.Year == Privacy.FOLLOWING) && (Model.Id != currentUserId))
+                {
+                    if (isfollower)
+                    {
+                        return true;
+                    }
+                }
+                else if ((Model.MonthAndDay == Privacy.FOLLOWBACK || Model.Year == Privacy.FOLLOWBACK) && (Model.Id != currentUserId))
+                {
+                    if (isfollowing && isfollower)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            });
+        }
+
+    }
+
+    long currentUserId = Convert.ToInt64(httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Id").Value);
+    string accessToken = httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "X-AUTH-TOKEN").Value;
+    bool isfollowing = await IsFollowing(Model.Id, currentUserId, accessToken);
+    bool isfollower = (Model.Id != currentUserId) ? await isFollower(currentUserId, Model.Id, accessToken) : false;
+    bool displayDOB = await ShouldDisplayDate(Model.MonthAndDay, Model.Year, currentUserId, isfollowing, isfollower);
 }
 
 <section>
     <section class="vbox">
         <section class="scrollable">
-            <section class="wrapper hidden-xs" style="height:300px; background-image:url(/images/electric_feeling-1280x800.jpg); background-size:cover">
-                <a href="#" class="img-circle" style="position:absolute; top:200px; left:5px; border-style:solid; border-color:white;">
-                    <img src="images/a4.png" class="img-circle" height="180" style="border-color:white;">
-                </a>
-            </section>
-            <section class="wrapper hidden-mobile-xs" style="height:100px;  background-image:url(/images/electric_feeling-1280x800.jpg); background-size:cover">
-                <a href="#" class="img-circle" style="position:absolute; top:100px; left:5px; border-style:solid; border-color:white;">
-                    <img src="images/a4.png" class="img-circle" height="100" style="border-color:white;">
-                </a>
-            </section>
-            <section class="hbox stretch" >
-                <aside class="aside-lg bg-light lter b-r">
+            <section class="hbox stretch">
+                <aside class="aside-lg bg-light" @*style="border-right-style:solid; border-right-width:1px;"*@>
                     <section class="vbox">
                         <section class="scrollable">
                             <div class="wrapper">
-                                <div style="padding-top:20px;">
-                                    @await Html.PartialAsync("_IsFanLayout")
+                                <div style="padding-top:50px;">
+                                    <div class="pull-right">
+                                        @if (Model.Id == currentUserId)
+                                        {
+                                            <a class="btn btn-default btn-rounded" href="/@httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Username").Value/updateprofile" data-toggle="ajaxModal">
+                                                <span class="text">Edit Profile</span>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            if (isfollowing)
+                                            {
+                                                <a class="btn btn-default btn-rounded" onclick="unfollow()">
+                                                    <span class="text">Unfollow </span>
+                                                </a>
+                                                <script type="text/javascript">
+                                                    function unfollow() {
+                                                        const Http = new XMLHttpRequest();
+                                                        const url = '/unfollow?userId=@Model.Id&fanId=@currentUserId';
+                                                        Http.open("POST", url);
+                                                        Http.send();
+                                                        Http.onreadystatechange = (e) => {
+                                                            if (Http.readyState == 4) {
+                                                                document.location.reload(true);
+                                                            }
+                                                        }
+                                                    }
+                                                </script>
+                                            }
+                                            else
+                                            {
+                                                <a class="btn btn-default btn-rounded" onclick="follow()">
+                                                    <span class="text"> Follow </span>
+                                                </a>
+                                                <script type="text/javascript">
+                                                    function follow() {
+                                                        const Http = new XMLHttpRequest();
+                                                        const url = '/follow?userId=@Model.Id&fanId=@currentUserId';
+                                                        Http.open("POST", url);
+                                                        Http.send();
+                                                        Http.onreadystatechange = (e) => {
+                                                            console.log(Http.responseText);
+                                                            if (Http.readyState == 4) {
+                                                                document.location.reload(true);
+                                                            }
+                                                        }
+                                                    }
+                                                </script>
+                                            }
+                                        }
+                                    </div>
                                 </div>
                                 <div class="m-b m-t" style="padding-top:60px;">
                                     <div class="h3 text-black">@Model.Name</div>
                                     <div class="h5">
                                         @@@Model.Username
-
-                                        @if (loggedInUserId != Model.Id)
+                                        @while (currentUserId != Model.Id)
                                         {
-                                            //Result<User> isFollowerResult = await userController.IsFollower(loggedInUserId, Model.Id);
-                                            //User followerUser = isFollowerResult.Data;
-                                            @*bool isFollower = (followerUser != null && followerUser.Id == Model.Id) ? true : false;
-
-                                            if (isFollower)
+                                            if (isfollower)
                                             {
                                                 <small class="text-muted">Follows you</small>
-                                            }*@
+                                            }
+                                            break;
                                         }
                                     </div>
                                     <div class="h5 text-black" style="padding-top:15px;">@Model.Biography</div>
@@ -76,10 +215,11 @@
                                         {
                                             <a class="text-muted">
                                                 <i class="fa fa-map-marker"></i>
-                                                <span>@Model.Location</span>
+                                                <span class="text-muted">@Model.Location</span>
                                             </a>
                                         }
-
+                                    </div>
+                                    <div class="h5" style="padding-top:10px;">
                                         @if (!string.IsNullOrEmpty(Model.Website))
                                         {
                                             <a href="@Model.Website" class="link">
@@ -89,36 +229,153 @@
                                         }
                                     </div>
 
-                                    <div class="h5" style="padding-top:10px">
+                                    @* Displays the Date of Birth of the User Account based on Privacy *@
+                                    @if (displayDOB)
+                                    {
+                                        <div class="h5" style="padding-top:10px">
+                                            <a class="text-muted">
+                                                <i class="icon-bell"></i>
+                                                <span>Born</span>
+                                                @switch (Model.MonthAndDay)
+                                                {
+                                                    case Privacy.PUBLIC:
+                                                        <span>@months[Model.DateOfBirth.Month - 1] @Model.DateOfBirth.Day</span>
+                                                        break;
+                                                    case Privacy.FOLLOWERS:
+                                                        if (isfollowing || Model.Id == currentUserId)
+                                                        {
+                                                            <span>@months[Model.DateOfBirth.Month - 1] @Model.DateOfBirth.Day</span>
+                                                        }
+                                                        break;
+                                                    case Privacy.FOLLOWING:
+                                                        if (isfollower || Model.Id == currentUserId)
+                                                        {
+                                                            <span>@months[Model.DateOfBirth.Month - 1] @Model.DateOfBirth.Day</span>
+                                                        }
+                                                        break;
+                                                    case Privacy.FOLLOWBACK:
+                                                        if (isfollower && isfollowing || Model.Id == currentUserId)
+                                                        {
+                                                            <span>@months[Model.DateOfBirth.Month - 1] @Model.DateOfBirth.Day</span>
+                                                        }
+                                                        break;
+                                                    case Privacy.PRIVATE:
+                                                        if (Model.Id == currentUserId)
+                                                        {
+                                                            <span>@months[Model.DateOfBirth.Month - 1] @Model.DateOfBirth.Day</span>
+                                                        }
+                                                        break;
+                                                }
+
+                                                @switch (Model.Year)
+                                                {
+                                                    case Privacy.PUBLIC:
+                                                        if (Model.MonthAndDay == Privacy.PUBLIC ||
+                                                            Model.MonthAndDay == Privacy.FOLLOWERS ||
+                                                            Model.MonthAndDay == Privacy.FOLLOWING ||
+                                                            Model.MonthAndDay == Privacy.FOLLOWBACK)
+                                                        {
+                                                            <span>,</span>
+                                                        }
+                                                        <span> @Model.DateOfBirth.Year</span>
+                                                        break;
+                                                    case Privacy.FOLLOWERS:
+                                                        if (isfollower || Model.Id == currentUserId)
+                                                        {
+                                                            if (Model.MonthAndDay == Privacy.PUBLIC ||
+                                                            Model.MonthAndDay == Privacy.FOLLOWERS ||
+                                                            Model.MonthAndDay == Privacy.FOLLOWING ||
+                                                            Model.MonthAndDay == Privacy.FOLLOWBACK)
+                                                            {
+                                                                <span>,</span>
+                                                            }
+                                                            <span> @Model.DateOfBirth.Year</span>
+                                                        }
+                                                        break;
+                                                    case Privacy.FOLLOWING:
+                                                        if (isfollowing || Model.Id == currentUserId)
+                                                        {
+                                                            if (Model.MonthAndDay == Privacy.PUBLIC ||
+                                                            Model.MonthAndDay == Privacy.FOLLOWERS ||
+                                                            Model.MonthAndDay == Privacy.FOLLOWING ||
+                                                            Model.MonthAndDay == Privacy.FOLLOWBACK)
+                                                            {
+                                                                <span>,</span>
+                                                            }
+                                                            <span> @Model.DateOfBirth.Year</span>
+                                                        }
+                                                        break;
+                                                    case Privacy.FOLLOWBACK:
+                                                        if (isfollower && isfollowing || Model.Id == currentUserId)
+                                                        {
+                                                            if (Model.MonthAndDay == Privacy.PUBLIC ||
+                                                            Model.MonthAndDay == Privacy.FOLLOWERS ||
+                                                            Model.MonthAndDay == Privacy.FOLLOWING ||
+                                                            Model.MonthAndDay == Privacy.FOLLOWBACK)
+                                                            {
+                                                                <span>,</span>
+                                                            }
+                                                            <span> @Model.DateOfBirth.Year</span>
+                                                        }
+                                                        break;
+                                                    case Privacy.PRIVATE:
+                                                        if (Model.Id == currentUserId)
+                                                        {
+                                                            if (Model.MonthAndDay == Privacy.PUBLIC ||
+                                                            Model.MonthAndDay == Privacy.FOLLOWERS ||
+                                                            Model.MonthAndDay == Privacy.FOLLOWING ||
+                                                            Model.MonthAndDay == Privacy.FOLLOWBACK)
+                                                            {
+                                                                <span>,</span>
+                                                            }
+                                                            <span> @Model.DateOfBirth.Year</span>
+                                                        }
+                                                        break;
+                                                }
+                                            </a>
+                                        </div>
+                                    }
+
+                                    @* Displays the Date the User Account was created *@
+                                    <div class="h5" style="padding-top:10px;">
                                         <a class="text-muted">
-                                            <i class="fa fa-bell"></i>
-                                            <span>Born @months[Model.DateOfBirth.Month - 1] @Model.DateOfBirth.Day, @Model.DateOfBirth.Year</span>
-                                        </a>
-                                        <a class="text-muted">
-                                            <i class="fa fa-calendar"></i>
+                                            <i class="icon-calendar"></i>
                                             <span>Joined @months[Model.DateCreated.Month - 1] @Model.DateCreated.Year</span>
                                         </a>
                                     </div>
-                                </div>
 
-                                <div class="h5">
-                                    <a style="padding-right:10px;">
-                                        <span class="text-black">@Model.Following</span>
-                                        <span>Following</span>
-                                    </a>
-                                    <a style="padding-left:10px;">
-                                        <span class="text-black">@Model.Followers</span>
-                                        <span>Followers</span>
-                                    </a>
-                                </div>
-                               
-                                <div>
-                                    <div class="line"></div> <small class="text-uc text-xs text-muted">connections</small>
-                                    <p class="m-t-sm">
-                                        <a href="@Model.TwitterProfile" class="btn btn-rounded btn-twitter btn-icon"><i class="fa fa-twitter"></i></a>
-                                        <a href="" class="btn btn-rounded btn-facebook btn-icon"><i class="fa fa-facebook"></i></a>
-                                        <a href="#" class="btn btn-rounded btn-icon"><i class="fa fa-envelope"></i></a>
-                                    </p>
+                                    <div class="h5" style="padding-top:10px;">
+                                        <a style="padding-right:10px;">
+                                            <span class="text-black">@Model.Following</span>
+                                            <span>Following</span>
+                                        </a>
+                                        <a style="padding-left:10px;">
+                                            <span class="text-black">@Model.Followers</span>
+                                            <span>Followers</span>
+                                        </a>
+                                    </div>
+
+                                    <div>
+                                        <div class="line"></div>
+                                        <small class="text-uc text-xs text-muted">connections</small>
+                                        <p class="m-t-sm">
+                                            @if (!string.IsNullOrEmpty(Model.TwitterProfile))
+                                            {
+                                                <a href="@Model.TwitterProfile" class="btn btn-rounded btn-twitter btn-icon"><i class="fa fa-twitter fa-2x"></i></a>
+                                            }
+
+                                            @if (!string.IsNullOrEmpty(Model.FacebookProfile))
+                                            {
+                                                <a href="@Model.FacebookProfile" class="btn btn-rounded btn-facebook btn-icon"><i class="fa fa-facebook fa-2x"></i></a>
+                                            }
+
+                                            @if (!string.IsNullOrEmpty(Model.YoutubePage))
+                                            {
+                                                <a href="@Model.YoutubePage" class="btn btn-rounded btn-icon"><i class="fa fa-youtube fa-2x"></i></a>
+                                            }
+
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </section>
@@ -211,23 +468,23 @@
                 </aside>
                 <aside class="col-lg-3 b-l">
                     @*<section class="vbox">
-                <section class="scrollable padder-v">
+                            <section class="scrollable padder-v">
 
-                    <div class="panel clearfix">
-                        <div class="panel-body">
-                            <a href="#" class="thumb pull-left m-r"> <img src="images/a0.png" class="img-circle"> </a>
-                            <div class="clear">
-                                <a href="https://twitter.com/beyonce" class="text-info">@Model.FirstName @Model.LastName</a>
-                                <br />
-                                <a href="https://twitter.com/beyonce?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @@beyonce</a>
+                                <div class="panel clearfix">
+                                    <div class="panel-body">
+                                        <a href="#" class="thumb pull-left m-r"> <img src="images/a0.png" class="img-circle"> </a>
+                                        <div class="clear">
+                                            <a href="https://twitter.com/beyonce" class="text-info">@Model.FirstName @Model.LastName</a>
+                                            <br />
+                                            <a href="https://twitter.com/beyonce?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @@beyonce</a>
+                                            <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a class="twitter-timeline" href="https://twitter.com/Beyonce?ref_src=twsrc%5Etfw">Tweets by Beyonce</a>
                                 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                            </div>
-                        </div>
-                    </div>
-                    <a class="twitter-timeline" href="https://twitter.com/Beyonce?ref_src=twsrc%5Etfw">Tweets by Beyonce</a>
-                    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                </section>
-            </section>*@
+                            </section>
+                        </section>*@
                 </aside>
             </section>
         </section>

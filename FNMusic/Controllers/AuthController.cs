@@ -1,12 +1,9 @@
 ﻿using BaseLib.Models;
-using FNMusic.Models;
-using FNMusic.Models;
 using FNMusic.Utils;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
@@ -17,6 +14,10 @@ using FNMusic.Services;
 using BaseLib.Utils;
 using System.Text.RegularExpressions;
 using UserMgt.Models;
+using UserMgt.Services;
+using System.Security.Claims;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace FNMusic.Controllers
 {
@@ -42,33 +43,33 @@ namespace FNMusic.Controllers
         }
 
         [Route("/register")]
-        public IActionResult Register([FromQuery(Name = "AuthKey")] AuthKey authKey)
+        public IActionResult Register([FromQuery(Name = "authkey")] AuthKey authKey)
         {
             HttpContext.Session.Clear();
-            Register model = new Register
+            Register register = new Register
             {
                 AuthKey = authKey
             };
 
-            return View(model);
+            return View(register);
         }
 
         [HttpPost]
         [Route("/register")]
-        public async Task<IActionResult> Register(Register model)
+        public async Task<IActionResult> Register(Register register)
         {
-            model.DateCreated = DateTime.Now;
+            register.DateCreated = DateTime.Now;
             if (!ModelState.IsValid)
             {
                 ModelState.AddModelError("", "Kindly fill in the necessary details");              
-                return View(model);
+                return View(register);
             }
 
-            return await Task.Run(async () =>
+            try
             {
-                try
+                await Task.Run(async () =>
                 {
-                    string json = JsonConvert.SerializeObject(model);
+                    string json = JsonConvert.SerializeObject(register);
                     HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
                     HttpResult<ServiceResponse> result = await authService.RegisterAsync(content);
                     if (!HttpStatusUtils.Is2xxSuccessful(result.Status))
@@ -76,43 +77,52 @@ namespace FNMusic.Controllers
                         ServiceResponse response = result.FailureResponse;
                         throw new Exception(response.Description);
                     }
+                });
 
-                    await SendConfirmationMail(model.Email);
-                    if (result.Content != null)
-                    {
-                        Login login = new Login
-                        {
-                            Password = model.Password,
-                            AuthKey = model.AuthKey
-                        };
+                await SendConfirmationMail(register.Email);
+                Login login = new Login
+                {
+                    Password = register.Password,
+                    AuthKey = register.AuthKey
+                };
 
-                        switch (model.AuthKey)
-                        {
-                            case AuthKey.Email:
-                                login.UserId = model.Email;
-                                break;
-                            case AuthKey.Phone:
-                                login.UserId = model.Phone;
-                                break;
-                        }
+                switch (register.AuthKey)
+                {
+                    case AuthKey.Email:
+                        login.UserId = register.Email;
+                        break;
 
-                        return await Login(login, "/" + model.Username + "/updateprofile");
-                    }
+                    case AuthKey.Phone:
+                        login.UserId = register.Phone;
+                        break;
+                }
 
+                await Login(login,null);
+                return Redirect("/login?ReturnUrl=/"+register.Username+"/updateProfile");
+            }
+            catch (Exception ex)
+            {
+                if (HttpContext.User.Identity.IsAuthenticated)
+                {
+                    await HttpContext.SignOutAsync();
                     return Redirect("/login");
                 }
-                catch (Exception ex)
-                {
-                    return View(model).WithDanger("Something went wrong", ex.Message);
-                }
-            });     
+
+                return View(register).WithDanger("Oops", ex.Message);
+            }
         }
 
+        
         [Route("/login")]
         public IActionResult Login([FromQuery(Name = "ReturnUrl")] string returnUrl)
         {
             if (HttpContext.User.Identity.IsAuthenticated)
             {
+                if (!string.IsNullOrEmpty(returnUrl))
+                {
+                    return Redirect(returnUrl);
+                }
+
                 return Redirect("/discover");
             }
 
@@ -127,30 +137,30 @@ namespace FNMusic.Controllers
         
         [HttpPost]
         [Route("/login")]
-        public async Task<IActionResult> Login(Login model, [FromQuery(Name = "ReturnUrl")] string returnUrl)
+        public async Task<IActionResult> Login(Login login, [FromQuery(Name = "ReturnUrl")] string returnUrl)
         {
             if (!ModelState.IsValid)
             {
                 ModelState.AddModelError("", "Kindly fill in the necessary details");
-                return View(model);
+                return View(login);
             }
 
             var emailRegex = "^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$";
-            var matchesEmail = Regex.Match(model.UserId, emailRegex);
-            bool matchesPhone = long.TryParse(model.UserId, out long n);
+            var matchesEmail = Regex.Match(login.UserId, emailRegex);
+            bool matchesPhone = long.TryParse(login.UserId, out long n);
 
             if (matchesEmail.Success)
-                model.AuthKey = AuthKey.Email;
+                login.AuthKey = AuthKey.Email;
             else if (matchesPhone)
-                model.AuthKey = AuthKey.Phone;
+                login.AuthKey = AuthKey.Phone;
             else
-                model.AuthKey = AuthKey.Username;
+                login.AuthKey = AuthKey.Username;
 
             return await Task.Run(async () => 
             {
                 try
                 {
-                    HttpResult<AccessTokenWithUserDetails> result = await authService.LogInAsync(model);
+                    HttpResult<AccessTokenWithUserDetails> result = await authService.LogInAsync(login);
                     if (!HttpStatusUtils.Is2xxSuccessful(result.Status))
                     {
                         ServiceResponse response = result.FailureResponse;
@@ -166,18 +176,16 @@ namespace FNMusic.Controllers
                     User user = accessTokenWithUserDetails.User;
                     Feature feature = accessTokenWithUserDetails.Feature;
                     string accessToken = accessTokenWithUserDetails.AccessToken;
-                    await systemService.SetHttpContext(user, feature, accessToken, "");
-                    if (HttpContext.User.Identity.IsAuthenticated)
+                    string refreshToken = accessTokenWithUserDetails.RefreshToken ?? "";
+                    await systemService.SetHttpContext(user, feature, accessToken, refreshToken);
+                    if (user.TwoFactorEnabled)
                     {
-                        if (Convert.ToBoolean(HttpContext.User.Claims.First(x => x.Type == "TwoFactorEnabled").Value) == true)
-                        {
-                            await SendLoginVerificationToken();
-                            session.SetString("TFE", true.ToString());
-                            return Redirect("/login/verification");
-                        }
+                        await SendLoginVerificationToken();
+                        session.SetString("TFE", true.ToString());
+                        return Redirect("/login/verification");
                     }
 
-                    if (returnUrl != null && returnUrl != "")
+                    if (!string.IsNullOrEmpty(returnUrl))
                     {
                         return Redirect(returnUrl);
                     }
@@ -191,7 +199,7 @@ namespace FNMusic.Controllers
                         await HttpContext.SignOutAsync();
                     }
 
-                    return View(model).WithDanger("Login Failed!", ex.Message);
+                    return View(login).WithDanger("Login Failed!", ex.Message);
                 }
             });        
         }

@@ -1,0 +1,108 @@
+﻿@model FNMusic.Models.UpdateTwoFactorByPhone
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+@{
+    ViewData["Title"] = "Update Two-factor authentication by Phone";
+    Layout = "~/Views/Shared/_SettingsLayout.cshtml";
+
+    ClaimsPrincipal principal = httpContextAccessor.HttpContext.User;
+    bool phoneExists = Convert.ToBoolean(!string.IsNullOrEmpty(principal.Claims.First(x => x.Type == "Phone").Value));
+    string maskedPhone = null, phone = null;
+    if (phoneExists)
+    {
+        phone = principal.Claims.First(x => x.Type == "Phone").Value;
+        int maxLength = phone.Length > 8 ? phone.Length - 4 : phone.Length - 3;
+        char[] phoneArray = phone.ToCharArray();
+        for (int i = 0; i < phone.ToCharArray().Length; i++)
+        {
+            if (i < maxLength)
+            {
+                maskedPhone += "*";
+            }
+            else
+            {
+                maskedPhone += phoneArray[i];
+            }
+        }
+    }
+    bool passwordVerified = Convert.ToBoolean(httpContextAccessor.HttpContext.Session.GetString("PV"));
+}
+<section class="vbox bg-white">
+    <section class="scrollable">
+        @if (!phoneExists)
+        {
+            <script type="text/javascript">
+                alert("You do not have a phone number associated with your account");
+                window.location.replace("/settings/account/security/twofactor");
+            </script>
+        }
+        else
+        {
+            <header class="modal-header">
+                <a asp-controller="Settings" asp-action="AccountSettings"><i class="fa fa-arrow-left"></i></a>
+                @if (!passwordVerified)
+                {
+                    <span class="h4">Enter your password</span>
+                }
+                else
+                {
+                    <span class="h4">Enter your confirmation code</span>
+                }
+            </header>
+            @using (Html.BeginForm("UpdateTwoFactorByPhone", "Settings", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <section class="wrapper" style="padding-left:30px;padding-right:30px;">
+                    <div class="form-horizontal">
+                        @if (!passwordVerified)
+                        {
+                            <div class="form-group">
+                                <p class="small">To get started, first enter your password to verify it's really you.</p>
+                                @Html.TextBoxFor(x => x.Password, new { @class = "form-control", type = "password", placeholder = "Enter your password", style = "border-top:none; border-left:none; border-right:none;width:200px;", required = "required" })
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                <p class="small">Enter the confirmation code sent to +@maskedPhone and follow the steps to complete the process</p>
+                                @Html.TextBoxFor(x => x.Token, new { @class = "form-control", placeholder = "Enter confirmation code", style = "border-top:none; border-left:none; border-right:none;width:200px;", required = "required" })
+                            </div>
+                            <span class="small">
+                                Didn't get the confirmation code?
+                            </span>
+                            <button class="btn btn-dark btn-xs" onclick="sendTwoFactorVerificationToken()">
+                                <span>Send Code</span>
+                            </button>
+                            <script type="text/javascript">
+                                function sendTwoFactorVerificationToken() {
+                                    var xhr = new XMLHttpRequest();
+                                    const url = "/settings/account/security/twofactor/phone/token/@phone";
+                                    xhr.open("POST", url);
+                                    xhr.send();
+                                    xhr.onreadystatechange = (e) => {
+                                        if (xhr.readyState == 4) {
+                                            console.log(xhr.response);
+                                            alert(xhr.response);
+                                        }
+                                    }
+                                }
+                            </script>
+                        }
+                        <footer class="modal-footer">
+                            <button type="submit" class="btn btn-success btn-rounded pull-right">
+                                @if (passwordVerified)
+                                {
+                                    <span>Next</span>
+                                }
+                                else
+                                {
+                                    <span>Verify</span>
+                                }
+                            </button>
+                        </footer>
+                    </div>
+                </section>
+            }
+        }
+    </section>
+</section>

@@ -4,7 +4,8 @@
 
     bool emailConfirmed = Convert.ToBoolean(httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "EmailConfirmed").Value);
     string email = httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Email").Value;
-    
+
+    bool MusicPlayerInBody = Convert.ToBoolean(ViewData["MPIB"]);
 
 }
 
@@ -19,7 +20,7 @@
     <!--[if lt IE 9]> <script src="js/ie/html5shiv.js"></script> <script src="js/ie/respond.min.js"></script> <script src="js/ie/excanvas.js"></script> <![endif]-->
 </head>
 <body class="">
-    <section class="vbox " >
+    <section class="vbox ">
         <header class=" bg-white-only header header-md navbar navbar-fixed-top-xs">
             <div class="navbar-header aside bg-dark nav-xs">
                 <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen,open" data-target="#nav,html">

@@ -1,0 +1,46 @@
+﻿@using Microsoft.AspNetCore.Http
+@using System.Security.Claims
+@inject IHttpContextAccessor httpContextAccessor
+@{
+    ViewData["Title"] = "Security";
+    Layout = "~/Views/Shared/_SettingsLayout.cshtml";
+
+    ClaimsPrincipal principal = httpContextAccessor.HttpContext.User;
+
+}
+<section class="vbox bg-white">
+    <section class="scrollable">
+        <header class="modal-header">
+            <a asp-controller="Settings" asp-action="AccountSettings"><i class="fa fa-arrow-left"></i></a>
+            <span class="h4 font-bold text-center padder">Security</span>
+        </header>
+        <ul class="list-group nav nav-user user">
+            <li class="">
+                <a asp-controller="Settings" asp-action="UpdateTwofactor">
+                    <p class="h5 text-black font-bold">Two-factor authentication</p>
+                    <span class="small">
+                        Turn this on to add an extra layer of security for your account. Instead of only entering a password to log in, you'll also enter a code which will be sent to you via any medium of your choosing to make sure that you, and only you, can access your account.
+                    </span>
+                </a>
+            </li>
+            <li class="">
+                <a href="/settings/account/security/password/reset/protection" data-toggle="ajaxModal">
+                    <p class="h5 text-black font-bold">
+                        Password reset protection
+                        @if (Convert.ToBoolean(principal.Claims.First(x => x.Type == "PasswordResetProtection").Value))
+                        {
+                            <input id="PRPCbx" type="checkbox" class="pull-right" checked />
+                        }
+                        else
+                        {
+                            <input id="PRPCbx" type="checkbox" class="pull-right" />
+                        }
+                    </p>
+                    <span class="small">
+                        For added protection, you'll need to confirm your email address or phone number to reset your password.
+                    </span>
+                </a>
+            </li>
+        </ul>   
+    </section>
+</section>

@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace BaseLib.Utils
@@ -26,6 +29,21 @@ namespace BaseLib.Utils
             }
 
             return val;
+        }
+
+        public static string GetEnumDefaultPropertyValue(int i)
+        {
+            var enumType = typeof(T);
+            if (!enumType.IsEnum)
+            {
+                throw new Exception("T must be an Enumeration type.");
+            }
+
+            var memberInfos = enumType.GetMember(GetEnumValueByInt(i).ToString());
+            var enumValueMemberInfo = memberInfos.FirstOrDefault(m => m.DeclaringType == enumType);
+            var valueAttributes = enumValueMemberInfo.GetCustomAttributes(typeof(DefaultValueAttribute), false);
+            var value = ((DefaultValueAttribute)valueAttributes[0]).Value;
+            return value.ToString();
         }
     }
 }

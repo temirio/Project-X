@@ -1,55 +1,38 @@
-﻿@model UserMgt.Models.UpdateTwoFactor
-@using UserMgt.Models;
+﻿@model FNMusic.Models.UpdateTwoFactorByPhone
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
 @{
     ViewData["Title"] = "Update Two-Factor";
     Layout = "~/Views/Shared/_SettingsLayout.cshtml";
 
-    bool isTextMessage = Model.VerificationMethod == VerificationMethod.TextMessage ? true : false;
-    bool isSecurityKey = Model.VerificationMethod == VerificationMethod.SecurityKey ? true : false;
-    bool isMobileSecurityApp = Model.VerificationMethod == VerificationMethod.MobileSecurityApp ? true : false;
+    ClaimsPrincipal principal = httpContextAccessor.HttpContext.User;
 }
 
 <section class="vbox bg-white">
     <section class="scrollable">
         <header class="modal-header">
-            <a asp-controller="Settings" asp-action="AccountSettings"><i class="fa fa-arrow-left"></i></a>
-            <span class="h4 font-bold text-center padder">Update Login Verification</span>
+            <a asp-controller="Settings" asp-action="Security"><i class="fa fa-arrow-left"></i></a>
+            <span class="h4 text-black padder">Two-factor authentication</span>
         </header>
-        @using (Html.BeginForm("Settings", "UpdateTwoFactor", FormMethod.Post, new { enctype = "multipart/formdata" }))
-        {
-            <section class="wrapper" style="padding-left:30px; padding-right:30px;">
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <p class="h4">Login Verification @Html.CheckBoxFor(x => x.Enabled, new { @class = "pull-right checkbox" })</p>
-                        <span class="small text-muted">
-                            Turn this on to add an extra layer of security for your account. Instead of only entering a password to log in, you'll also enter a code which is sent via text message to your mobile phone to make sure that you, and only you, can access your account.
-                        </span>
-                    </div>
-                </div>
-            </section>
-            @if (!Model.Enabled)
-            {
-                <div class="header bg-light">
-                    <p class="h4 font-bold">Verification Methods</p>
-                </div>
-                <section class="wrapper" style="padding-left:30px; padding-right:30px;">
-                    <div class="form-horizontal">
-                        <div class="form-group">
-                            <p class="h4">Text Message<input type="checkbox" class="pull-right checkbox" checked="@isTextMessage" /></p>
-                            <span class="small text-muted">We will send a code to your phone as an SMS text message. You will need your phone to log in.</span>
-                        </div>
-                        <div class="form-group">
-                            <p class="h4">Security Key<input type="checkbox" class="pull-right checkbox" checked="@isSecurityKey" /></p>
-                            <span class="small text-muted">You can use a physical electronic key to approve login attempts</span>
-                        </div>
-                        <div class="form-group">
-                            <p class="h4">Mobile Security App<input type="checkbox" class="pull-right checkbox" checked="@isMobileSecurityApp" /></p>
-                            <span class="small text-muted">Use a seperate security app to generate a login code. You will need access to this app to login</span>
-                        </div>
-                    </div>
-                </section>
-            }
-        }
+        <ul class="list-group nav nav-user user">
+            <li>
+                <a asp-controller="Settings" asp-action="UpdateTwoFactorByPhone">
+                    <p class="h5 text-black font-bold">
+                        Text Message
+                        @if (Convert.ToBoolean(principal.Claims.First(x => x.Type == "TwoFactorEnabled").Value))
+                        {
+                            <input type="checkbox" class="pull-right checkbox" checked />
+                        }
+                        else
+                        {
+                            <input type="checkbox" class="pull-right checkbox" />
+                        }
+                    </p>
+                    <span class="small">Use your mobile phone to receive a text message with an authentication code to enter when you log in</span>
+                </a>
+            </li>
+        </ul>
     </section>
 </section>
 

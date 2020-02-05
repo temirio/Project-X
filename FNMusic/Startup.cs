@@ -1,8 +1,5 @@
 ﻿using System;
-using FNMusic.Models;
 using FNMusic.Services;
-using FNMusic.Utils;
-using FNMusic.Controllers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,14 +7,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using FNMusic.Services.Impl;
 using BaseLib.Models;
 using BaseLib.Services;
 using BaseLib.Utils;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.Mvc.Internal;
-using FNMusic.Services;
 using UserMgt.Models;
+using UserMgt.Services;
+using UserMgt.Services.Impl;
 
 namespace FNMusic
 {
@@ -71,8 +66,6 @@ namespace FNMusic
 
             // Configure FNMusic Services
             services.AddTransient(typeof(SystemService));
-
-            //services.AddTransient(typeof(UserController));
 
             // Configure UserMgt Services
             services.AddTransient<IAuthService<ServiceResponse>, AuthService>();

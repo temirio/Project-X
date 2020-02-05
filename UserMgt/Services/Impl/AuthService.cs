@@ -7,14 +7,25 @@ using System.Net.Http.Headers;
 using BaseLib.Models;
 using BaseLib.Services;
 
-namespace FNMusic.Services.Impl
+namespace UserMgt.Services.Impl
 {
+    /// <summary>
+    /// Authentication Service for the User Management Library
+    /// </summary>
     public class AuthService : HostService, IAuthService<ServiceResponse>
     {
+        #region Private fields
         private IRestTemplate<ServiceResponse> restTemplate;
         private IRestTemplate<AccessTokenWithUserDetails> loginRestTemplate;
         private HttpRequestHeaders httpRequestHeaders;
+        #endregion
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="configuration">IConfiguration service dependency</param>
+        /// <param name="restTemplate">IRestTemplate service dependency</param>
+        /// <param name="loginRestTemplate">Special IRestTemplate dependency for login purposes</param>
         public AuthService(IConfiguration configuration, IRestTemplate<ServiceResponse> restTemplate, IRestTemplate<AccessTokenWithUserDetails> loginRestTemplate) : base (configuration)
         {
             this.restTemplate = restTemplate;

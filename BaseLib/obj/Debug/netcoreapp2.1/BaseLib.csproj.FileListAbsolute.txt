@@ -15,7 +15,6 @@ C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\BaseLib\bin\Deb
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\BaseLib\bin\Debug\netcoreapp2.1\BaseLib.runtimeconfig.dev.json
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\BaseLib\bin\Debug\netcoreapp2.1\BaseLib.dll
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\BaseLib\bin\Debug\netcoreapp2.1\BaseLib.pdb
-C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\BaseLib\obj\Debug\netcoreapp2.1\BaseLib.csprojAssemblyReference.cache
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\BaseLib\obj\Debug\netcoreapp2.1\BaseLib.csproj.CoreCompileInputs.cache
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\BaseLib\obj\Debug\netcoreapp2.1\BaseLib.AssemblyInfoInputs.cache
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\BaseLib\obj\Debug\netcoreapp2.1\BaseLib.AssemblyInfo.cs

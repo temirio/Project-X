@@ -7,7 +7,7 @@ using BaseLib.Models;
 using BaseLib.Services;
 using UserMgt.Models;
 
-namespace FNMusic.Services.Impl
+namespace UserMgt.Services.Impl
 {
     public class UserService : HostService, IUserService<Result<User>>
     {
@@ -20,6 +20,12 @@ namespace FNMusic.Services.Impl
             requestHeaders = new HttpRequestMessage().Headers;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
         public async Task<HttpResult<Result<User>>> FindUserById(long id, string accessToken) {
             return await Task.Run(async () =>
             {
@@ -37,6 +43,12 @@ namespace FNMusic.Services.Impl
             });
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
         public async Task<HttpResult<Result<User>>> FindUserByEmail(string email, string accessToken)
         {
             return await Task.Run(async () =>
@@ -55,6 +67,12 @@ namespace FNMusic.Services.Impl
             });
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
         public async Task<HttpResult<Result<User>>> FindUserByPhone(string phone, string accessToken)
         {
             return await Task.Run(async () =>
@@ -73,6 +91,12 @@ namespace FNMusic.Services.Impl
             });
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
         public async Task<HttpResult<Result<User>>> FindUserByUsername(string username, string accessToken)
         {
             return await Task.Run(async () =>
@@ -91,6 +115,12 @@ namespace FNMusic.Services.Impl
             });
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="httpContent"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
         public async Task UpdateProfile(HttpContent httpContent, string accessToken)
         {
             await Task.Run(async() =>
@@ -107,6 +137,13 @@ namespace FNMusic.Services.Impl
             });
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="fanId"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
         public async Task FollowUser(long userId, long fanId, string accessToken)
         {
             await Task.Run(async()=> {
@@ -125,6 +162,13 @@ namespace FNMusic.Services.Impl
             });
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="fanId"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
         public async Task UnfollowUser(long userId, long fanId, string accessToken)
         {
             await Task.Run(async () => {
@@ -142,6 +186,14 @@ namespace FNMusic.Services.Impl
             });
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
         public async Task<HttpResult<Result<User>>> GetFollowers(long id, int pageNumber, int pageSize, string accessToken)
         {
             return await Task.Run(async () => 
@@ -162,6 +214,14 @@ namespace FNMusic.Services.Impl
             });
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
         public async Task<HttpResult<Result<User>>> GetFollowing(long id, int pageNumber, int pageSize, string accessToken)
         {
             return await Task.Run(async () =>
@@ -182,6 +242,13 @@ namespace FNMusic.Services.Impl
             });
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="fanId"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
         public async Task<HttpResult<Result<User>>> IsFollower(long userId, long fanId, string accessToken)
         {
             return await Task.Run(async () =>
@@ -201,6 +268,13 @@ namespace FNMusic.Services.Impl
             });
         }
 
+        /// <summary>
+        /// This method checks if the logged in user is following a specified user account
+        /// </summary>
+        /// <param name="userId">Profile user id</param>
+        /// <param name="fanId">Logged In user id</param>
+        /// <param name="accessToken">Logged-In User access token</param>
+        /// <returns></returns>
         public async Task<HttpResult<Result<User>>> IsFollowing(long userId, long fanId, string accessToken)
         {
             return await Task.Run(async () =>
@@ -220,6 +294,11 @@ namespace FNMusic.Services.Impl
             });
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
         public async Task<HttpResult<Result<User>>> LogOut(string accessToken)
         {
             return await Task.Run(async () =>

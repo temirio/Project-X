@@ -1,11 +1,10 @@
-﻿using FNMusic.Services;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using BaseLib.Services;
 
-namespace FNMusic.Services.Impl
+namespace UserMgt.Services.Impl
 {
     public class HostService : GatewayHostService
     {
@@ -42,6 +41,7 @@ namespace FNMusic.Services.Impl
             return "http://" + GetIPAddress() + ":" + GetPort() + "/";
         }
 
+        #region AuthService Uri'S
         public string AuthBaseAddress => string.Concat(GetBaseAddress(), configuration.GetValue<string>("RestServices:userMgt:auth:basePath"));
         public string SignUpUri => configuration.GetValue<string>("RestServices:userMgt:auth:signUp");
         public string SignInUri => configuration.GetValue<string>("RestServices:userMgt:auth:signIn");
@@ -53,8 +53,9 @@ namespace FNMusic.Services.Impl
         public string ForgotPasswordTokenVerificationUri => configuration.GetValue<string>("RestServices:userMgt:auth:forgotPasswordTokenVerification");
         public string PasswordResetUri => configuration.GetValue<string>("RestServices:userMgt:auth:passwordReset");
         public string ResetPasswordUri => configuration.GetValue<string>("RestServices:userMgt:auth:resetPassword");
+        #endregion
 
-
+        #region UserService Uri's
         public string UserBaseAddress => string.Concat(GetBaseAddress(), configuration.GetValue<string>("RestServices:userMgt:user:basePath"));
         public string FindByIdUri => configuration.GetValue<string>("RestServices:userMgt:user:findById");
         public string FindByEmailUri => configuration.GetValue<string>("RestServices:userMgt:user:findByEmail");
@@ -68,21 +69,24 @@ namespace FNMusic.Services.Impl
         public string IsFollowerUri => configuration.GetValue<string>("RestServices:userMgt:user:isFollower");
         public string IsFollowingUri => configuration.GetValue<string>("RestServices:userMgt:user:isFollowing");
         public string LogOutUri => configuration.GetValue<string>("RestServices:userMgt:user:logOut");
+        #endregion
 
-        //Account Settings Service
+        #region Account Settings Uri's
         public string AccountSettingsBaseAddress => string.Concat(GetBaseAddress(), configuration.GetValue<string>("RestServices:userMgt:settings:account:basePath"));
         public string UpdateUsernameUri => configuration.GetValue<string>("RestServices:userMgt:settings:account:username");
-        public string SendPhoneVerificationTokenUri => configuration.GetValue<string>("RestServices:userMgt:settings:account:updatePhoneVerification");
         public string UpdatePhoneUri => configuration.GetValue<string>("RestServices:userMgt:settings:account:phone");
-        public string SendEmailVerificationTokenUri => configuration.GetValue<string>("RestServices:userMgt:settings:account:updateEmailVerification");
+        public string SendPhoneVerificationTokenUri => configuration.GetValue<string>("RestServices:userMgt:settings:account:sendPhoneVerificationToken");
+        public string UpdatePhoneVerificationUri => configuration.GetValue<string>("RestServices:userMgt:settings:account:updatePhoneVerification");
         public string UpdateEmailUri => configuration.GetValue<string>("RestServices:userMgt:settings:account:email");
+        public string SendEmailVerificationTokenUri => configuration.GetValue<string>("RestServices:userMgt:settings:account:sendEmailVerificationToken");
+        public string UpdateEmailVerificationUri => configuration.GetValue<string>("RestServices:userMgt:settings:account:updateEmailVerification");
         public string UpdatePasswordUri => configuration.GetValue<string>("RestServices:userMgt:settings:account:password");
-        public string SendTwoFactorVerificationTokenUri => configuration.GetValue<string>("RestServices:userMgt:settings:account:updateTwoFactorVerification");
+        public string SendTwoFactorVerificationTokenUri => configuration.GetValue<string>("RestServices:userMgt:settings:account:sendTwoFactorVerificationToken");
         public string UpdateTwoFactorUri => configuration.GetValue<string>("RestServices:userMgt:settings:account:twoFactor");
         public string VerifyPasswordUri => configuration.GetValue<string>("RestServices:userMgt:settings:account:verifyPassword");
-        public string PasswordResetProtectionUri => configuration.GetValue<string>("RestServices:userMgt:settings:account:passwordResetProtection");
+        public string UpdatePasswordResetProtectionUri => configuration.GetValue<string>("RestServices:userMgt:settings:account:passwordResetProtection");
         public string UpdateNationalityUri => configuration.GetValue<string>("RestServices:userMgt:settings:account:nationality");
         public string Deactivateuri => configuration.GetValue<string>("RestServices:userMgt:settings:account:deactivate");
-
+        #endregion
     }
 }

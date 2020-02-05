@@ -7,6 +7,8 @@ using FNMusic.Services;
 using Microsoft.AspNetCore.Authorization;
 using BaseLib.Models;
 using UserMgt.Models;
+using UserMgt.Services;
+using System.Threading.Tasks;
 
 namespace FNMusic.Controllers
 {
@@ -37,6 +39,7 @@ namespace FNMusic.Controllers
         [Route("/discover")]
         public IActionResult Discover()
         {
+            ViewData["MPIB"] = true;
             return View();
         }
 

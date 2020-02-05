@@ -1,37 +1,26 @@
-﻿@model UserMgt.Models.User
+﻿@model FNMusic.Models.EditProfile
 @using FNMusic.Controllers;
 @using Microsoft.AspNetCore.Http;
 @using BaseLib.Models;
 @using BaseLib.Utils;
 @using UserMgt.Models;
 @using UserMgt.Utils;
-@inject IHttpContextAccessor HttpContextAccessor
+@using System.ComponentModel;
+@using Microsoft.AspNetCore.Mvc.Rendering;
+@inject IHttpContextAccessor HttpContextAccessor;
+
 @{
     ViewData["Title"] = "Update your Profile";
     Layout = "~/Views/Shared/_ModalLayout.cshtml";
+    string dateOfBirth =
+        Model.DateOfBirth.Year
+        + "-" + (Model.DateOfBirth.Month > 9 ? Model.DateOfBirth.Month.ToString() : "0" + Model.DateOfBirth.Month.ToString() )
+        + "-" + (Model.DateOfBirth.Day > 9 ? Model.DateOfBirth.Day.ToString() : "0" + Model.DateOfBirth.Day.ToString() );
 
     List<SelectListItem> privacy = new List<SelectListItem>();
-    for (int i = 1; i <= 5; i++)
+    for (int i = 0; i < 5; i++)
     {
-        privacy.Add(new SelectListItem { Text = EnumUtils<Privacy>.GetEnumValueByInt(i).ToString(), Value = i.ToString() });
-    }
-
-    List<SelectListItem> countries = new List<SelectListItem>
-{
-new SelectListItem { Value = "Select Country"}
-};
-
-    foreach (string country in AppUtils.GetCountries())
-    {
-        if (country == Model.Nationality)
-        {
-            countries.Add(new SelectListItem() { Text = country, Value = country, Selected = true });
-        }
-        else
-        {
-            countries.Add(new SelectListItem() { Text = country, Value = country });
-        }
-
+        privacy.Add(new SelectListItem { Text =  EnumUtils<Privacy>.GetEnumDefaultPropertyValue(i), Value = i.ToString() });
     }
 
     List<SelectListItem> genres = new List<SelectListItem>
@@ -49,15 +38,9 @@ new SelectListItem { Value = "Select Country"}
         {
             genres.Add(new SelectListItem() { Text = genre, Value = genre });
         }
-
     }
-
     string profileImage = !string.IsNullOrEmpty(Model.ProfileImagePath) ? Model.ProfileImagePath : "~/images/a0.png";
-
 }
-
-
-
 <section class="m-t-lg wrapper-md animated fadeInDown">
     <div class="container aside-xxl bg-white" style="box-shadow:0px 10px 10px; border-radius:5px;">
         <div id="editProfileBx" >
@@ -88,6 +71,10 @@ new SelectListItem { Value = "Select Country"}
                             <span class="text-sm">Website @Html.ValidationMessageFor(x => x.Website, "", new { @class = "text-danger" })</span>
                             @Html.TextBoxFor(x => x.Website, new { type = "url", @class = "form-control input-sm", style = "border-top:unset; border-left:unset; border-right:unset;" })
                         </div>
+                        <div class="form-group-sm" style="padding:5px 0px 0px 0px">
+                            <span class="text-sm">Date Of Birth @Html.ValidationMessageFor(x => x.DateOfBirth, "", new { @class = "text-danger" })</span>
+                            <input name="DateOfBirth" type="date" class="form-control input-sm" value="@dateOfBirth" style="border-top:unset; border-left:unset; border-right:unset;" />
+                        </div>
                         <h6 class="text-u-c">Privacy Options</h6>
                         <section class="form-group"  style="padding:5px 0px 0px 0px;">
                             <div class="form-group-sm">
@@ -104,16 +91,16 @@ new SelectListItem { Value = "Select Country"}
                             </div>
                         </section>
                         <div class="form-group-sm" style="padding:5px 0px 0px 0px;">
-                            <span class="text-sm">Twitter Profile @Html.ValidationMessageFor(x => x.TwitterProfile, "", new { @class = "text-danger" })</span>
-                            @Html.TextBoxFor(x => x.TwitterProfile, new { type = "url", @class = "form-control input-sm", style = "border-top:unset; border-left:unset; border-right:unset;" })
+                            <span class="text-sm">Twitter Profile @Html.ValidationMessageFor(x => x.Twitter, "", new { @class = "text-danger" })</span>
+                            @Html.TextBoxFor(x => x.Twitter, new { type = "url", @class = "form-control input-sm", style = "border-top:unset; border-left:unset; border-right:unset;" })
                         </div>
                         <div class="form-group-sm" style="padding:5px 0px 0px 0px;">
-                            <span class="text-sm">Facebook Profile @Html.ValidationMessageFor(x => x.FacebookProfile, "", new { @class = "text-danger" })</span>
-                            @Html.TextBoxFor(x => x.FacebookProfile, new { type = "url", @class = "form-control input-sm", style = "border-top:unset; border-left:unset; border-right:unset;" })
+                            <span class="text-sm">Facebook Profile @Html.ValidationMessageFor(x => x.FaceBook, "", new { @class = "text-danger" })</span>
+                            @Html.TextBoxFor(x => x.FaceBook, new { type = "url", @class = "form-control input-sm", style = "border-top:unset; border-left:unset; border-right:unset;" })
                         </div>
                         <div class="form-group-sm" style="padding:5px 0px 0px 0px;">
-                            <span class="text-sm">Youtube Page @Html.ValidationMessageFor(x => x.YoutubePage, "", new { @class = "text-danger" })</span>
-                            @Html.TextBoxFor(x => x.YoutubePage, new { type = "url", @class = "form-control input-sm", style = "border-top:unset; border-left:unset; border-right:unset;" })
+                            <span class="text-sm">Youtube Page @Html.ValidationMessageFor(x => x.Youtube, "", new { @class = "text-danger" })</span>
+                            @Html.TextBoxFor(x => x.Youtube, new { type = "url", @class = "form-control input-sm", style = "border-top:unset; border-left:unset; border-right:unset;" })
                         </div>
                     </div>
                 </section>
@@ -127,14 +114,12 @@ new SelectListItem { Value = "Select Country"}
                         <i class="fa fa-save"></i>
                     </button>
                 </footer>
-
             }
         </div>
         <div id="editProfileImgBx" class="hidden">
             <header class="modal-header">
                 <h4>EDIT PROFILE IMAGE</h4>
             </header>
-
             <link rel="stylesheet" href="~/css/croppie.css" type="text/css" />
             <script src="~/js/croppie.js"></script>
             <div class="imgCropBx"></div>
@@ -146,9 +131,7 @@ new SelectListItem { Value = "Select Country"}
                         width:150
                     }
                 });
-
             </script>
-
             <footer class="modal-footer">
                 <a class="btn btn-danger">
                     <span>Cancel</span>
@@ -163,12 +146,7 @@ new SelectListItem { Value = "Select Country"}
                 <a class="text-center">
                     <small>Powered By Foliotek</small>
                 </a>
-
             </div>
         </div>
-
     </div>
-
 </section>
-
-

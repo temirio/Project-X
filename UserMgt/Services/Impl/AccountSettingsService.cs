@@ -8,7 +8,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FNMusic.Services.Impl
+namespace UserMgt.Services.Impl
 {
     public class AccountSettingsService : HostService, IAccountSettingsService<ServiceResponse>
     {
@@ -21,6 +21,12 @@ namespace FNMusic.Services.Impl
             requestHeaders = new HttpRequestMessage().Headers;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
         public async Task<HttpResult<ServiceResponse>> UpdateUsernameAsync(string username, string accessToken)
         {
             return await Task.Run(async () =>
@@ -39,6 +45,36 @@ namespace FNMusic.Services.Impl
             });
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
+        public async Task<HttpResult<ServiceResponse>> UpdatePhoneAsync(string phone, string accessToken)
+        {
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    requestHeaders.Add("X-AUTH-TOKEN", accessToken);
+                    requestHeaders.Add("Phone", phone);
+                    HttpResult<ServiceResponse> httpResult = await restTemplate.PutAsync(AccountSettingsBaseAddress, UpdatePhoneUri, requestHeaders, null);
+                    return httpResult;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
         public async Task<HttpResult<ServiceResponse>> SendPhoneVerificationTokenAsync(string phone, string accessToken)
         {
             return await Task.Run(async () =>
@@ -57,7 +93,14 @@ namespace FNMusic.Services.Impl
             });
         }
 
-        public async Task<HttpResult<ServiceResponse>> UpdatePhoneAsync(string phone, string token, string accessToken)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <param name="token"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
+        public async Task<HttpResult<ServiceResponse>> UpdatePhoneVerificationAsync(string phone, string token, string accessToken)
         {
             return await Task.Run(async () =>
             {
@@ -66,7 +109,7 @@ namespace FNMusic.Services.Impl
                     requestHeaders.Add("X-AUTH-TOKEN", accessToken);
                     requestHeaders.Add("Phone", phone);
                     requestHeaders.Add("Token", token);
-                    HttpResult<ServiceResponse> httpResult = await restTemplate.PutAsync(AccountSettingsBaseAddress, UpdatePhoneUri, requestHeaders, null);
+                    HttpResult<ServiceResponse> httpResult = await restTemplate.PutAsync(AccountSettingsBaseAddress, UpdatePhoneVerificationUri, requestHeaders, null);
                     return httpResult;
                 }
                 catch (Exception e)
@@ -76,9 +119,39 @@ namespace FNMusic.Services.Impl
             });
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
+        public async Task<HttpResult<ServiceResponse>> UpdateEmailAsync(string email, string accessToken)
+        {
+            return await Task.Run(async()=> 
+            {
+                try
+                {
+                    requestHeaders.Add("X-AUTH-TOKEN", accessToken);
+                    requestHeaders.Add("Email", email);
+                    HttpResult<ServiceResponse> httpResult = await restTemplate.PutAsync(AccountSettingsBaseAddress, UpdateEmailUri, requestHeaders, null);
+                    return httpResult;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
         public async Task<HttpResult<ServiceResponse>> SendEmailVerificationTokenAsync(string email, string accessToken)
         {
-            return await Task.Run(async () => 
+            return await Task.Run(async () =>
             {
                 try
                 {
@@ -94,16 +167,23 @@ namespace FNMusic.Services.Impl
             });
         }
 
-        public async Task<HttpResult<ServiceResponse>> UpdateEmailAsync(string email, string token, string accessToken)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="token"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
+        public async Task<HttpResult<ServiceResponse>> UpdateEmailVerificationAsync(string email, string token, string accessToken)
         {
-            return await Task.Run(async()=> 
+            return await Task.Run(async () =>
             {
                 try
                 {
                     requestHeaders.Add("X-AUTH-TOKEN", accessToken);
                     requestHeaders.Add("Email", email);
                     requestHeaders.Add("Token", token);
-                    HttpResult<ServiceResponse> httpResult = await restTemplate.PutAsync(AccountSettingsBaseAddress, UpdateEmailUri, requestHeaders, null);
+                    HttpResult<ServiceResponse> httpResult = await restTemplate.PutAsync(AccountSettingsBaseAddress, UpdateEmailVerificationUri, requestHeaders, null);
                     return httpResult;
                 }
                 catch (Exception e)
@@ -113,6 +193,13 @@ namespace FNMusic.Services.Impl
             });
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="currentPassword"></param>
+        /// <param name="newPassword"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
         public async Task<HttpResult<ServiceResponse>> UpdatePasswordAsync(string currentPassword, string newPassword, string accessToken)
         {
             return await Task.Run(async () =>
@@ -132,20 +219,111 @@ namespace FNMusic.Services.Impl
             });
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
+        public async Task<HttpResult<ServiceResponse>> SendTwoFactorVerificationTokenAsync(string phone, string accessToken)
+        {
+            return await Task.Run(async () => 
+            {
+                try
+                {
+                    requestHeaders.Add("Phone", phone);
+                    requestHeaders.Add("X-AUTH-TOKEN", accessToken);
+                    HttpResult<ServiceResponse> httpResult = await restTemplate.PostAsync(AccountSettingsBaseAddress, SendTwoFactorVerificationTokenUri, requestHeaders, null);
+                    return httpResult;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <param name="status"></param>
+        /// <param name="token"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
+        public async Task<HttpResult<ServiceResponse>> UpdateTwoFactorAsync(string phone, bool status, string token, string accessToken)
+        {
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    requestHeaders.Add("Phone", phone);
+                    requestHeaders.Add("Status", status.ToString());
+                    requestHeaders.Add("Token", token);
+                    requestHeaders.Add("X-AUTH-TOKEN", accessToken);
+                    HttpResult<ServiceResponse> httpResult = await restTemplate.PutAsync(AccountSettingsBaseAddress, UpdateTwoFactorUri, requestHeaders, null);
+                    return httpResult;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="password"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
+        public async Task<HttpResult<ServiceResponse>> VerifyPasswordAsync(string password, string accessToken)
+        {
+            return await Task.Run(async () => 
+            {
+                try
+                {
+                    requestHeaders.Add("X-AUTH-PASSWORD", password);
+                    requestHeaders.Add("X-AUTH-TOKEN", accessToken);
+                    HttpResult<ServiceResponse> httpResult = await restTemplate.PostAsync(AccountSettingsBaseAddress, VerifyPasswordUri, requestHeaders, null);
+                    return httpResult;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+            });
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="status"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
+        public async Task<HttpResult<ServiceResponse>> UpdatePasswordResetProtectionAsync(bool status, string accessToken)
+        {
+            return await Task.Run(async () =>
+            {
+                try
+                {
+                    requestHeaders.Add("X-AUTH-TOKEN", accessToken);
+                    requestHeaders.Add("Status", status.ToString());
+                    HttpResult<ServiceResponse> httpResult = await restTemplate.PutAsync(AccountSettingsBaseAddress, UpdatePasswordResetProtectionUri, requestHeaders, null);
+                    return httpResult;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+            });
+        }
         public Task<HttpResult<ServiceResponse>> DeactivateAccountAsync(bool status, string accessToken)
         {
             throw new NotImplementedException();
         }
         
-        public Task<HttpResult<ServiceResponse>> SendTwoFactorVerificationTokenAsync(string phonenumber, string accessToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<HttpResult<ServiceResponse>> UpdateTwoFactorAsync(bool status, string token, string accessToken)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public Task<HttpResult<ServiceResponse>> UpdateNationalityAsync(string country, string accessToken)
         {
@@ -153,26 +331,5 @@ namespace FNMusic.Services.Impl
         }
 
         
-
-        
-
-       
-
-        
-
-        public Task<HttpResult<ServiceResponse>> VerifyEmailVerificationTokenAsync(string phone, string accessToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<HttpResult<ServiceResponse>> VerifyPasswordForPasswordResetProtectionAsync(string password, string accessToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<HttpResult<ServiceResponse>> VerifyPhoneVerificationTokenAsync(string phone, string accessToken)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -37,17 +37,17 @@
                                     </a>
                                 </div>
                                 <script type="text/javascript">
-                                                function sendConfirmationEmail() {
-                                                    const http = new XMLHttpRequest();
-                                                    const url = '/confirm/@email';
-                                                    http.open("POST", url);
-                                                    http.send();
-                                                    http.onreadystatechange = (e) => {
-                                                        if (http.readyState == 4) {
-                                                            document.location.reload(true);
-                                                        }
-                                                    }
-                                                }
+                                    function sendConfirmationEmail() {
+                                        const http = new XMLHttpRequest();
+                                        const url = '/confirm/@email';
+                                        http.open("POST", url);
+                                        http.send();
+                                        http.onreadystatechange = (e) => {
+                                            if (http.readyState == 4) {
+                                                document.location.reload(true);
+                                            }
+                                        }
+                                    }
                                 </script>
                             </div>
                         }
@@ -79,7 +79,7 @@
                 <li><a href="#"> <span class="badge bg-danger pull-right">3</span> Notifications </a></li>
                 <li><a href="#">Bookmarks</a></li>
                 <li class="divider"></li>
-                <li><a asp-controller="settings" asp-action="accountsettings">Settings & Privacy</a></li>
+                <li><a asp-controller="settings" asp-action="accountsettings">Settings</a></li>
                 <li><a href="docs.html">Help Center</a></li>
                 <li><a asp-controller="user" asp-action="logout">Log Out</a></li>
             </ul>
