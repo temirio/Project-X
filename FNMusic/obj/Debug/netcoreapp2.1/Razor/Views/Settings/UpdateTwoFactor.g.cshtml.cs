@@ -75,7 +75,7 @@ using Microsoft.AspNetCore.Http;
             WriteLiteral("\r\n<section class=\"vbox bg-white\">\r\n    <section class=\"scrollable\">\r\n        <header class=\"modal-header\">\r\n            ");
             EndContext();
             BeginContext(462, 87, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "3f4d28cf1672446e8f7b21d55732a9ab", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c303d2f1a1d84078be973c664f8286d1", async() => {
                 BeginContext(513, 32, true);
                 WriteLiteral("<i class=\"fa fa-arrow-left\"></i>");
                 EndContext();
@@ -99,7 +99,7 @@ using Microsoft.AspNetCore.Http;
             WriteLiteral("\r\n            <span class=\"h4 text-black padder\">Two-factor authentication</span>\r\n        </header>\r\n        <ul class=\"list-group nav nav-user user\">\r\n            <li>\r\n                ");
             EndContext();
             BeginContext(736, 783, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "088293ec15bb480e9aee9f0870b247cb", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "83306f612ccf478ca87c5c2a1bff7518", async() => {
                 BeginContext(801, 97, true);
                 WriteLiteral("\r\n                    <p class=\"h5 text-black font-bold\">\r\n                        Text Message\r\n");
                 EndContext();

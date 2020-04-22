@@ -4,5 +4,20 @@
     Layout = "~/Views/Shared/_SettingsLayout.cshtml";
 }
 
-<h2>Update Country</h2>
+<section class="vbox bg-white">
+    <section class="scrollable">
+        <header class="modal-header">
+            <a asp-controller="Settings" asp-action="AccountSettings"><i class="fa fa-arrow-left"></i></a>
+            <span class="h4 font-bold text-center padder">Select your country</span>
+        </header>
+        @using (Html.BeginForm("UpdateCountry","Settings", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <section class="wrapper" style="padding-left:30px; padding-right:30px;">
+                <div class="form-horizontal">
+
+                </div>
+            </section>
+        }
+    </section>
+</section>
 

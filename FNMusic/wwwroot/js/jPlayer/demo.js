@@ -5,24 +5,27 @@ $(document).ready(function(){
     cssSelectorAncestor: "#jp_container_N"
   }, [
         {
-          title:"ubble",
-          artist:"Miaow",
-          mp3: "http://flatfull.com/themes/assets/musics/Miaow-07-Bubble.mp3",
-          oga: "http://flatfull.com/themes/assets/musics/Miaow-07-Bubble.ogg",
+            title: "RockStar",
+            artist: "Post Malone ft. 21 Savage",
+            mp3: "https://localhost:5001/music/RockStar-Post-malone-Ft-21-savage.mp3",
+            poster: "images/m0.jpg"
+        },
+        {
+          title:"Lover's Rock",
+          artist:"Sade Adu",
+          mp3: "https://localhost:5001/music/01%20By%20Your%20Side.m4a",
           poster: "images/m0.jpg"
         },
         {
-          title:"Lentement",
-          artist:"Miaow",
-          mp3: "http://flatfull.com/themes/assets/musics/Miaow-03-Lentement.mp3",
-          oga: "http://flatfull.com/themes/assets/musics/Miaow-03-Lentement.ogg",
+          title:"Hurt Feelings",
+          artist:"Mac Miller",
+          mp3: "https://localhost:5001/music/02.%20Hurt%20Feelings.mp3",
           poster: "images/m0.jpg"
         },
         {
-          title:"Partir",
-          artist:"Miaow",
-          mp3: "http://flatfull.com/themes/assets/musics/Miaow-09-Partir.mp3",
-          oga: "http://flatfull.com/themes/assets/musics/Miaow-09-Partir.ogg",
+          title:"Suffer Head",
+          artist:"Mr. Eazi",
+          mp3: "https://localhost:5001/music/04.%20Mr%20Eazi,%202baba%20-%20Suffer%20Head.mp3",
           poster: "images/m0.jpg"
         }
     ], {

@@ -86,6 +86,9 @@
         "frameworks": {
           "netcoreapp2.1": {
             "projectReferences": {
+              "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\BaseLib\\BaseLib.csproj": {
+                "projectPath": "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\BaseLib\\BaseLib.csproj"
+              },
               "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\UserMgt\\UserMgt.csproj": {
                 "projectPath": "C:\\Users\\Stephen\\Documents\\Visual Studio 2017\\Projects\\Project-X\\UserMgt\\UserMgt.csproj"
               }
@@ -108,9 +111,8 @@
               "autoReferenced": true
             },
             "Microsoft.AspNetCore.Razor.Design": {
-              "suppressParent": "All",
               "target": "Package",
-              "version": "[2.1.1, )"
+              "version": "[2.1.2, )"
             },
             "Microsoft.NETCore.App": {
               "suppressParent": "All",

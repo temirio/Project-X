@@ -69,19 +69,24 @@ namespace FNMusic.Controllers
         [Authorize]
         [HttpPost]
         [Route("account/username")]
-        public async Task<IActionResult> UpdateUsername(UpdateUsername updateUsername)
+        public async Task<IActionResult> UpdateUsername(Update update)
         {
             return await Task.Run(async () => 
             {
                 try
                 {
-                    string username = httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Username").Value;
-                    if (updateUsername.Username == username)
+                    if (string.IsNullOrEmpty(update.Username))
+                    {
+                        throw new Exception("Username cannot be empty");
+                    }
+
+                    string OldUsername = httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Username").Value;
+                    if (update.Username == OldUsername)
                     {
                         throw new Exception("You need to change your username");
                     }
 
-                    HttpResult<ServiceResponse> httpResult = await accountSettingsService.UpdateUsernameAsync(updateUsername.Username, accessToken);
+                    HttpResult<ServiceResponse> httpResult = await accountSettingsService.UpdateUsernameAsync(update.Username, accessToken);
                     if (!HttpStatusUtils.Is2xxSuccessful(httpResult.Status))
                     {
                         throw new Exception(httpResult.FailureResponse.Description);
@@ -91,7 +96,7 @@ namespace FNMusic.Controllers
                 }
                 catch (Exception e)
                 {
-                    return View(updateUsername).WithDanger("Oops",e.Message);
+                    return View(update).WithDanger("Oops",e.Message);
                 }
             });
         }
@@ -135,6 +140,17 @@ namespace FNMusic.Controllers
             {
                 try
                 {
+                    if (string.IsNullOrEmpty(update.Phone))
+                    {
+                        throw new Exception("Phone cannot be empty");
+                    }
+
+                    string OldPhone = httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Phone").Value;
+                    if (update.Phone == OldPhone)
+                    {
+                        throw new Exception("You need to change your phone");
+                    }
+
                     bool VerificationCodeSent = Convert.ToBoolean(httpContextAccessor.HttpContext.Session.GetString("VCSent"));
                     if (!VerificationCodeSent)
                     {
@@ -145,7 +161,7 @@ namespace FNMusic.Controllers
                         }
                         httpContextAccessor.HttpContext.Session.SetString("VCSent", true.ToString());
                         await systemService.UpdateHttpContext();
-                        return View(update);
+                        return View(update).WithSuccess("Good","A verification code has been sent to your phone");
                     }
 
                     HttpResult<ServiceResponse> httpResult = await accountSettingsService.UpdatePhoneVerificationAsync(update.Phone, update.Token, accessToken);
@@ -164,10 +180,10 @@ namespace FNMusic.Controllers
         }
 
         /// <summary>
-        /// 
+        /// This method sends a request for a verification token to be sent to the updated phone of the user
         /// </summary>
         /// <param name="phone"></param>
-        /// <returns></returns>
+        /// <returns>Status Code 200 if successful & Status Code 400 if not successful</returns>
         [Authorize]
         [HttpPost("account/phone/token/{Phone}")]
         public async Task<IActionResult> SendUpdatePhoneVerificationToken([FromRoute(Name = "Phone")] string phone)
@@ -235,6 +251,17 @@ namespace FNMusic.Controllers
             {
                 try
                 {
+                    if (string.IsNullOrEmpty(update.Email))
+                    {
+                        throw new Exception("Email cannot be empty");
+                    }
+
+                    string OldEmail = httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "Email").Value;
+                    if (update.Email == OldEmail)
+                    {
+                        throw new Exception("Email cannot be the same");
+                    }
+
                     bool verificationTokenSent = Convert.ToBoolean(httpContextAccessor.HttpContext.Session.GetString("VCSent"));
                     if (!verificationTokenSent)
                     {
@@ -246,7 +273,7 @@ namespace FNMusic.Controllers
                         }
                         httpContextAccessor.HttpContext.Session.SetString("VCSent", true.ToString());
                         await systemService.UpdateHttpContext();
-                        return View(update);
+                        return View(update).WithSuccess("Good","A verification code has been sent to your email");
                     }
 
                     HttpResult<ServiceResponse> httpResult = await accountSettingsService.UpdateEmailVerificationAsync(update.Email, update.Token, accessToken);
@@ -488,20 +515,9 @@ namespace FNMusic.Controllers
 
         [Authorize]
         [Route("account/country")]
-        public Task<IActionResult> UpdateCountry()
+        public IActionResult UpdateCountry()
         {
-            return Task.Run(()=> 
-            {
-                try
-                {
-                    httpContextAccessor.HttpContext.Session.Clear();
-                    return View();
-                }
-                catch (Exception e)
-                {
-                    return View().WithDanger("Oops", e.Message);
-                }
-            });
+            return View();
         }
 
         [Authorize]

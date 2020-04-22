@@ -407,7 +407,7 @@ WriteAttributeValue("", 4705, dateOfBirth, 4705, 12, false);
             WriteLiteral("        </div>\r\n        <div id=\"editProfileImgBx\" class=\"hidden\">\r\n            <header class=\"modal-header\">\r\n                <h4>EDIT PROFILE IMAGE</h4>\r\n            </header>\r\n            ");
             EndContext();
             BeginContext(8195, 66, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "0c208dd83d764f55aa3dbbeadbbecce4", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("link", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "cbee8e23a47345f480fd625fb8814f33", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -427,7 +427,7 @@ WriteAttributeValue("", 4705, dateOfBirth, 4705, 12, false);
             WriteLiteral("\r\n            ");
             EndContext();
             BeginContext(8275, 39, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("script", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "b45ca443c94541938f88608a1bb34de4", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("script", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "93df5c61b84942b289e74c930909c273", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();

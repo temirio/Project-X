@@ -68,10 +68,17 @@
             <li class="h4 font-bold list-group-item bg-light"> Data & Permissions </li>
             <li class="list-group-item">
                 <a asp-controller="Settings" asp-action="UpdateCountry">
-                    <span class="font-bold">Country</span><br />
-                    <span>@principal.Claims.First(x => x.Type == "Country").Value</span>
+                    <p class="font-bold">Country</p>
+                    @if (!string.IsNullOrEmpty(principal.Claims.First(x => x.Type == "Country").Value))
+                    {
+                        <p class="small">@principal.Claims.First(x => x.Type == "Country").Value</p>
+                    }
+                    else
+                    {
+                        <p class="small">Select the country you live in.</p>
+                    }
+
                 </a>
-                <span>Select the country you live in. <a href="#" class="btn-link">Learn more</a></span>
             </li>
             <li class="list-group-item"><a href="#"><span class="font-bold">Your Data</span></a></li>
             <li class="list-group-item"><a href="#"><span class="font-bold">Apps and Sessions</span></a></li>

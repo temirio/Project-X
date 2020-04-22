@@ -76,7 +76,7 @@ using System.Security.Claims;
             WriteLiteral("<section class=\"vbox bg-white\">\r\n    <section class=\"scrollable\">\r\n        <header class=\"modal-header\">\r\n            ");
             EndContext();
             BeginContext(540, 94, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "a472297bf1b0444681b59574013dc4fe", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "c2ac4a15ccee4f6c91c7e5c8faa1f29a", async() => {
                 BeginContext(598, 32, true);
                 WriteLiteral("<i class=\"fa fa-arrow-left\"></i>");
                 EndContext();

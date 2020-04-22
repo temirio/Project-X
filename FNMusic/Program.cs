@@ -19,7 +19,6 @@ namespace FNMusic
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseUrls("https://*:5001")
                 .UseStartup<Startup>();
     }
 }

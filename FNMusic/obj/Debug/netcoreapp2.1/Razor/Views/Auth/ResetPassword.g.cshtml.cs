@@ -265,7 +265,7 @@ WriteAttributeValue("", 2159, Model.Token, 2159, 12, false);
             WriteLiteral("</h4>\r\n                <h5 class=\"text-center\">You have successfully reset your password</h5>\r\n                <br />\r\n                ");
             EndContext();
             BeginContext(3371, 149, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "630143b5a7e742eab3cd6deca628a25a", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "1e94b3b174a946f3a785a85e3ff72e3c", async() => {
                 BeginContext(3449, 67, true);
                 WriteLiteral("\r\n                    <span>Click to Login</span>\r\n                ");
                 EndContext();

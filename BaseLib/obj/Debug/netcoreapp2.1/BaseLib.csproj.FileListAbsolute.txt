@@ -20,3 +20,4 @@ C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\BaseLib\obj\Deb
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\BaseLib\obj\Debug\netcoreapp2.1\BaseLib.AssemblyInfo.cs
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\BaseLib\obj\Debug\netcoreapp2.1\BaseLib.dll
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\BaseLib\obj\Debug\netcoreapp2.1\BaseLib.pdb
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\BaseLib\obj\Debug\netcoreapp2.1\BaseLib.csprojAssemblyReference.cache
