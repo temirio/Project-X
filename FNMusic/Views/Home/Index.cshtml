@@ -1,1 +1,15 @@
-﻿
+﻿@model UserMgt.Models.Login
+@{
+
+    ViewData["Title"] = "fnmusic - Home";
+}
+
+<div class="row">
+    <div class="col-sm-6 col-xs-6 col-lg-6 col-md-6 home-bg-left"></div>
+    <div class="col-sm-6 col-xs-6 col-lg-6 col-md-6 bg-white-only">
+        <div class="login login-container">
+            @await Html.PartialAsync("_LoginPartial")
+        </div>
+        
+    </div>
+</div>

@@ -111,3 +111,4 @@ C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Deb
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.csproj.CopyComplete
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.dll
 C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\FNMusic.pdb
+C:\Users\Stephen\Documents\Visual Studio 2017\Projects\Project-X\FNMusic\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_LoginPartial.g.cshtml.cs

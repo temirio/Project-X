@@ -65,7 +65,7 @@ using FNMusic.Models;
             WriteLiteral("\r\n<section class=\"vbox bg-white\">\r\n    <section class=\"scrollable\">\r\n        <header class=\"modal-header\">\r\n            ");
             EndContext();
             BeginContext(227, 94, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "b430208acf2d4618afbfb7930780aefe", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "d1a33cba01b64d44919fc915c2395fdb", async() => {
                 BeginContext(285, 32, true);
                 WriteLiteral("<i class=\"fa fa-arrow-left\"></i>");
                 EndContext();

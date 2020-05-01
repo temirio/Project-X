@@ -1,33 +1,19 @@
-﻿
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" class="app">
 <head>
     <meta charset="utf-8" />
     <title>@ViewData["Title"]</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <link rel="stylesheet" href="~/css/app.v1.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/custom.v1.css" type="text/css" />
 </head>
 <body>
-    <nav class="navbar bg-black navbar-fixed-top">
+    <nav class="navbar bg-white-only navbar-fixed-top">
         <header class="navbar-header">
-            <a href="~/" class="navbar-brand pull-left" style="color:white" >fnmusic</a>
+            <a href="~/" class="navbar-brand pull-left" style="">fnmusic</a>
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle Navigation">
                 <span class="fa fa-bars"></span>
             </button>
-            @using (Html.BeginForm("Player", "Search", FormMethod.Get, new { enctype = "multipart/form-data", @class= "navbar-form navbar-left input-s-lg hidden-xs", role= "search" }))
-            {
-                <div class="form-group">
-                    <div class="input-group">
-                        @Html.TextBox("Search", "", new { type = "text", @class = "form-control input-sm rounded", placeholder = "Search songs, albums..." })
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn btn-sm btn-icon rounded btn-primary">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </span>
-                    </div>
-                </div>
-            }
         </header>
         <div id="nav" class="collapse navbar-collapse center">
             <ul class="nav navbar-nav nav-primary">
@@ -35,14 +21,9 @@
                 <li><a href="#">About</a></li>
                 <li><a href="#">Featured</a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right" style="padding-right:100px;">
-                <li><a class="btn btn-primary" asp-controller="Auth" asp-action="Register">Try it free!</a></li>
-                <li><a asp-controller="Auth" asp-action="Login">Login</a></li>
-            </ul>
         </div>
     </nav>
     @RenderBody()
-
     <script src="~/js/app.v1.js"></script>
     <script src="~/js/app.plugin.js"></script>
 </body>

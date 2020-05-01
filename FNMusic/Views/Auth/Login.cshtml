@@ -4,46 +4,5 @@
     ViewData["Title"] = "Login";
 }
 
-<section class="m-t-lg wrapper">
-    <div class="container aside-xl bg-white" style="border-style:solid; border-width:1px; border-radius:5px;">
-        <header class="wrapper text-center">
-            <h3>Sign In</h3>
-        </header>
-        <section class="form-horizontal" style="padding:0px 30px 30px 30px;">
-            <h5 class="text-center">Sign in to listen to the best music from your favourite artistes</h5>
-            @Html.ValidationSummary(true,"", new { @class = "text-danger small" })
-            <hr />
-            @using (Html.BeginForm("login?ReturnUrl=" + ViewData["ReturnUrl"] + "", "Auth", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                <div class="form-group">
-                    @Html.ValidationMessageFor(x => x.UserId, "", new { @class = "text-danger small" })
-                    @Html.TextBoxFor(x => x.UserId, new { placeholder = "Email, Phone or Username", @class = "form-control input-sm text-center" })
-                </div>
-                <div class="form-group">
-                    @Html.ValidationMessageFor(x => x.Password, "", new { @class = "text-danger small" })
-                    @Html.PasswordFor(x => x.Password, new { placeholder = "Password", @class = "form-control input-sm text-center" })
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">
-                    <span class="text-center h3">Sign in</span>
-                </button>
-                <p class="text-center m-t m-b">
-                    <small>
-                        <a asp-controller="Auth" asp-action="ForgotPassword">Forgot your password?</a>
-                    </small>
-                </p>
-            }
-        </section>
-    </div>
-</section>
-
-<section class="m-t-lg wrapper">
-    <div class="container aside-xl bg-white" style="border-style:solid; border-width:1px; border-radius:5px;">
-        <section class="form-horizontal" style="padding:10px 0px 0px 10px;">
-            <p class="text-muted text-center">
-                Don't have an account?
-                <a asp-controller="Auth" asp-action="Register" class="font-bold">Register</a>
-            </p>
-        </section>
-    </div>
-</section>
+@await Html.PartialAsync("_LoginPartial")
 
